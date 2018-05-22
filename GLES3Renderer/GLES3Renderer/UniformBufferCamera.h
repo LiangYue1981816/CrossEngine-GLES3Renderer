@@ -10,8 +10,9 @@ class CUniformBufferCamera
 private:
 	typedef struct Params {
 		glm::mat4 mtxProjection;
-		glm::mat4 mtxWorldToView;
-		glm::mat4 mtxWorldToViewInverseTranspose;
+		glm::mat4 mtxView;
+		glm::mat4 mtxViewInverse;
+		glm::mat4 mtxViewInverseTranspose;
 	} Params;
 
 

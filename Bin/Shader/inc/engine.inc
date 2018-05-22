@@ -16,6 +16,7 @@
 	{                                                                            \
 		mat4 projectionMatrix;                                                     \
 		mat4 viewMatrix;                                                           \
+		mat4 viewInverseMatrix;                                                    \
 		mat4 viewInverseTransposeMatrix;                                           \
 	} engineCamera
 
