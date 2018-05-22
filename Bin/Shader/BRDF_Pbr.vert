@@ -19,38 +19,34 @@ USE_ENGINE_DIRECTION_LIGHT;
 layout (location = 0) out vec2 outTexcoord;
 layout (location = 1) out vec3 outHalfDirection;
 layout (location = 2) out vec3 outViewDirection;
-layout (location = 3) out vec3 outDirectionLightDirection;
-layout (location = 4) out mat3 outTBN;
+layout (location = 3) out mat3 outTBN;
 
 void main()
 {
 	mat4 worldMatrix = mat4(inInstanceTransformMatrixCol0, inInstanceTransformMatrixCol1, inInstanceTransformMatrixCol2, inInstanceTransformMatrixCol3);
 
-	vec3 viewNormal;
-	viewNormal = (engineCamera.viewInverseTransposeMatrix * worldMatrix * vec4(inNormal, 0.0f)).xyz;
-	viewNormal = normalize(viewNormal);
+	vec3 worldPosition = (worldMatrix * vec4(inPosition.xyz, 1.0)).xyz;
+	vec3 worldCameraPosition = (engineCamera.viewInverseMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+	vec3 worldViewDirection = worldCameraPosition - worldPosition;
+	worldViewDirection = normalize(worldViewDirection);
 
-	vec3 viewBinormal;
-	viewBinormal = (engineCamera.viewInverseTransposeMatrix * worldMatrix * vec4(inBinormal, 0.0f)).xyz;
-	viewBinormal = normalize(viewBinormal);
+	vec3 worldHalfDirection = engineDirectionLight.direction + worldViewDirection;
+	worldHalfDirection = normalize(worldHalfDirection);
 
-	vec3 viewDirectionLightDirection;
-	viewDirectionLightDirection = (engineCamera.viewInverseTransposeMatrix * vec4(engineDirectionLight.direction, 0.0f)).xyz;
-	viewDirectionLightDirection = normalize(viewDirectionLightDirection);
+	vec3 worldNormal = (worldMatrix * vec4(inNormal, 0.0f)).xyz;
+	worldNormal = normalize(worldNormal);
 
-	vec3 viewHalfDirection;
-	viewHalfDirection = viewDirectionLightDirection + vec3(0.0, 0.0, 1.0);
-	viewHalfDirection = normalize(viewHalfDirection);
+	vec3 worldBinormal = (worldMatrix * vec4(inBinormal, 0.0f)).xyz;
+	worldBinormal = normalize(worldBinormal);
 
-	vec3 t = cross(viewBinormal, viewNormal);
-	vec3 b = cross(viewNormal, t);
-	mat3 tbn = mat3(t, b, viewNormal);
-	
-	outTBN = tbn;
+	vec3 t = cross(worldBinormal, worldNormal);
+	vec3 b = cross(worldNormal, t);
+	mat3 tbn = mat3(t, b, worldNormal);
+
 	outTexcoord = inTexcoord0;
-	outHalfDirection = viewHalfDirection * tbn;
-	outViewDirection = vec3(0.0, 0.0, 1.0) * tbn;
-	outDirectionLightDirection = viewDirectionLightDirection * tbn;
+	outHalfDirection = worldHalfDirection;
+	outViewDirection = worldViewDirection;
+	outTBN = tbn;
 
 	gl_Position = engineCamera.projectionMatrix * engineCamera.viewMatrix * worldMatrix * vec4(inPosition.xyz, 1.0);
 }
