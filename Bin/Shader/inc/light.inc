@@ -22,7 +22,8 @@ vec3 Diffuse_SH(vec3 albedoColor, float metallic, vec3 normal, mat4 rotationMatr
 	float y = rotationNormal.y;
 	float z = rotationNormal.z;
 
-	vec3 basis0 = vec3(1.0, z, x);
+//	vec3 basis0 = vec3(1.0, z, x);
+	vec3 basis0 = vec3(0.2, z, x);
 	vec3 basis1 = vec3(y, z * z * 2.0 - x * x - y * y, z * x);
 	vec3 basis2 = vec3(y * z, x * x - y * y, x * y);
 
