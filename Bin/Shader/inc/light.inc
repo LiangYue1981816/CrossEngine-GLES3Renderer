@@ -14,7 +14,7 @@ vec3 Linear2Gamma(vec3 linear)
 
 
 // BRDF
-vec3 Diffuse_SH(vec3 albedoColor, float metallic, vec3 normal, mat4 rotationMatrix, vec3 shRed0, vec3 shRed1, vec3 shRed2, vec3 shGreen0, vec3 shGreen1, vec3 shGreen2, vec3 shBlue0, vec3 shBlue1, vec3 shBlue2)
+vec3 Ambient_SH(vec3 albedoColor, float metallic, vec3 normal, mat4 rotationMatrix, vec3 shRed0, vec3 shRed1, vec3 shRed2, vec3 shGreen0, vec3 shGreen1, vec3 shGreen2, vec3 shBlue0, vec3 shBlue1, vec3 shBlue2)
 {
 	vec3 rotationNormal = (rotationMatrix * vec4(normal, 0.0)).xyz;
 
