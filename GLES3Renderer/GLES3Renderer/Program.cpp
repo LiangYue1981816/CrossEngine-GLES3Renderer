@@ -285,7 +285,7 @@ bool CProgram::BindTexture2D(GLuint name, GLuint texture, GLuint sampler, GLuint
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindSampler(unit, sampler);
 		glBindTexture(GL_TEXTURE_2D, texture);
-		glProgramUniform1i(m_program, itLocation->second, unit);
+		glUniform1i(itLocation->second, unit);
 		return true;
 	}
 
@@ -300,7 +300,7 @@ bool CProgram::BindTextureArray(GLuint name, GLuint texture, GLuint sampler, GLu
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindSampler(unit, sampler);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, texture);
-		glProgramUniform1i(m_program, itLocation->second, unit);
+		glUniform1i(itLocation->second, unit);
 		return true;
 	}
 
@@ -315,7 +315,7 @@ bool CProgram::BindTextureCubeMap(GLuint name, GLuint texture, GLuint sampler, G
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindSampler(unit, sampler);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
-		glProgramUniform1i(m_program, itLocation->second, unit);
+		glUniform1i(itLocation->second, unit);
 		return true;
 	}
 
