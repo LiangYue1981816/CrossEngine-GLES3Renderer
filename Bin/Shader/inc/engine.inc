@@ -47,13 +47,13 @@
 #define USE_ENGINE_POINT_LIGHT                                                 \
 	uniform PointLight                                                           \
 	{                                                                            \
-		vec3 position;                                                             \
 		vec3 color;                                                                \
+		vec3 position;                                                             \
 	} enginePointLight
 
 #define USE_ENGINE_DIRECTION_LIGHT                                             \
 	uniform DirectionLight                                                       \
 	{                                                                            \
-		vec3 direction;                                                            \
 		vec3 color;                                                                \
+		vec3 direction;                                                            \
 	} engineDirectionLight
