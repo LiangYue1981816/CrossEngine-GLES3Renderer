@@ -8,8 +8,8 @@ class CUniformBufferPointLight
 {
 private:
 	typedef struct Params {
-		glm::vec4 position;
 		glm::vec4 color;
+		glm::vec4 position;
 	} Params;
 
 
