@@ -21,7 +21,7 @@
 #define INSTANCE_ATTRIBUTE_TRANSFORM (INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL0 | INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL1 | INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL2 | INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL3)
 
 
-class CMeshBufferInstance
+class CVertexBufferInstance
 {
 private:
 	typedef struct InstanceData {
@@ -30,8 +30,8 @@ private:
 
 
 public:
-	CMeshBufferInstance(void);
-	virtual ~CMeshBufferInstance(void);
+	CVertexBufferInstance(void);
+	virtual ~CVertexBufferInstance(void);
 
 
 public:
@@ -43,25 +43,17 @@ public:
 	void AddInstance(const glm::mat4 &mtxTransform);
 
 public:
-	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
 	bool CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint vertexFormat, GLuint instanceFormat);
 	void Destroy(void);
 
 public:
-	GLenum GetIndexType(void) const;
-	GLuint GetIndexCount(void) const;
 	GLuint GetVertexCount(void) const;
 	GLuint GetInstanceCount(void) const;
 
 
 private:
-	GLenum m_indexType;
-	GLuint m_indexCount;
-	GLuint m_vertexCount;
-
-private:
 	GLuint m_vao;
-	GLuint m_indexBuffer;
+	GLuint m_vertexCount;
 	GLuint m_vertexBuffer;
 	GLuint m_instanceBuffer;
 	GLuint m_instanceBufferSize;
@@ -69,4 +61,29 @@ private:
 private:
 	bool m_bDirty;
 	std::vector<InstanceData> m_instanceDatas;
+};
+
+class CIndexBuffer
+{
+public:
+	CIndexBuffer(void);
+	virtual ~CIndexBuffer(void);
+
+
+public:
+	void Bind(void);
+
+public:
+	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
+	void Destroy(void);
+
+public:
+	GLenum GetIndexType(void) const;
+	GLuint GetIndexCount(void) const;
+
+
+private:
+	GLenum m_indexType;
+	GLuint m_indexCount;
+	GLuint m_indexBuffer;
 };

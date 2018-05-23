@@ -118,28 +118,23 @@ static GLuint GetInstanceAttributeLocation(GLuint attribute)
 
 static const int INSTANCE_BUFFER_SIZE = 4 * 1024;
 
-CMeshBufferInstance::CMeshBufferInstance(void)
+CVertexBufferInstance::CVertexBufferInstance(void)
 	: m_vao(0)
-	, m_indexBuffer(0)
+	, m_vertexCount(0)
 	, m_vertexBuffer(0)
 	, m_instanceBuffer(0)
 	, m_instanceBufferSize(0)
-
-	, m_indexType(GL_UNSIGNED_SHORT)
-	, m_indexCount(0)
-	, m_vertexCount(0)
-
 	, m_bDirty(false)
 {
 
 }
 
-CMeshBufferInstance::~CMeshBufferInstance(void)
+CVertexBufferInstance::~CVertexBufferInstance(void)
 {
 	Destroy();
 }
 
-void CMeshBufferInstance::Bind(void)
+void CVertexBufferInstance::Bind(void)
 {
 	if (m_bDirty && m_instanceBuffer) {
 		m_bDirty = false;
@@ -161,60 +156,40 @@ void CMeshBufferInstance::Bind(void)
 	}
 
 	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 }
 
-void CMeshBufferInstance::Clear(void)
+void CVertexBufferInstance::Clear(void)
 {
-	if (m_instanceBuffer == 0) {
-		return;
+	if (m_instanceBuffer) {
+		m_bDirty = true;
+		m_instanceDatas.clear();
 	}
-
-	m_bDirty = true;
-	m_instanceDatas.clear();
 }
 
-void CMeshBufferInstance::SetInstance(const glm::mat4 &mtxTransform)
+void CVertexBufferInstance::SetInstance(const glm::mat4 &mtxTransform)
 {
-	if (m_instanceBuffer == 0) {
-		return;
+	if (m_instanceBuffer) {
+		m_bDirty = true;
+		m_instanceDatas.clear();
+
+		InstanceData data;
+		data.mtxTransform = mtxTransform;
+		m_instanceDatas.push_back(data);
 	}
-
-	m_bDirty = true;
-
-	InstanceData data;
-	data.mtxTransform = mtxTransform;
-	m_instanceDatas.clear();
-	m_instanceDatas.push_back(data);
 }
 
-void CMeshBufferInstance::AddInstance(const glm::mat4 &mtxTransform)
+void CVertexBufferInstance::AddInstance(const glm::mat4 &mtxTransform)
 {
-	if (m_instanceBuffer == 0) {
-		return;
+	if (m_instanceBuffer) {
+		m_bDirty = true;
+
+		InstanceData data;
+		data.mtxTransform = mtxTransform;
+		m_instanceDatas.push_back(data);
 	}
-
-	m_bDirty = true;
-
-	InstanceData data;
-	data.mtxTransform = mtxTransform;
-	m_instanceDatas.push_back(data);
 }
 
-bool CMeshBufferInstance::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
-{
-	m_indexType = type;
-	m_indexCount = size / (m_indexType == GL_UNSIGNED_SHORT ? 2 : 4);
-
-	glGenBuffers(1, &m_indexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, pBuffer, bDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	return true;
-}
-
-bool CMeshBufferInstance::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint vertexFormat, GLuint instanceFormat)
+bool CVertexBufferInstance::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint vertexFormat, GLuint instanceFormat)
 {
 	if (vertexFormat) {
 		m_vertexCount = size / GetVertexStride(vertexFormat);
@@ -286,14 +261,10 @@ bool CMeshBufferInstance::CreateVertexBuffer(size_t size, const void *pBuffer, b
 	return true;
 }
 
-void CMeshBufferInstance::Destroy(void)
+void CVertexBufferInstance::Destroy(void)
 {
 	if (m_vao) {
 		glDeleteVertexArrays(1, &m_vao);
-	}
-
-	if (m_indexBuffer) {
-		glDeleteBuffers(1, &m_indexBuffer);
 	}
 
 	if (m_vertexBuffer) {
@@ -305,27 +276,67 @@ void CMeshBufferInstance::Destroy(void)
 	}
 
 	m_vao = 0;
-	m_indexBuffer = 0;
 	m_vertexBuffer = 0;
 	m_instanceBuffer = 0;
 }
 
-GLenum CMeshBufferInstance::GetIndexType(void) const
-{
-	return m_indexType;
-}
-
-GLuint CMeshBufferInstance::GetIndexCount(void) const
-{
-	return m_indexCount;
-}
-
-GLuint CMeshBufferInstance::GetVertexCount(void) const
+GLuint CVertexBufferInstance::GetVertexCount(void) const
 {
 	return m_vertexCount;
 }
 
-GLuint CMeshBufferInstance::GetInstanceCount(void) const
+GLuint CVertexBufferInstance::GetInstanceCount(void) const
 {
 	return m_instanceDatas.size();
+}
+
+
+CIndexBuffer::CIndexBuffer(void)
+	: m_indexType(GL_UNSIGNED_SHORT)
+	, m_indexCount(0)
+	, m_indexBuffer(0)
+{
+
+}
+
+CIndexBuffer::~CIndexBuffer(void)
+{
+	Destroy();
+}
+
+void CIndexBuffer::Bind(void)
+{
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
+}
+
+bool CIndexBuffer::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
+{
+	m_indexType = type;
+	m_indexCount = size / (m_indexType == GL_UNSIGNED_SHORT ? 2 : 4);
+
+	glGenBuffers(1, &m_indexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, pBuffer, bDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	return true;
+}
+
+void CIndexBuffer::Destroy(void)
+{
+	if (m_indexBuffer) {
+		glDeleteBuffers(1, &m_indexBuffer);
+	}
+
+	m_indexBuffer = 0;
+}
+
+GLenum CIndexBuffer::GetIndexType(void) const
+{
+	return m_indexType;
+}
+
+GLuint CIndexBuffer::GetIndexCount(void) const
+{
+	return m_indexCount;
 }
