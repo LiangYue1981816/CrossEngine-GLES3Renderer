@@ -66,6 +66,7 @@
     <ClInclude Include="GLES3Renderer\VertexBuffer.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -151,13 +152,13 @@
     <ClCompile Include="GLES3Renderer\UniformBufferAmbientLight.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Loader.cpp" />
     <ClCompile Include="GLES3Renderer\IndexBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLES3Renderer\VertexBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GLES3Renderer">

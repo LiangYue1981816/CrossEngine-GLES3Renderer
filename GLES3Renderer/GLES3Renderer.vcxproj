@@ -115,6 +115,7 @@
     <ClInclude Include="GLES3Renderer\UniformBufferVec3.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferVec4.h" />
     <ClInclude Include="GLES3Renderer\VertexBuffer.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -123,7 +124,6 @@
     <ClCompile Include="GLES3Renderer\IndexBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\UniformBufferAmbientLight.cpp" />
     <ClCompile Include="GLES3Renderer\VertexBuffer.cpp" />
-    <ClCompile Include="Loader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GLES3Renderer\Material.cpp" />
     <ClCompile Include="GLES3Renderer\Program.cpp" />
@@ -150,6 +150,7 @@
     <ClCompile Include="GLES3Renderer\UniformBufferVec2.cpp" />
     <ClCompile Include="GLES3Renderer\UniformBufferVec3.cpp" />
     <ClCompile Include="GLES3Renderer\UniformBufferVec4.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
