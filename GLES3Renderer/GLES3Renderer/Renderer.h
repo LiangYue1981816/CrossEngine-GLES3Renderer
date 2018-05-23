@@ -3,7 +3,8 @@
 #include "glew.h"
 #include "Material.h"
 #include "FrameBuffer.h"
-#include "MeshBufferInstance.h"
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
 #include "UniformBufferCamera.h"
 #include "UniformBufferTransform.h"
 #include "UniformBufferAmbientLight.h"
@@ -53,8 +54,8 @@ public:
 
 public:
 	void Clear(float red, float green, float blue, float alpha, float depth);
-	void DrawInstance(GLuint material, CMeshBufferInstance *pMesh);
-	void DrawElements(GLuint material, CMeshBufferInstance *pMesh, const CUniformBufferTransform *pUniformTransform);
+	void DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer);
+	void DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformBufferTransform *pUniformTransform);
 	void DrawScreen(GLuint material, GLsizei numTextures, GLuint *textures, GLchar names[][260]);
 
 
@@ -64,7 +65,8 @@ private:
 	char m_szMaterialPath[260];
 
 private:
-	CMeshBufferInstance m_screenMesh;
+	CIndexBuffer m_screenIndexBuffer;
+	CVertexBuffer m_screenVertexBuffer;
 
 private:
 	CUniformBufferCamera m_uniformCamera;

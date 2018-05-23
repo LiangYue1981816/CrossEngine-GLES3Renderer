@@ -117,7 +117,7 @@ static GLuint GetInstanceAttributeLocation(GLuint attribute)
 
 static const int INSTANCE_BUFFER_SIZE = 4 * 1024;
 
-CVertexBufferInstance::CVertexBufferInstance(void)
+CVertexBuffer::CVertexBuffer(void)
 	: m_vao(0)
 	, m_vertexCount(0)
 	, m_vertexBuffer(0)
@@ -128,12 +128,12 @@ CVertexBufferInstance::CVertexBufferInstance(void)
 
 }
 
-CVertexBufferInstance::~CVertexBufferInstance(void)
+CVertexBuffer::~CVertexBuffer(void)
 {
 	Destroy();
 }
 
-void CVertexBufferInstance::Bind(void)
+void CVertexBuffer::Bind(void)
 {
 	if (m_bDirty && m_instanceBuffer) {
 		m_bDirty = false;
@@ -157,7 +157,7 @@ void CVertexBufferInstance::Bind(void)
 	glBindVertexArray(m_vao);
 }
 
-void CVertexBufferInstance::Clear(void)
+void CVertexBuffer::Clear(void)
 {
 	if (m_instanceBuffer) {
 		m_bDirty = true;
@@ -165,7 +165,7 @@ void CVertexBufferInstance::Clear(void)
 	}
 }
 
-void CVertexBufferInstance::SetInstance(const glm::mat4 &mtxTransform)
+void CVertexBuffer::SetInstance(const glm::mat4 &mtxTransform)
 {
 	if (m_instanceBuffer) {
 		m_bDirty = true;
@@ -177,7 +177,7 @@ void CVertexBufferInstance::SetInstance(const glm::mat4 &mtxTransform)
 	}
 }
 
-void CVertexBufferInstance::AddInstance(const glm::mat4 &mtxTransform)
+void CVertexBuffer::AddInstance(const glm::mat4 &mtxTransform)
 {
 	if (m_instanceBuffer) {
 		m_bDirty = true;
@@ -188,7 +188,7 @@ void CVertexBufferInstance::AddInstance(const glm::mat4 &mtxTransform)
 	}
 }
 
-bool CVertexBufferInstance::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint vertexFormat, GLuint instanceFormat)
+bool CVertexBuffer::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint vertexFormat, GLuint instanceFormat)
 {
 	if (vertexFormat) {
 		m_vertexCount = size / GetVertexStride(vertexFormat);
@@ -260,7 +260,7 @@ bool CVertexBufferInstance::CreateVertexBuffer(size_t size, const void *pBuffer,
 	return true;
 }
 
-void CVertexBufferInstance::Destroy(void)
+void CVertexBuffer::Destroy(void)
 {
 	if (m_vao) {
 		glDeleteVertexArrays(1, &m_vao);
@@ -279,12 +279,12 @@ void CVertexBufferInstance::Destroy(void)
 	m_instanceBuffer = 0;
 }
 
-GLuint CVertexBufferInstance::GetVertexCount(void) const
+GLuint CVertexBuffer::GetVertexCount(void) const
 {
 	return m_vertexCount;
 }
 
-GLuint CVertexBufferInstance::GetInstanceCount(void) const
+GLuint CVertexBuffer::GetInstanceCount(void) const
 {
 	return m_instanceDatas.size();
 }

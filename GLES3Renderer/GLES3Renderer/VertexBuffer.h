@@ -21,7 +21,7 @@
 #define INSTANCE_ATTRIBUTE_TRANSFORM (INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL0 | INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL1 | INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL2 | INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL3)
 
 
-class CVertexBufferInstance
+class CVertexBuffer
 {
 private:
 	typedef struct InstanceData {
@@ -30,8 +30,8 @@ private:
 
 
 public:
-	CVertexBufferInstance(void);
-	virtual ~CVertexBufferInstance(void);
+	CVertexBuffer(void);
+	virtual ~CVertexBuffer(void);
 
 
 public:
