@@ -213,6 +213,7 @@ void CRenderer::DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 
 	pIndexBuffer->Bind();
 	pVertexBuffer->Bind();
+
 	glDrawElementsInstanced(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL, pVertexBuffer->GetInstanceCount());
 }
 
@@ -231,6 +232,7 @@ void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 
 	pIndexBuffer->Bind();
 	pVertexBuffer->Bind();
+
 	glDrawElements(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL);
 }
 
@@ -254,5 +256,6 @@ void CRenderer::DrawScreen(GLuint material, GLsizei numTextures, GLuint *texture
 
 	m_screenIndexBuffer.Bind();
 	m_screenVertexBuffer.Bind();
+
 	glDrawElements(GL_TRIANGLES, m_screenIndexBuffer.GetIndexCount(), m_screenIndexBuffer.GetIndexType(), NULL);
 }
