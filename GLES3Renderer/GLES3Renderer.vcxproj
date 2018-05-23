@@ -95,8 +95,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GLES3Renderer\FrameBuffer.h" />
+    <ClInclude Include="GLES3Renderer\IndexBuffer.h" />
     <ClInclude Include="GLES3Renderer\Material.h" />
-    <ClInclude Include="GLES3Renderer\MeshBufferInstance.h" />
     <ClInclude Include="GLES3Renderer\Program.h" />
     <ClInclude Include="GLES3Renderer\Renderer.h" />
     <ClInclude Include="GLES3Renderer\Texture2D.h" />
@@ -114,13 +114,15 @@
     <ClInclude Include="GLES3Renderer\UniformBufferVec2.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferVec3.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferVec4.h" />
+    <ClInclude Include="GLES3Renderer\VertexBuffer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLES3Renderer\FrameBuffer.cpp" />
-    <ClCompile Include="GLES3Renderer\MeshBufferInstance.cpp" />
+    <ClCompile Include="GLES3Renderer\IndexBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\UniformBufferAmbientLight.cpp" />
+    <ClCompile Include="GLES3Renderer\VertexBuffer.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GLES3Renderer\Material.cpp" />
