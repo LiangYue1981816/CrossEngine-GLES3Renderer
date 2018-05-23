@@ -55,25 +55,25 @@ void CUniformBufferCamera::SetProjectionMatrix(const float *mtxProjection)
 	m_params.mtxProjection[3][3] = mtxProjection[15];
 }
 
-void CUniformBufferCamera::SetWorldToViewMatrix(const float *mtxWorldToView)
+void CUniformBufferCamera::SetViewMatrix(const float *mtxView)
 {
 	m_bDirty = true;
-	m_params.mtxView[0][0] = mtxWorldToView[0];
-	m_params.mtxView[0][1] = mtxWorldToView[1];
-	m_params.mtxView[0][2] = mtxWorldToView[2];
-	m_params.mtxView[0][3] = mtxWorldToView[3];
-	m_params.mtxView[1][0] = mtxWorldToView[4];
-	m_params.mtxView[1][1] = mtxWorldToView[5];
-	m_params.mtxView[1][2] = mtxWorldToView[6];
-	m_params.mtxView[1][3] = mtxWorldToView[7];
-	m_params.mtxView[2][0] = mtxWorldToView[8];
-	m_params.mtxView[2][1] = mtxWorldToView[9];
-	m_params.mtxView[2][2] = mtxWorldToView[10];
-	m_params.mtxView[2][3] = mtxWorldToView[11];
-	m_params.mtxView[3][0] = mtxWorldToView[12];
-	m_params.mtxView[3][1] = mtxWorldToView[13];
-	m_params.mtxView[3][2] = mtxWorldToView[14];
-	m_params.mtxView[3][3] = mtxWorldToView[15];
+	m_params.mtxView[0][0] = mtxView[0];
+	m_params.mtxView[0][1] = mtxView[1];
+	m_params.mtxView[0][2] = mtxView[2];
+	m_params.mtxView[0][3] = mtxView[3];
+	m_params.mtxView[1][0] = mtxView[4];
+	m_params.mtxView[1][1] = mtxView[5];
+	m_params.mtxView[1][2] = mtxView[6];
+	m_params.mtxView[1][3] = mtxView[7];
+	m_params.mtxView[2][0] = mtxView[8];
+	m_params.mtxView[2][1] = mtxView[9];
+	m_params.mtxView[2][2] = mtxView[10];
+	m_params.mtxView[2][3] = mtxView[11];
+	m_params.mtxView[3][0] = mtxView[12];
+	m_params.mtxView[3][1] = mtxView[13];
+	m_params.mtxView[3][2] = mtxView[14];
+	m_params.mtxView[3][3] = mtxView[15];
 	m_params.mtxViewInverse = glm::inverse(m_params.mtxView);
 	m_params.mtxViewInverseTranspose = glm::transpose(m_params.mtxViewInverse);
 }

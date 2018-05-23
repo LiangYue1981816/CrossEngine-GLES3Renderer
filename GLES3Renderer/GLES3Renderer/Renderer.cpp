@@ -110,15 +110,15 @@ void CRenderer::SetCameraLookat(float eyex, float eyey, float eyez, float center
 	m_uniformCamera.Apply();
 }
 
-void CRenderer::SetCameraProjectionMatrix(const float *mtxProjection)
+void CRenderer::SetProjectionMatrix(const float *mtxProjection)
 {
 	m_uniformCamera.SetProjectionMatrix(mtxProjection);
 	m_uniformCamera.Apply();
 }
 
-void CRenderer::SetCameraWorldToViewMatrix(const float *mtxWorldToView)
+void CRenderer::SetViewMatrix(const float *mtxView)
 {
-	m_uniformCamera.SetWorldToViewMatrix(mtxWorldToView);
+	m_uniformCamera.SetViewMatrix(mtxView);
 	m_uniformCamera.Apply();
 }
 
