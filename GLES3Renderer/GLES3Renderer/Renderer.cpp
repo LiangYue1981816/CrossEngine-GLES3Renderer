@@ -50,7 +50,7 @@ CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const 
 	strcpy(m_szTexturePath, szTexturePath);
 	strcpy(m_szMaterialPath, szMaterialPath);
 
-	m_material = 0;
+	m_material = -1;
 }
 
 CRenderer::~CRenderer(void)
@@ -211,8 +211,8 @@ void CRenderer::DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 		m_pMaterials[material]->Bind();
 	}
 
-	pIndexBuffer->Bind();
 	pVertexBuffer->Bind();
+	pIndexBuffer->Bind();
 
 	glDrawElementsInstanced(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL, pVertexBuffer->GetInstanceCount());
 }
@@ -230,8 +230,8 @@ void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 
 	m_pMaterials[material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TRANSFORM_NAME), pUniformTransform->GetBuffer(), pUniformTransform->GetSize());
 
-	pIndexBuffer->Bind();
 	pVertexBuffer->Bind();
+	pIndexBuffer->Bind();
 
 	glDrawElements(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL);
 }
@@ -254,8 +254,8 @@ void CRenderer::DrawScreen(GLuint material, GLsizei numTextures, GLuint *texture
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
 
-	m_screenIndexBuffer.Bind();
 	m_screenVertexBuffer.Bind();
+	m_screenIndexBuffer.Bind();
 
 	glDrawElements(GL_TRIANGLES, m_screenIndexBuffer.GetIndexCount(), m_screenIndexBuffer.GetIndexType(), NULL);
 }
