@@ -162,7 +162,7 @@ bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 				throw err++;
 			}
 
-			if (pMaterial->Create(szFileName, &m_uniformCamera, &m_uniformAmbientLight, &m_uniformPointLight, &m_uniformDirectionLight) == false) {
+			if (pMaterial->Create(szFileName) == false) {
 				throw err++;
 			}
 
@@ -208,7 +208,7 @@ void CRenderer::DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 
 	if (m_material != material) {
 		m_material  = material;
-		m_pMaterials[material]->Bind();
+		BindMaterial(m_pMaterials[material]);
 	}
 
 	pVertexBuffer->Bind();
@@ -225,7 +225,7 @@ void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 
 	if (m_material != material) {
 		m_material  = material;
-		m_pMaterials[material]->Bind();
+		BindMaterial(m_pMaterials[material]);
 	}
 
 	m_pMaterials[material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TRANSFORM_NAME), pUniformTransform->GetBuffer(), pUniformTransform->GetSize());
@@ -244,7 +244,7 @@ void CRenderer::DrawScreen(GLuint material, GLsizei numTextures, GLuint *texture
 
 	if (m_material != material) {
 		m_material  = material;
-		m_pMaterials[material]->Bind();
+		BindMaterial(m_pMaterials[material]);
 	}
 
 	for (GLint index = 0; index < numTextures; index++) {
@@ -258,4 +258,13 @@ void CRenderer::DrawScreen(GLuint material, GLsizei numTextures, GLuint *texture
 	m_screenIndexBuffer.Bind();
 
 	glDrawElements(GL_TRIANGLES, m_screenIndexBuffer.GetIndexCount(), m_screenIndexBuffer.GetIndexType(), NULL);
+}
+
+void CRenderer::BindMaterial(CMaterial *pMaterial)
+{
+	pMaterial->Bind();
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECTION_LIGHT_NAME), m_uniformDirectionLight.GetBuffer(), m_uniformDirectionLight.GetSize());
 }

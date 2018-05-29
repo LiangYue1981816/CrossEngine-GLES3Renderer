@@ -33,7 +33,7 @@ private:
 	void BindUniforms(void) const;
 
 public:
-	bool Create(const char *szFileName, CUniformBufferCamera *pUniformCamera, CUniformBufferAmbientLight *pUniformAmbientLight, CUniformBufferPointLight *pUniformPointLight, CUniformBufferDirectionLight *pUniformDirectionLight);
+	bool Create(const char *szFileName);
 	void Destroy(void);
 
 private:
@@ -70,11 +70,7 @@ private:
 private:
 	CProgram *m_pProgram;
 
-	CUniformBufferCamera *m_pUniformCamera;
-	CUniformBufferAmbientLight *m_pUniformAmbientLight;
-	CUniformBufferPointLight *m_pUniformPointLight;
-	CUniformBufferDirectionLight *m_pUniformDirectionLight;
-
+private:
 	GLuint m_inUseTexUnits;
 	std::map<GLuint, CTexture2D*> m_pTexture2ds;
 	std::map<GLuint, CTexture2DArray*> m_pTexture2dArrays;

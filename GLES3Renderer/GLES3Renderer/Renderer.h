@@ -58,6 +58,9 @@ public:
 	void DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformBufferTransform *pUniformTransform);
 	void DrawScreen(GLuint material, GLsizei numTextures, GLuint *textures, GLchar names[][260]);
 
+private:
+	void BindMaterial(CMaterial *pMaterial);
+
 
 private:
 	char m_szShaderPath[260];

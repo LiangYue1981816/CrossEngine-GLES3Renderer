@@ -56,10 +56,6 @@ static GLenum StringToBlendFactor(const char *szString)
 
 CMaterial::CMaterial(void)
 	: m_pProgram(NULL)
-	, m_pUniformCamera(NULL)
-	, m_pUniformAmbientLight(NULL)
-	, m_pUniformPointLight(NULL)
-	, m_pUniformDirectionLight(NULL)
 
 	, m_bEnableCullFace(true)
 	, m_bEnableDepthTest(true)
@@ -174,14 +170,9 @@ void CMaterial::BindUniforms(void) const
 	for (const auto &itUniform : m_pUniform4fs) {
 		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
-
-	m_pProgram->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_pUniformCamera->GetBuffer(), m_pUniformCamera->GetSize());
-	m_pProgram->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_pUniformAmbientLight->GetBuffer(), m_pUniformAmbientLight->GetSize());
-	m_pProgram->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_pUniformPointLight->GetBuffer(), m_pUniformPointLight->GetSize());
-	m_pProgram->BindUniformBuffer(HashValue(ENGINE_DIRECTION_LIGHT_NAME), m_pUniformDirectionLight->GetBuffer(), m_pUniformDirectionLight->GetSize());
 }
 
-bool CMaterial::Create(const char *szFileName, CUniformBufferCamera *pUniformCamera, CUniformBufferAmbientLight *pUniformAmbientLight, CUniformBufferPointLight *pUniformPointLight, CUniformBufferDirectionLight *pUniformDirectionLight)
+bool CMaterial::Create(const char *szFileName)
 {
 	try {
 		printf("LoadMaterial(%s)\n", szFileName);
@@ -189,11 +180,6 @@ bool CMaterial::Create(const char *szFileName, CUniformBufferCamera *pUniformCam
 			if (Load(szFileName) == false) {
 				throw 0;
 			}
-
-			m_pUniformCamera = pUniformCamera;
-			m_pUniformAmbientLight = pUniformAmbientLight;
-			m_pUniformPointLight = pUniformPointLight;
-			m_pUniformDirectionLight = pUniformDirectionLight;
 		}
 		printf("OK\n");
 		return true;
