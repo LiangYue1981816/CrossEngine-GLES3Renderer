@@ -1,6 +1,6 @@
-<Material id="100">
-	<Cull enable="false" />
-	<Depth enable_test="true" enable_write="true" />
+<Material>
+	<Cull enable="false" front_face="GL_CCW" />
+	<Depth enable_test="true" enable_write="true" depth_func="GL_LESS" />
 	<Blend enable="false" src_factor="GL_SRC_ALPHA" dst_factor="GL_ONE_MINUS_SRC_ALPHA" />
 	<Program vertex_file_name="SkyBox.vert.bin" fragment_file_name="SkyBox.frag.bin" />
 	<Texture2D file_name="SkyBox.dds" name="texAlbedo" min_filter="GL_LINEAR_MIPMAP_NEAREST" mag_filter="GL_LINEAR" address_mode="GL_CLAMP_TO_EDGE" />

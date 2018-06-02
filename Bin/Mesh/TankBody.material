@@ -1,6 +1,6 @@
-<Material id="100">
-	<Cull enable="true" />
-	<Depth enable_test="true" enable_write="true" />
+<Material>
+	<Cull enable="true" front_face="GL_CCW" />
+	<Depth enable_test="true" enable_write="true" depth_func="GL_LESS" />
 	<Blend enable="false" src_factor="GL_SRC_ALPHA" dst_factor="GL_ONE_MINUS_SRC_ALPHA" />
 	<Program vertex_file_name="BRDF_Blinn.vert.bin" fragment_file_name="BRDF_Blinn.frag.bin" />
 	<Texture2D file_name="Tank.dds" name="texAlbedo" min_filter="GL_LINEAR_MIPMAP_NEAREST" mag_filter="GL_LINEAR" address_mode="GL_CLAMP_TO_EDGE" />
