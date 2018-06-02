@@ -241,6 +241,8 @@ bool CTexture2DArray::TransferTexture2DCompressed(GLint layer, GLint level, GLen
 		glCompressedTexSubImage3D(GL_TEXTURE_2D_ARRAY, level, 0, 0, 0, width, height, layer, format, size, data);
 	}
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+
+	return true;
 }
 
 GLuint CTexture2DArray::GetTexture(void) const

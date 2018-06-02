@@ -204,6 +204,8 @@ bool CTexture2D::TransferTexture2DCompressed(GLint level, GLenum format, GLsizei
 		glCompressedTexSubImage2D(GL_TEXTURE_2D, level, 0, 0, width, height, format, size, data);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return true;
 }
 
 GLuint CTexture2D::GetTexture(void) const

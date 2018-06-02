@@ -26,7 +26,6 @@ public:
 	bool TransferTexture2D(GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data);
 	bool TransferTexture2DCompressed(GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data);
 
-
 public:
 	GLuint GetTexture(void) const;
 	GLuint GetSampler(void) const;
