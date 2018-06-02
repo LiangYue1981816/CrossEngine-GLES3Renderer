@@ -26,6 +26,8 @@ CTexture2D::~CTexture2D(void)
 bool CTexture2D::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -59,6 +61,8 @@ bool CTexture2D::Create(const char *szFileName, GLenum minFilter, GLenum magFilt
 bool CTexture2D::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -80,6 +84,8 @@ bool CTexture2D::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLen
 bool CTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;

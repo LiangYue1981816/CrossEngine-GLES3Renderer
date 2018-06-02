@@ -49,29 +49,41 @@ private:
 	bool LoadUniform4f(TiXmlNode *pMaterialNode);
 
 public:
-	CProgram * GetProgram(void) const;
-	GLuint GetID(void) const;
-	GLuint GetInUseTextureUnits(void) const;
+	void SetEnableCullFace(bool bEnable, GLenum frontFace);
+	void SetEnableDepthTest(bool bEnable, GLenum depthFunc);
+	void SetEnableDepthWrite(bool bEnable);
+	void SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor);
+	void SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units);
+
+public:
+	CProgram* GetProgram(void);
+
+	CTexture2D* GetTexture2D(const char *szName);
+	CTexture2DArray* GetTexture2DArray(const char *szName);
+	CTextureCubeMap* GetTextureCubeMap(const char *szName);
+
+	CUniformBufferVec1* GetUniform1f(const char *szName);
+	CUniformBufferVec2* GetUniform2f(const char *szName);
+	CUniformBufferVec3* GetUniform3f(const char *szName);
+	CUniformBufferVec4* GetUniform4f(const char *szName);
+
+	GLuint GetTextureUnits(void) const;
 
 
 private:
-	GLuint m_id;
-	
 	bool m_bEnableCullFace;
 	bool m_bEnableDepthTest;
 	bool m_bEnableDepthWrite;
 	bool m_bEnableBlend;
+	bool m_bEnablePolygonOffset;
+	GLenum m_frontFace;
+	GLenum m_depthFunc;
 	GLenum m_srcBlendFactor;
 	GLenum m_dstBlendFactor;
-	bool m_bEnablePolygonOffset;
 	GLfloat m_polygonOffsetFactor;
 	GLfloat m_polygonOffsetUnits;
 
 private:
-	CProgram *m_pProgram;
-
-private:
-	GLuint m_inUseTexUnits;
 	std::map<GLuint, CTexture2D*> m_pTexture2ds;
 	std::map<GLuint, CTexture2DArray*> m_pTexture2dArrays;
 	std::map<GLuint, CTextureCubeMap*> m_pTextureCubeMaps;
@@ -80,4 +92,7 @@ private:
 	std::map<GLuint, CUniformBufferVec2*> m_pUniform2fs;
 	std::map<GLuint, CUniformBufferVec3*> m_pUniform3fs;
 	std::map<GLuint, CUniformBufferVec4*> m_pUniform4fs;
+
+private:
+	CProgram *m_pProgram;
 };

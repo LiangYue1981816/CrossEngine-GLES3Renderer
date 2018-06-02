@@ -45,8 +45,21 @@ bool CFrameBuffer::SetRenderTexture(GLuint index, GLenum internalformat, GLenum 
 	return true;
 }
 
+bool CFrameBuffer::CheckFramebufferStatus(void)
+{
+	GLenum status;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+	status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	return status == GL_FRAMEBUFFER_COMPLETE;
+}
+
 bool CFrameBuffer::Create(void)
 {
+	Destroy();
+
 	glGenRenderbuffers(1, &m_rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_width, m_height);
@@ -77,21 +90,15 @@ bool CFrameBuffer::Create(void)
 	return CheckFramebufferStatus();
 }
 
-bool CFrameBuffer::CheckFramebufferStatus(void)
-{
-	GLenum status;
-
-	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-	status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	return status == GL_FRAMEBUFFER_COMPLETE;
-}
-
 void CFrameBuffer::Destroy(void)
 {
-	glDeleteFramebuffers(1, &m_fbo);
-	glDeleteRenderbuffers(1, &m_rbo);
+	if (m_fbo) {
+		glDeleteFramebuffers(1, &m_fbo);
+	}
+
+	if (m_rbo) {
+		glDeleteRenderbuffers(1, &m_rbo);
+	}
 
 	for (const auto &itTexture : m_textures) {
 		glDeleteTextures(1, &itTexture.second);

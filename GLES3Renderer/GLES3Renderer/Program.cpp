@@ -79,6 +79,8 @@ CProgram::~CProgram(void)
 bool CProgram::Create(const char *szVertexFileName, const char *szFragmentFileName)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... \n");
 		{
 			int err = 0;

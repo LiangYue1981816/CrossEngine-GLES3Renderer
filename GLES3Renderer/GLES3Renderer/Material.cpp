@@ -4,53 +4,109 @@
 #include "Renderer.h"
 
 
+static GLenum StringToFrontFace(const char *szString)
+{
+	if (szString) {
+		if (!stricmp(szString, "GL_CW")) return GL_CW;
+		if (!stricmp(szString, "GL_CCW")) return GL_CCW;
+	}
+
+	return GL_CCW;
+}
+
+static GLenum StringToDepthFunc(const char *szString)
+{
+	if (szString) {
+		if (!stricmp(szString, "GL_NEVER")) return GL_NEVER;
+		if (!stricmp(szString, "GL_LESS")) return GL_LESS;
+		if (!stricmp(szString, "GL_EQUAL")) return GL_EQUAL;
+		if (!stricmp(szString, "GL_LEQUAL")) return GL_LEQUAL;
+		if (!stricmp(szString, "GL_GREATER")) return GL_GREATER;
+		if (!stricmp(szString, "GL_NOTEQUAL")) return GL_NOTEQUAL;
+		if (!stricmp(szString, "GL_GEQUAL")) return GL_GEQUAL;
+	}
+
+	return GL_LESS;
+}
+
 static GLenum StringToMinFilter(const char *szString)
 {
-	if (!stricmp(szString, "GL_LINEAR")) return GL_LINEAR;
-	if (!stricmp(szString, "GL_LINEAR_MIPMAP_LINEAR")) return GL_LINEAR_MIPMAP_LINEAR;
-	if (!stricmp(szString, "GL_LINEAR_MIPMAP_NEAREST")) return GL_LINEAR_MIPMAP_NEAREST;
-	if (!stricmp(szString, "GL_NEAREST")) return GL_NEAREST;
-	if (!stricmp(szString, "GL_NEAREST_MIPMAP_LINEAR")) return GL_NEAREST_MIPMAP_LINEAR;
-	if (!stricmp(szString, "GL_NEAREST_MIPMAP_NEAREST")) return GL_NEAREST_MIPMAP_NEAREST;
+	if (szString) {
+		if (!stricmp(szString, "GL_LINEAR")) return GL_LINEAR;
+		if (!stricmp(szString, "GL_LINEAR_MIPMAP_LINEAR")) return GL_LINEAR_MIPMAP_LINEAR;
+		if (!stricmp(szString, "GL_LINEAR_MIPMAP_NEAREST")) return GL_LINEAR_MIPMAP_NEAREST;
+		if (!stricmp(szString, "GL_NEAREST")) return GL_NEAREST;
+		if (!stricmp(szString, "GL_NEAREST_MIPMAP_LINEAR")) return GL_NEAREST_MIPMAP_LINEAR;
+		if (!stricmp(szString, "GL_NEAREST_MIPMAP_NEAREST")) return GL_NEAREST_MIPMAP_NEAREST;
+	}
 	
-	return GL_INVALID_ENUM;
+	return GL_LINEAR_MIPMAP_NEAREST;
 }
 
 static GLenum StringToMagFilter(const char *szString)
 {
-	if (!stricmp(szString, "GL_LINEAR")) return GL_LINEAR;
-	if (!stricmp(szString, "GL_NEAREST")) return GL_NEAREST;
+	if (szString) {
+		if (!stricmp(szString, "GL_LINEAR")) return GL_LINEAR;
+		if (!stricmp(szString, "GL_NEAREST")) return GL_NEAREST;
+	}
 
-	return GL_INVALID_ENUM;
+	return GL_LINEAR;
 }
 
 static GLenum StringToAddressMode(const char *szString)
 {
-	if (!stricmp(szString, "GL_REPEAT")) return GL_REPEAT;
-	if (!stricmp(szString, "GL_CLAMP_TO_EDGE")) return GL_CLAMP_TO_EDGE;
+	if (szString) {
+		if (!stricmp(szString, "GL_REPEAT")) return GL_REPEAT;
+		if (!stricmp(szString, "GL_CLAMP_TO_EDGE")) return GL_CLAMP_TO_EDGE;
+	}
 
-	return GL_INVALID_ENUM;
+	return GL_REPEAT;
 }
 
-static GLenum StringToBlendFactor(const char *szString)
+static GLenum StringToBlendSrcFactor(const char *szString)
 {
-	if (!stricmp(szString, "GL_ZERO")) return GL_ZERO;
-	if (!stricmp(szString, "GL_ONE")) return GL_ONE;
-	if (!stricmp(szString, "GL_SRC_COLOR")) return GL_SRC_COLOR;
-	if (!stricmp(szString, "GL_ONE_MINUS_SRC_COLOR")) return GL_ONE_MINUS_SRC_COLOR;
-	if (!stricmp(szString, "GL_DST_COLOR")) return GL_DST_COLOR;
-	if (!stricmp(szString, "GL_ONE_MINUS_DST_COLOR")) return GL_ONE_MINUS_DST_COLOR;
-	if (!stricmp(szString, "GL_SRC_ALPHA")) return GL_SRC_ALPHA;
-	if (!stricmp(szString, "GL_ONE_MINUS_SRC_ALPHA")) return GL_ONE_MINUS_SRC_ALPHA;
-	if (!stricmp(szString, "GL_DST_ALPHA")) return GL_DST_ALPHA;
-	if (!stricmp(szString, "GL_ONE_MINUS_DST_ALPHA")) return GL_ONE_MINUS_DST_ALPHA;
-	if (!stricmp(szString, "GL_CONSTANT_COLOR")) return GL_CONSTANT_COLOR;
-	if (!stricmp(szString, "GL_ONE_MINUS_CONSTANT_COLOR")) return GL_ONE_MINUS_CONSTANT_COLOR;
-	if (!stricmp(szString, "GL_CONSTANT_ALPHA")) return GL_CONSTANT_ALPHA;
-	if (!stricmp(szString, "GL_ONE_MINUS_CONSTANT_ALPHA")) return GL_ONE_MINUS_CONSTANT_ALPHA;
-	if (!stricmp(szString, "GL_SRC_ALPHA_SATURATE")) return GL_SRC_ALPHA_SATURATE;
+	if (szString) {
+		if (!stricmp(szString, "GL_ZERO")) return GL_ZERO;
+		if (!stricmp(szString, "GL_ONE")) return GL_ONE;
+		if (!stricmp(szString, "GL_SRC_COLOR")) return GL_SRC_COLOR;
+		if (!stricmp(szString, "GL_ONE_MINUS_SRC_COLOR")) return GL_ONE_MINUS_SRC_COLOR;
+		if (!stricmp(szString, "GL_DST_COLOR")) return GL_DST_COLOR;
+		if (!stricmp(szString, "GL_ONE_MINUS_DST_COLOR")) return GL_ONE_MINUS_DST_COLOR;
+		if (!stricmp(szString, "GL_SRC_ALPHA")) return GL_SRC_ALPHA;
+		if (!stricmp(szString, "GL_ONE_MINUS_SRC_ALPHA")) return GL_ONE_MINUS_SRC_ALPHA;
+		if (!stricmp(szString, "GL_DST_ALPHA")) return GL_DST_ALPHA;
+		if (!stricmp(szString, "GL_ONE_MINUS_DST_ALPHA")) return GL_ONE_MINUS_DST_ALPHA;
+		if (!stricmp(szString, "GL_CONSTANT_COLOR")) return GL_CONSTANT_COLOR;
+		if (!stricmp(szString, "GL_ONE_MINUS_CONSTANT_COLOR")) return GL_ONE_MINUS_CONSTANT_COLOR;
+		if (!stricmp(szString, "GL_CONSTANT_ALPHA")) return GL_CONSTANT_ALPHA;
+		if (!stricmp(szString, "GL_ONE_MINUS_CONSTANT_ALPHA")) return GL_ONE_MINUS_CONSTANT_ALPHA;
+		if (!stricmp(szString, "GL_SRC_ALPHA_SATURATE")) return GL_SRC_ALPHA_SATURATE;
+	}
 
-	return GL_INVALID_ENUM;
+	return GL_SRC_ALPHA;
+}
+
+static GLenum StringToBlendDstFactor(const char *szString)
+{
+	if (szString) {
+		if (!stricmp(szString, "GL_ZERO")) return GL_ZERO;
+		if (!stricmp(szString, "GL_ONE")) return GL_ONE;
+		if (!stricmp(szString, "GL_SRC_COLOR")) return GL_SRC_COLOR;
+		if (!stricmp(szString, "GL_ONE_MINUS_SRC_COLOR")) return GL_ONE_MINUS_SRC_COLOR;
+		if (!stricmp(szString, "GL_DST_COLOR")) return GL_DST_COLOR;
+		if (!stricmp(szString, "GL_ONE_MINUS_DST_COLOR")) return GL_ONE_MINUS_DST_COLOR;
+		if (!stricmp(szString, "GL_SRC_ALPHA")) return GL_SRC_ALPHA;
+		if (!stricmp(szString, "GL_ONE_MINUS_SRC_ALPHA")) return GL_ONE_MINUS_SRC_ALPHA;
+		if (!stricmp(szString, "GL_DST_ALPHA")) return GL_DST_ALPHA;
+		if (!stricmp(szString, "GL_ONE_MINUS_DST_ALPHA")) return GL_ONE_MINUS_DST_ALPHA;
+		if (!stricmp(szString, "GL_CONSTANT_COLOR")) return GL_CONSTANT_COLOR;
+		if (!stricmp(szString, "GL_ONE_MINUS_CONSTANT_COLOR")) return GL_ONE_MINUS_CONSTANT_COLOR;
+		if (!stricmp(szString, "GL_CONSTANT_ALPHA")) return GL_CONSTANT_ALPHA;
+		if (!stricmp(szString, "GL_ONE_MINUS_CONSTANT_ALPHA")) return GL_ONE_MINUS_CONSTANT_ALPHA;
+		if (!stricmp(szString, "GL_SRC_ALPHA_SATURATE")) return GL_SRC_ALPHA_SATURATE;
+	}
+
+	return GL_ONE_MINUS_SRC_ALPHA;
 }
 
 
@@ -61,13 +117,12 @@ CMaterial::CMaterial(void)
 	, m_bEnableDepthTest(true)
 	, m_bEnableDepthWrite(true)
 	, m_bEnableBlend(false)
+	, m_bEnablePolygonOffset(false)
+	, m_depthFunc(GL_LESS)
 	, m_srcBlendFactor(GL_SRC_ALPHA)
 	, m_dstBlendFactor(GL_ONE_MINUS_SRC_ALPHA)
-	, m_bEnablePolygonOffset(false)
 	, m_polygonOffsetFactor(0.0f)
 	, m_polygonOffsetUnits(0.0f)
-
-	, m_inUseTexUnits(0)
 {
 
 }
@@ -132,23 +187,23 @@ void CMaterial::BindPipeline(void) const
 
 void CMaterial::BindTextures(void) const
 {
-	GLuint texUnits = 0;
+	GLuint numTexUnits = 0;
 
 	for (const auto &itTexture : m_pTexture2ds) {
-		if (m_pProgram->BindTexture2D(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), texUnits)) {
-			texUnits++;
+		if (m_pProgram->BindTexture2D(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), numTexUnits)) {
+			numTexUnits++;
 		}
 	}
 
 	for (const auto &itTexture : m_pTexture2dArrays) {
-		if (m_pProgram->BindTextureArray(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), texUnits)) {
-			texUnits++;
+		if (m_pProgram->BindTextureArray(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), numTexUnits)) {
+			numTexUnits++;
 		}
 	}
 
 	for (const auto &itTexture : m_pTextureCubeMaps) {
-		if (m_pProgram->BindTextureCubeMap(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), texUnits)) {
-			texUnits++;
+		if (m_pProgram->BindTextureCubeMap(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), numTexUnits)) {
+			numTexUnits++;
 		}
 	}
 }
@@ -175,6 +230,8 @@ void CMaterial::BindUniforms(void) const
 bool CMaterial::Create(const char *szFileName)
 {
 	try {
+		Destroy();
+
 		printf("LoadMaterial(%s)\n", szFileName);
 		{
 			if (Load(szFileName) == false) {
@@ -195,11 +252,11 @@ bool CMaterial::Create(const char *szFileName)
 bool CMaterial::Load(const char *szFileName)
 {
 	/*
-	<Material id="" opaque="">
-		<Cull enable="" />
-		<Depth enable_test="" enable_write="" />
+	<Material>
+		<Cull enable="" front_face="" />
+		<Depth enable_test="" enable_write="" depth_func="" />
 		<Blend enable="" src_factor="" dst_factor="" />
-		<Offset factor="" units="" />
+		<Offset enable="" factor="" units="" />
 
 		<Program vertex_file_name="" fragment_file_name="" />
 
@@ -213,8 +270,6 @@ bool CMaterial::Load(const char *szFileName)
 		<Uniform4f name="" value="" />
 	</Material>
 	*/
-
-	m_inUseTexUnits = 0;
 
 	char szFullPath[260];
 	CRenderer::GetInstance()->GetMaterialFullPath(szFileName, szFullPath);
@@ -244,21 +299,21 @@ bool CMaterial::LoadBase(TiXmlNode *pMaterialNode)
 	try {
 		printf("\tLoadBase ... ");
 		{
-			m_id = pMaterialNode->ToElement()->AttributeInt1("id");
-
 			if (TiXmlNode *pCullNode = pMaterialNode->FirstChild("Cull")) {
 				m_bEnableCullFace = pCullNode->ToElement()->AttributeBool("enable");
+				m_frontFace = StringToFrontFace(pCullNode->ToElement()->AttributeString("front_face"));
 			}
 
 			if (TiXmlNode *pDepthNode = pMaterialNode->FirstChild("Depth")) {
 				m_bEnableDepthTest = pDepthNode->ToElement()->AttributeBool("enable_test");
 				m_bEnableDepthWrite = pDepthNode->ToElement()->AttributeBool("enable_write");
+				m_depthFunc = StringToDepthFunc(pDepthNode->ToElement()->AttributeString("depth_func"));
 			}
 
 			if (TiXmlNode *pBlendNode = pMaterialNode->FirstChild("Blend")) {
 				m_bEnableBlend = pBlendNode->ToElement()->AttributeBool("enable");
-				m_srcBlendFactor = StringToBlendFactor(pBlendNode->ToElement()->AttributeString("src_factor"));
-				m_dstBlendFactor = StringToBlendFactor(pBlendNode->ToElement()->AttributeString("dst_factor"));
+				m_srcBlendFactor = StringToBlendSrcFactor(pBlendNode->ToElement()->AttributeString("src_factor"));
+				m_dstBlendFactor = StringToBlendDstFactor(pBlendNode->ToElement()->AttributeString("dst_factor"));
 			}
 
 			if (TiXmlNode *pOffsetNode = pMaterialNode->FirstChild("Offset")) {
@@ -328,13 +383,11 @@ bool CMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 					throw err++;
 				}
 
-				if (m_pTexture2ds[name] = new CTexture2D) {
-					if (m_pTexture2ds[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
-						throw err++;
-					}
-
-					if (m_pProgram->IsTextureValid(name)) {
-						m_inUseTexUnits++;
+				if (m_pProgram->IsTextureValid(name)) {
+					if (m_pTexture2ds[name] = new CTexture2D) {
+						if (m_pTexture2ds[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
+							throw err++;
+						}
 					}
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2D", pTextureNode));
@@ -373,13 +426,11 @@ bool CMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 					throw err++;
 				}
 
-				if (m_pTexture2dArrays[name] = new CTexture2DArray) {
-					if (m_pTexture2dArrays[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
-						throw err++;
-					}
-
-					if (m_pProgram->IsTextureValid(name)) {
-						m_inUseTexUnits++;
+				if (m_pProgram->IsTextureValid(name)) {
+					if (m_pTexture2dArrays[name] = new CTexture2DArray) {
+						if (m_pTexture2dArrays[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
+							throw err++;
+						}
 					}
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2DArray", pTextureNode));
@@ -418,13 +469,11 @@ bool CMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 					throw err++;
 				}
 
-				if (m_pTextureCubeMaps[name] = new CTextureCubeMap) {
-					if (m_pTextureCubeMaps[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
-						throw err++;
-					}
-
-					if (m_pProgram->IsTextureValid(name)) {
-						m_inUseTexUnits++;
+				if (m_pProgram->IsTextureValid(name)) {
+					if (m_pTextureCubeMaps[name] = new CTextureCubeMap) {
+						if (m_pTextureCubeMaps[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
+							throw err++;
+						}
 					}
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("TextureCubeMap", pTextureNode));
@@ -459,9 +508,11 @@ bool CMaterial::LoadUniform1f(TiXmlNode *pMaterialNode)
 					throw err++;
 				}
 
-				if (m_pUniform1fs[name] = new CUniformBufferVec1) {
-					m_pUniform1fs[name]->SetValue(value);
-					m_pUniform1fs[name]->Apply();
+				if (m_pProgram->IsUniformValid(name)) {
+					if (m_pUniform1fs[name] = new CUniformBufferVec1) {
+						m_pUniform1fs[name]->SetValue(value);
+						m_pUniform1fs[name]->Apply();
+					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform1f", pUniformNode));
 		}
@@ -495,9 +546,11 @@ bool CMaterial::LoadUniform2f(TiXmlNode *pMaterialNode)
 					throw err++;
 				}
 
-				if (m_pUniform2fs[name] = new CUniformBufferVec2) {
-					m_pUniform2fs[name]->SetValue(value[0], value[1]);
-					m_pUniform2fs[name]->Apply();
+				if (m_pProgram->IsUniformValid(name)) {
+					if (m_pUniform2fs[name] = new CUniformBufferVec2) {
+						m_pUniform2fs[name]->SetValue(value[0], value[1]);
+						m_pUniform2fs[name]->Apply();
+					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform2f", pUniformNode));
 		}
@@ -531,9 +584,11 @@ bool CMaterial::LoadUniform3f(TiXmlNode *pMaterialNode)
 					throw err++;
 				}
 
-				if (m_pUniform3fs[name] = new CUniformBufferVec3) {
-					m_pUniform3fs[name]->SetValue(value[0], value[1], value[2]);
-					m_pUniform3fs[name]->Apply();
+				if (m_pProgram->IsUniformValid(name)) {
+					if (m_pUniform3fs[name] = new CUniformBufferVec3) {
+						m_pUniform3fs[name]->SetValue(value[0], value[1], value[2]);
+						m_pUniform3fs[name]->Apply();
+					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform3f", pUniformNode));
 		}
@@ -567,9 +622,11 @@ bool CMaterial::LoadUniform4f(TiXmlNode *pMaterialNode)
 					throw err++;
 				}
 
-				if (m_pUniform4fs[name] = new CUniformBufferVec4) {
-					m_pUniform4fs[name]->SetValue(value[0], value[1], value[2], value[3]);
-					m_pUniform4fs[name]->Apply();
+				if (m_pProgram->IsUniformValid(name)) {
+					if (m_pUniform4fs[name] = new CUniformBufferVec4) {
+						m_pUniform4fs[name]->SetValue(value[0], value[1], value[2], value[3]);
+						m_pUniform4fs[name]->Apply();
+					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform4f", pUniformNode));
 		}
@@ -626,17 +683,158 @@ void CMaterial::Destroy(void)
 	m_pUniform4fs.clear();
 }
 
-CProgram* CMaterial::GetProgram(void) const
+void CMaterial::SetEnableCullFace(bool bEnable, GLenum frontFace)
 {
+	m_bEnableCullFace = bEnable;
+	m_frontFace = frontFace;
+}
+
+void CMaterial::SetEnableDepthTest(bool bEnable, GLenum depthFunc)
+{
+	m_bEnableDepthTest = bEnable;
+	m_depthFunc = depthFunc;
+}
+
+void CMaterial::SetEnableDepthWrite(bool bEnable)
+{
+	m_bEnableDepthWrite = bEnable;
+}
+
+void CMaterial::SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor)
+{
+	m_bEnableBlend = bEnable;
+	m_srcBlendFactor = srcFactor;
+	m_dstBlendFactor = dstFactor;
+}
+
+void CMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units)
+{
+	m_bEnablePolygonOffset = bEnable;
+	m_polygonOffsetFactor = factor;
+	m_polygonOffsetUnits = units;
+}
+
+CProgram* CMaterial::GetProgram(void)
+{
+	if (m_pProgram == NULL) {
+		m_pProgram = new CProgram;
+	}
+
 	return m_pProgram;
 }
 
-GLuint CMaterial::GetID(void) const
+CTexture2D* CMaterial::GetTexture2D(const char *szName)
 {
-	return m_id;
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsTextureValid(name)) {
+		if (m_pTexture2ds[name] == NULL) {
+			m_pTexture2ds[name] = new CTexture2D;
+		}
+
+		return m_pTexture2ds[name];
+	}
+
+	return NULL;
 }
 
-GLuint CMaterial::GetInUseTextureUnits(void) const
+CTexture2DArray* CMaterial::GetTexture2DArray(const char *szName)
 {
-	return m_inUseTexUnits;
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsTextureValid(name)) {
+		if (m_pTexture2dArrays[name] == NULL) {
+			m_pTexture2dArrays[name] = new CTexture2DArray;
+		}
+
+		return m_pTexture2dArrays[name];
+	}
+
+	return NULL;
+}
+
+CTextureCubeMap* CMaterial::GetTextureCubeMap(const char *szName)
+{
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsTextureValid(name)) {
+		if (m_pTextureCubeMaps[name] == NULL) {
+			m_pTextureCubeMaps[name] = new CTextureCubeMap;
+		}
+
+		return m_pTextureCubeMaps[name];
+	}
+
+	return NULL;
+}
+
+CUniformBufferVec1* CMaterial::GetUniform1f(const char *szName)
+{
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+		if (m_pUniform1fs[name] == NULL) {
+			m_pUniform1fs[name] = new CUniformBufferVec1;
+		}
+
+		return m_pUniform1fs[name];
+	}
+
+	return NULL;
+}
+
+CUniformBufferVec2* CMaterial::GetUniform2f(const char *szName)
+{
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+		if (m_pUniform2fs[name] == NULL) {
+			m_pUniform2fs[name] = new CUniformBufferVec2;
+		}
+
+		return m_pUniform2fs[name];
+	}
+
+	return NULL;
+}
+
+CUniformBufferVec3* CMaterial::GetUniform3f(const char *szName)
+{
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+		if (m_pUniform3fs[name] == NULL) {
+			m_pUniform3fs[name] = new CUniformBufferVec3;
+		}
+
+		return m_pUniform3fs[name];
+	}
+
+	return NULL;
+}
+
+CUniformBufferVec4* CMaterial::GetUniform4f(const char *szName)
+{
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+		if (m_pUniform4fs[name] == NULL) {
+			m_pUniform4fs[name] = new CUniformBufferVec4;
+		}
+
+		return m_pUniform4fs[name];
+	}
+
+	return NULL;
+}
+
+GLuint CMaterial::GetTextureUnits(void) const
+{
+	GLuint numTexUnits = 0;
+
+	numTexUnits += m_pTexture2ds.size();
+	numTexUnits += m_pTexture2dArrays.size();
+	numTexUnits += m_pTextureCubeMaps.size();
+
+	return numTexUnits;
 }

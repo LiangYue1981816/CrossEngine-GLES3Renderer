@@ -26,6 +26,8 @@ CTextureCubeMap::~CTextureCubeMap(void)
 bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -59,6 +61,8 @@ bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum ma
 bool CTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -80,6 +84,8 @@ bool CTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter,
 bool CTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;

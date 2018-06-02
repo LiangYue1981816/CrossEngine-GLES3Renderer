@@ -166,10 +166,6 @@ bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 				throw err++;
 			}
 
-			if (materialid == 0xffffffff) {
-				materialid = pMaterial->GetID();
-			}
-
 			if (m_pMaterials.find(materialid) != m_pMaterials.end()) {
 				throw err++;
 			}
@@ -248,7 +244,7 @@ void CRenderer::DrawScreen(GLuint material, GLsizei numTextures, GLuint *texture
 	}
 
 	for (GLint index = 0; index < numTextures; index++) {
-		m_pMaterials[material]->GetProgram()->BindTexture2D(HashValue(names[index]), textures[index], 0, m_pMaterials[material]->GetInUseTextureUnits() + index);
+		m_pMaterials[material]->GetProgram()->BindTexture2D(HashValue(names[index]), textures[index], 0, m_pMaterials[material]->GetTextureUnits() + index);
 	}
 
 	glDisable(GL_DEPTH_TEST);

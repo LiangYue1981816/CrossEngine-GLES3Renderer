@@ -49,7 +49,7 @@ public:
 	void SetDirectionLight(float dirx, float diry, float dirz, float red, float green, float blue);
 
 public:
-	bool LoadMaterial(const char *szFileName, GLuint materialid = 0xffffffff);
+	bool LoadMaterial(const char *szFileName, GLuint materialid);
 	CMaterial* GetMaterial(GLuint id) const;
 
 public:

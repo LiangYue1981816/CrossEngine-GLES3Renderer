@@ -27,6 +27,8 @@ CTexture2DArray::~CTexture2DArray(void)
 bool CTexture2DArray::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -60,6 +62,8 @@ bool CTexture2DArray::Create(const char *szFileName, GLenum minFilter, GLenum ma
 bool CTexture2DArray::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -81,6 +85,8 @@ bool CTexture2DArray::Create(GLuint texture, GLenum minFilter, GLenum magFilter,
 bool CTexture2DArray::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLint arrayLayers, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
+		Destroy();
+
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;

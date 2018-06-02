@@ -13,8 +13,9 @@ public:
 
 public:
 	bool SetRenderTexture(GLuint index, GLenum internalformat, GLenum format, GLenum type, GLenum minFilter, GLenum magFilter, bool invalidation);
-	bool Create(void);
 	bool CheckFramebufferStatus(void);
+
+	bool Create(void);
 	void Destroy(void);
 
 public:
