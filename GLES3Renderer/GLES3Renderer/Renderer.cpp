@@ -154,24 +154,22 @@ bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 	CMaterial *pMaterial = NULL;
 
 	try {
-		pMaterial = new CMaterial;
-		{
-			int err = 0;
+		int err = 0;
 
-			if (pMaterial == NULL) {
-				throw err++;
-			}
-
-			if (pMaterial->Create(szFileName) == false) {
-				throw err++;
-			}
-
-			if (m_pMaterials.find(materialid) != m_pMaterials.end()) {
-				throw err++;
-			}
-
-			m_pMaterials[materialid] = pMaterial;
+		if (m_pMaterials.find(materialid) != m_pMaterials.end()) {
+			throw err++;
 		}
+
+		if ((pMaterial = new CMaterial) == NULL) {
+			throw err++;
+		}
+
+		if (pMaterial->Create(szFileName) == false) {
+			throw err++;
+		}
+
+		m_pMaterials[materialid] = pMaterial;
+
 		return true;
 	}
 	catch (int) {
