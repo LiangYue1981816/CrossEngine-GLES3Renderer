@@ -186,6 +186,26 @@ bool CTexture2D::TransferTexture2D(const gli::texture2d &texture)
 	return true;
 }
 
+bool CTexture2D::TransferTexture2D(GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
+{
+	glBindTexture(GL_TEXTURE_2D, m_texture);
+	{
+		glTexSubImage2D(GL_TEXTURE_2D, level, 0, 0, width, height, format, type, data);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return true;
+}
+
+bool CTexture2D::TransferTexture2DCompressed(GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
+{
+	glBindTexture(GL_TEXTURE_2D, m_texture);
+	{
+		glCompressedTexSubImage2D(GL_TEXTURE_2D, level, 0, 0, width, height, format, size, data);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 GLuint CTexture2D::GetTexture(void) const
 {
 	return m_texture;

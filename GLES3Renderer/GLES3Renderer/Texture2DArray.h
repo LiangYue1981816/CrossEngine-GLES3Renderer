@@ -22,8 +22,10 @@ private:
 	bool CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 public:
-	bool TransferTexture2D(const gli::texture2d &texture, GLint layer);
 	bool TransferTexture2DArray(const gli::texture2d_array &texture);
+	bool TransferTexture2D(const gli::texture2d &texture, GLint layer);
+	bool TransferTexture2D(GLint layer, GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data);
+	bool TransferTexture2DCompressed(GLint layer, GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data);
 
 public:
 	GLuint GetTexture(void) const;

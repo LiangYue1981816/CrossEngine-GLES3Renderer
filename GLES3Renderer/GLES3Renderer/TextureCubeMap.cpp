@@ -153,39 +153,6 @@ void CTextureCubeMap::Destroy(void)
 	m_sampler = 0;
 }
 
-bool CTextureCubeMap::TransferTexture2D(const gli::texture2d &texture, GLint face)
-{
-	gli::gl GL(gli::gl::PROFILE_ES30);
-	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
-
-	if (texture.target() != gli::TARGET_2D) {
-		return false;
-	}
-
-	if (m_format != format.External) {
-		return false;
-	}
-
-	if (m_internalFormat != format.Internal) {
-		return false;
-	}
-
-	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
-	{
-		for (int level = 0; level < (int)texture.levels(); level++) {
-			if (gli::is_compressed(texture.format())) {
-				glCompressedTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, level, 0, 0, texture.extent(level).x, texture.extent(level).y, format.Internal, texture.size(level), texture.data(0, 0, level));
-			}
-			else {
-				glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, level, 0, 0, texture.extent(level).x, texture.extent(level).y, format.External, format.Type, texture.data(0, 0, level));
-			}
-		}
-	}
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-
-	return true;
-}
-
 bool CTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture)
 {
 	gli::gl GL(gli::gl::PROFILE_ES30);
@@ -223,6 +190,61 @@ bool CTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture)
 				glTexSubImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, level, 0, 0, texture.extent(level).x, texture.extent(level).y, format.External, format.Type, texture.data(0, 5, level));
 			}
 		}
+	}
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	return true;
+}
+
+bool CTextureCubeMap::TransferTexture2D(const gli::texture2d &texture, GLint face)
+{
+	gli::gl GL(gli::gl::PROFILE_ES30);
+	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
+
+	if (texture.target() != gli::TARGET_2D) {
+		return false;
+	}
+
+	if (m_format != format.External) {
+		return false;
+	}
+
+	if (m_internalFormat != format.Internal) {
+		return false;
+	}
+
+	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
+	{
+		for (int level = 0; level < (int)texture.levels(); level++) {
+			if (gli::is_compressed(texture.format())) {
+				glCompressedTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, level, 0, 0, texture.extent(level).x, texture.extent(level).y, format.Internal, texture.size(level), texture.data(0, 0, level));
+			}
+			else {
+				glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, level, 0, 0, texture.extent(level).x, texture.extent(level).y, format.External, format.Type, texture.data(0, 0, level));
+			}
+		}
+	}
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	return true;
+}
+
+bool CTextureCubeMap::TransferTexture2D(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
+{
+	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
+	{
+		glTexSubImage2D(face, level, 0, 0, width, height, format, type, data);
+	}
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+	return true;
+}
+
+bool CTextureCubeMap::TransferTexture2DCompressed(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
+{
+	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
+	{
+		glCompressedTexSubImage2D(face, level, 0, 0, width, height, format, size, data);
 	}
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
