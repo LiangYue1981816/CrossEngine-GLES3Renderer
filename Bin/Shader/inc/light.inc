@@ -25,25 +25,20 @@ vec3 Linear2Gamma(vec3 linear)
 
 
 // BRDF
-vec3 Ambient_SH4(vec3 albedoColor, float metallic, vec3 normal, mat4 rotationMatrix, vec4 shRed, vec4 shGreen, vec4 shBlue)
+vec3 Ambient_SH4(vec3 albedoColor, float metallic, vec3 normal, vec4 shRed, vec4 shGreen, vec4 shBlue)
 {
-	vec3 rotationNormal = (rotationMatrix * vec4(normal, 0.0)).xyz;
-
-	vec4 basis = vec4(0.2, rotationNormal.z, rotationNormal.x, rotationNormal.y);
+	vec4 basis = vec4(0.2, normal.z, normal.x, normal.y);
 	vec3 diffuse = vec3(dot(basis, shRed), dot(basis, shGreen), dot(basis, shBlue));
 
 	return (1.0 - metallic) * diffuse * albedoColor / PI;
 }
 
-vec3 Ambient_SH9(vec3 albedoColor, float metallic, vec3 normal, mat4 rotationMatrix, vec3 shRed0, vec3 shRed1, vec3 shRed2, vec3 shGreen0, vec3 shGreen1, vec3 shGreen2, vec3 shBlue0, vec3 shBlue1, vec3 shBlue2)
+vec3 Ambient_SH9(vec3 albedoColor, float metallic, vec3 normal, vec3 shRed0, vec3 shRed1, vec3 shRed2, vec3 shGreen0, vec3 shGreen1, vec3 shGreen2, vec3 shBlue0, vec3 shBlue1, vec3 shBlue2)
 {
-	vec3 rotationNormal = (rotationMatrix * vec4(normal, 0.0)).xyz;
+	float x = normal.x;
+	float y = normal.y;
+	float z = normal.z;
 
-	float x = rotationNormal.x;
-	float y = rotationNormal.y;
-	float z = rotationNormal.z;
-
-//	vec3 basis0 = vec3(1.0, z, x);
 	vec3 basis0 = vec3(0.2, z, x);
 	vec3 basis1 = vec3(y, z * z * 2.0 - x * x - y * y, z * x);
 	vec3 basis2 = vec3(y * z, x * x - y * y, x * y);
@@ -63,7 +58,7 @@ vec3 Diffuse_Lambert(vec3 albedoColor)
 
 float D_Blinn(float ndh, float ldh, float a, float spec)
 {
-	return ((a + 2.0) / 8.0) * pow(ndh, a) * (spec + (1.0 - spec) * (1.0 - ldh));
+	return (a + 2.0) / (8.0 * PI) * pow(ndh, a) * (spec + (1.0 - spec) * (1.0 - ldh));
 }
 
 float D_GGX(float ndh, float roughness)

@@ -32,7 +32,7 @@ void main()
 	vec3 pixelNormal = texture(texNormal, inTexcoord).rgb * 2.0 - 1.0;
 	pixelNormal = normalize(inTBN * pixelNormal);
 
-	vec3 envAmbientColor = Ambient_SH9(albedoColor, metallic, pixelNormal, engineAmbientLight.rotationMatrix, engineAmbientLight.shRed0, engineAmbientLight.shRed1, engineAmbientLight.shRed2, engineAmbientLight.shGreen0, engineAmbientLight.shGreen1, engineAmbientLight.shGreen2, engineAmbientLight.shBlue0, engineAmbientLight.shBlue1, engineAmbientLight.shBlue2);
+	vec3 envAmbientColor = Ambient_SH9(albedoColor, metallic, (engineAmbientLight.rotationMatrix * vec4(pixelNormal, 0.0)).xyz, engineAmbientLight.shRed0, engineAmbientLight.shRed1, engineAmbientLight.shRed2, engineAmbientLight.shGreen0, engineAmbientLight.shGreen1, engineAmbientLight.shGreen2, engineAmbientLight.shBlue0, engineAmbientLight.shBlue1, engineAmbientLight.shBlue2);
 	vec3 lightColor = BRDF_Pbr(engineDirectionLight.color, engineDirectionLight.direction, inHalfDirection, inViewDirection, pixelNormal, albedoColor, metallic, roughness);
 	vec3 final = (envAmbientColor + lightColor) * ao;
 
