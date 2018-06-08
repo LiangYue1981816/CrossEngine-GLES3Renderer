@@ -24,6 +24,7 @@ void main()
 	vec3 albedoColor = Gamma2Linear(texture(texAlbedo, inTexcoord).rgb);
 	vec4 specularColor = texture(texSpecular, inTexcoord);
 
+	float metallic = specularColor.r;
 	float roughness = specularColor.a;
 
 	vec3 pixelNormal = texture(texNormal, inTexcoord).rgb * 2.0 - 1.0;
@@ -31,7 +32,7 @@ void main()
 
 	vec3 envAmbientColor = Ambient_SH9(albedoColor, 0.0, (engineAmbientLight.rotationMatrix * vec4(pixelNormal, 0.0)).xyz, engineAmbientLight.shRed0, engineAmbientLight.shRed1, engineAmbientLight.shRed2, engineAmbientLight.shGreen0, engineAmbientLight.shGreen1, engineAmbientLight.shGreen2, engineAmbientLight.shBlue0, engineAmbientLight.shBlue1, engineAmbientLight.shBlue2);
 //	vec3 lightColor = BRDF_Blinn(engineDirectionLight.color, engineDirectionLight.direction, inHalfDirection, pixelNormal, albedoColor, specularColor.rgb, roughness);
-	vec3 lightColor = BRDF_BlinnGGX(engineDirectionLight.color, engineDirectionLight.direction, inHalfDirection, inViewDirection, pixelNormal, albedoColor, specularColor.rgb, roughness);
+	vec3 lightColor = BRDF_BlinnGGX(engineDirectionLight.color, engineDirectionLight.direction, inHalfDirection, inViewDirection, pixelNormal, albedoColor, metallic, roughness);
 	vec3 final = envAmbientColor + lightColor;
 
 	outFragColor.rgb = Linear2Gamma(final);
