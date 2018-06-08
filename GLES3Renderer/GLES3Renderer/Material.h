@@ -11,6 +11,7 @@
 #include "UniformBufferVec2.h"
 #include "UniformBufferVec3.h"
 #include "UniformBufferVec4.h"
+#include "UniformBufferMat4.h"
 #include "UniformBufferCamera.h"
 #include "UniformBufferAmbientLight.h"
 #include "UniformBufferPointLight.h"
@@ -43,10 +44,10 @@ private:
 	bool LoadTexture2D(TiXmlNode *pMaterialNode);
 	bool LoadTexture2DArray(TiXmlNode *pMaterialNode);
 	bool LoadTextureCubeMap(TiXmlNode *pMaterialNode);
-	bool LoadUniform1f(TiXmlNode *pMaterialNode);
-	bool LoadUniform2f(TiXmlNode *pMaterialNode);
-	bool LoadUniform3f(TiXmlNode *pMaterialNode);
-	bool LoadUniform4f(TiXmlNode *pMaterialNode);
+	bool LoadUniformVec1(TiXmlNode *pMaterialNode);
+	bool LoadUniformVec2(TiXmlNode *pMaterialNode);
+	bool LoadUniformVec3(TiXmlNode *pMaterialNode);
+	bool LoadUniformVec4(TiXmlNode *pMaterialNode);
 
 public:
 	void SetEnableCullFace(bool bEnable, GLenum frontFace);
@@ -62,10 +63,11 @@ public:
 	CTexture2DArray* GetTexture2DArray(const char *szName);
 	CTextureCubeMap* GetTextureCubeMap(const char *szName);
 
-	CUniformBufferVec1* GetUniform1f(const char *szName);
-	CUniformBufferVec2* GetUniform2f(const char *szName);
-	CUniformBufferVec3* GetUniform3f(const char *szName);
-	CUniformBufferVec4* GetUniform4f(const char *szName);
+	CUniformBufferVec1* GetUniformVec1(const char *szName);
+	CUniformBufferVec2* GetUniformVec2(const char *szName);
+	CUniformBufferVec3* GetUniformVec3(const char *szName);
+	CUniformBufferVec4* GetUniformVec4(const char *szName);
+	CUniformBufferMat4* GetUniformMat4(const char *szName);
 
 	GLuint GetTextureUnits(void) const;
 
@@ -88,10 +90,11 @@ private:
 	std::map<GLuint, CTexture2DArray*> m_pTexture2dArrays;
 	std::map<GLuint, CTextureCubeMap*> m_pTextureCubeMaps;
 
-	std::map<GLuint, CUniformBufferVec1*> m_pUniform1fs;
-	std::map<GLuint, CUniformBufferVec2*> m_pUniform2fs;
-	std::map<GLuint, CUniformBufferVec3*> m_pUniform3fs;
-	std::map<GLuint, CUniformBufferVec4*> m_pUniform4fs;
+	std::map<GLuint, CUniformBufferVec1*> m_pUniformVec1s;
+	std::map<GLuint, CUniformBufferVec2*> m_pUniformVec2s;
+	std::map<GLuint, CUniformBufferVec3*> m_pUniformVec3s;
+	std::map<GLuint, CUniformBufferVec4*> m_pUniformVec4s;
+	std::map<GLuint, CUniformBufferMat4*> m_pUniformMat4s;
 
 private:
 	CProgram *m_pProgram;

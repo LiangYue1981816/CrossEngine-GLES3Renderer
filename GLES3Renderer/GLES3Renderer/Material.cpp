@@ -210,19 +210,23 @@ void CMaterial::BindTextures(void) const
 
 void CMaterial::BindUniforms(void) const
 {
-	for (const auto &itUniform : m_pUniform1fs) {
+	for (const auto &itUniform : m_pUniformVec1s) {
 		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 
-	for (const auto &itUniform : m_pUniform2fs) {
+	for (const auto &itUniform : m_pUniformVec2s) {
 		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 
-	for (const auto &itUniform : m_pUniform3fs) {
+	for (const auto &itUniform : m_pUniformVec3s) {
 		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 
-	for (const auto &itUniform : m_pUniform4fs) {
+	for (const auto &itUniform : m_pUniformVec4s) {
+		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
+	}
+
+	for (const auto &itUniform : m_pUniformMat4s) {
 		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 }
@@ -264,10 +268,10 @@ bool CMaterial::Load(const char *szFileName)
 		<Texture2DArray file_name="" name="" min_filter="" mag_filter="" address_mode="" />
 		<TextureCubeMap file_name="" name="" min_filter="" mag_filter="" address_mode="" />
 
-		<Uniform1f name="" value="" />
-		<Uniform2f name="" value="" />
-		<Uniform3f name="" value="" />
-		<Uniform4f name="" value="" />
+		<UniformVec1 name="" value="" />
+		<UniformVec2 name="" value="" />
+		<UniformVec3 name="" value="" />
+		<UniformVec4 name="" value="" />
 	</Material>
 	*/
 
@@ -282,10 +286,10 @@ bool CMaterial::Load(const char *szFileName)
 			if (LoadTexture2D(pMaterialNode) == false) return false;
 			if (LoadTexture2DArray(pMaterialNode) == false) return false;
 			if (LoadTextureCubeMap(pMaterialNode) == false) return false;
-			if (LoadUniform1f(pMaterialNode) == false) return false;
-			if (LoadUniform2f(pMaterialNode) == false) return false;
-			if (LoadUniform3f(pMaterialNode) == false) return false;
-			if (LoadUniform4f(pMaterialNode) == false) return false;
+			if (LoadUniformVec1(pMaterialNode) == false) return false;
+			if (LoadUniformVec2(pMaterialNode) == false) return false;
+			if (LoadUniformVec3(pMaterialNode) == false) return false;
+			if (LoadUniformVec4(pMaterialNode) == false) return false;
 		}
 
 		return true;
@@ -487,13 +491,13 @@ bool CMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniform1f(TiXmlNode *pMaterialNode)
+bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform1f");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec1");
 		if (pUniformNode == NULL) return true;
 
-		printf("\tLoadUniform1f ... ");
+		printf("\tLoadUniformVec1 ... ");
 		{
 			do {
 				int err = 0;
@@ -504,17 +508,17 @@ bool CMaterial::LoadUniform1f(TiXmlNode *pMaterialNode)
 				GLuint name = HashValue(szName);
 				GLfloat value = pUniformNode->ToElement()->AttributeFloat1("value");
 
-				if (m_pUniform1fs.find(name) != m_pUniform1fs.end()) {
+				if (m_pUniformVec1s.find(name) != m_pUniformVec1s.end()) {
 					throw err++;
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniform1fs[name] = new CUniformBufferVec1) {
-						m_pUniform1fs[name]->SetValue(value);
-						m_pUniform1fs[name]->Apply();
+					if (m_pUniformVec1s[name] = new CUniformBufferVec1) {
+						m_pUniformVec1s[name]->SetValue(value);
+						m_pUniformVec1s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform1f", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec1", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
@@ -525,10 +529,10 @@ bool CMaterial::LoadUniform1f(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniform2f(TiXmlNode *pMaterialNode)
+bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform2f");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec2");
 		if (pUniformNode == NULL) return true;
 
 		printf("\tLoadUniform2f ... ");
@@ -542,17 +546,17 @@ bool CMaterial::LoadUniform2f(TiXmlNode *pMaterialNode)
 				GLuint name = HashValue(szName);
 				GLfloat value[2]; pUniformNode->ToElement()->AttributeFloat2("value", value);
 
-				if (m_pUniform2fs.find(name) != m_pUniform2fs.end()) {
+				if (m_pUniformVec2s.find(name) != m_pUniformVec2s.end()) {
 					throw err++;
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniform2fs[name] = new CUniformBufferVec2) {
-						m_pUniform2fs[name]->SetValue(value[0], value[1]);
-						m_pUniform2fs[name]->Apply();
+					if (m_pUniformVec2s[name] = new CUniformBufferVec2) {
+						m_pUniformVec2s[name]->SetValue(value[0], value[1]);
+						m_pUniformVec2s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform2f", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec2", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
@@ -563,10 +567,10 @@ bool CMaterial::LoadUniform2f(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniform3f(TiXmlNode *pMaterialNode)
+bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform3f");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec3");
 		if (pUniformNode == NULL) return true;
 
 		printf("\tLoadUniform3f ... ");
@@ -580,17 +584,17 @@ bool CMaterial::LoadUniform3f(TiXmlNode *pMaterialNode)
 				GLuint name = HashValue(szName);
 				GLfloat value[3]; pUniformNode->ToElement()->AttributeFloat3("value", value);
 
-				if (m_pUniform3fs.find(name) != m_pUniform3fs.end()) {
+				if (m_pUniformVec3s.find(name) != m_pUniformVec3s.end()) {
 					throw err++;
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniform3fs[name] = new CUniformBufferVec3) {
-						m_pUniform3fs[name]->SetValue(value[0], value[1], value[2]);
-						m_pUniform3fs[name]->Apply();
+					if (m_pUniformVec3s[name] = new CUniformBufferVec3) {
+						m_pUniformVec3s[name]->SetValue(value[0], value[1], value[2]);
+						m_pUniformVec3s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform3f", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec3", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
@@ -601,10 +605,10 @@ bool CMaterial::LoadUniform3f(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniform4f(TiXmlNode *pMaterialNode)
+bool CMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform4f");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec4");
 		if (pUniformNode == NULL) return true;
 
 		printf("\tLoadUniform4f ... ");
@@ -618,17 +622,17 @@ bool CMaterial::LoadUniform4f(TiXmlNode *pMaterialNode)
 				GLuint name = HashValue(szName);
 				GLfloat value[4]; pUniformNode->ToElement()->AttributeFloat4("value", value);
 
-				if (m_pUniform4fs.find(name) != m_pUniform4fs.end()) {
+				if (m_pUniformVec4s.find(name) != m_pUniformVec4s.end()) {
 					throw err++;
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniform4fs[name] = new CUniformBufferVec4) {
-						m_pUniform4fs[name]->SetValue(value[0], value[1], value[2], value[3]);
-						m_pUniform4fs[name]->Apply();
+					if (m_pUniformVec4s[name] = new CUniformBufferVec4) {
+						m_pUniformVec4s[name]->SetValue(value[0], value[1], value[2], value[3]);
+						m_pUniformVec4s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform4f", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec4", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
@@ -657,19 +661,23 @@ void CMaterial::Destroy(void)
 		delete itTexture.second;
 	}
 
-	for (auto &itUniform : m_pUniform1fs) {
+	for (auto &itUniform : m_pUniformVec1s) {
 		delete itUniform.second;
 	}
 
-	for (auto &itUniform : m_pUniform2fs) {
+	for (auto &itUniform : m_pUniformVec2s) {
 		delete itUniform.second;
 	}
 
-	for (auto &itUniform : m_pUniform3fs) {
+	for (auto &itUniform : m_pUniformVec3s) {
 		delete itUniform.second;
 	}
 
-	for (auto &itUniform : m_pUniform4fs) {
+	for (auto &itUniform : m_pUniformVec4s) {
+		delete itUniform.second;
+	}
+
+	for (auto &itUniform : m_pUniformMat4s) {
 		delete itUniform.second;
 	}
 
@@ -677,10 +685,11 @@ void CMaterial::Destroy(void)
 	m_pTexture2ds.clear();
 	m_pTexture2dArrays.clear();
 	m_pTextureCubeMaps.clear();
-	m_pUniform1fs.clear();
-	m_pUniform2fs.clear();
-	m_pUniform3fs.clear();
-	m_pUniform4fs.clear();
+	m_pUniformVec1s.clear();
+	m_pUniformVec2s.clear();
+	m_pUniformVec3s.clear();
+	m_pUniformVec4s.clear();
+	m_pUniformMat4s.clear();
 }
 
 void CMaterial::SetEnableCullFace(bool bEnable, GLenum frontFace)
@@ -768,61 +777,76 @@ CTextureCubeMap* CMaterial::GetTextureCubeMap(const char *szName)
 	return NULL;
 }
 
-CUniformBufferVec1* CMaterial::GetUniform1f(const char *szName)
+CUniformBufferVec1* CMaterial::GetUniformVec1(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
-		if (m_pUniform1fs[name] == NULL) {
-			m_pUniform1fs[name] = new CUniformBufferVec1;
+		if (m_pUniformVec1s[name] == NULL) {
+			m_pUniformVec1s[name] = new CUniformBufferVec1;
 		}
 
-		return m_pUniform1fs[name];
+		return m_pUniformVec1s[name];
 	}
 
 	return NULL;
 }
 
-CUniformBufferVec2* CMaterial::GetUniform2f(const char *szName)
+CUniformBufferVec2* CMaterial::GetUniformVec2(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
-		if (m_pUniform2fs[name] == NULL) {
-			m_pUniform2fs[name] = new CUniformBufferVec2;
+		if (m_pUniformVec2s[name] == NULL) {
+			m_pUniformVec2s[name] = new CUniformBufferVec2;
 		}
 
-		return m_pUniform2fs[name];
+		return m_pUniformVec2s[name];
 	}
 
 	return NULL;
 }
 
-CUniformBufferVec3* CMaterial::GetUniform3f(const char *szName)
+CUniformBufferVec3* CMaterial::GetUniformVec3(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
-		if (m_pUniform3fs[name] == NULL) {
-			m_pUniform3fs[name] = new CUniformBufferVec3;
+		if (m_pUniformVec3s[name] == NULL) {
+			m_pUniformVec3s[name] = new CUniformBufferVec3;
 		}
 
-		return m_pUniform3fs[name];
+		return m_pUniformVec3s[name];
 	}
 
 	return NULL;
 }
 
-CUniformBufferVec4* CMaterial::GetUniform4f(const char *szName)
+CUniformBufferVec4* CMaterial::GetUniformVec4(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
-		if (m_pUniform4fs[name] == NULL) {
-			m_pUniform4fs[name] = new CUniformBufferVec4;
+		if (m_pUniformVec4s[name] == NULL) {
+			m_pUniformVec4s[name] = new CUniformBufferVec4;
 		}
 
-		return m_pUniform4fs[name];
+		return m_pUniformVec4s[name];
+	}
+
+	return NULL;
+}
+
+CUniformBufferMat4* CMaterial::GetUniformMat4(const char *szName)
+{
+	GLuint name = HashValue(szName);
+
+	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+		if (m_pUniformMat4s[name] == NULL) {
+			m_pUniformMat4s[name] = new CUniformBufferMat4;
+		}
+
+		return m_pUniformMat4s[name];
 	}
 
 	return NULL;

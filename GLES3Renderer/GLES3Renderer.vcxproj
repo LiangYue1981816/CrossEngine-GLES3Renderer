@@ -108,6 +108,7 @@
     <ClInclude Include="GLES3Renderer\UniformBufferAmbientLight.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferCamera.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferDirectionLight.h" />
+    <ClInclude Include="GLES3Renderer\UniformBufferMat4.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferPointLight.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferTransform.h" />
     <ClInclude Include="GLES3Renderer\UniformBufferVec1.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="GLES3Renderer\FrameBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\IndexBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\UniformBufferAmbientLight.cpp" />
+    <ClCompile Include="GLES3Renderer\UniformBufferMat4.cpp" />
     <ClCompile Include="GLES3Renderer\VertexBuffer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GLES3Renderer\Material.cpp" />
