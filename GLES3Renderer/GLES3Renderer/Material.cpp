@@ -118,6 +118,7 @@ CMaterial::CMaterial(void)
 	, m_bEnableDepthWrite(true)
 	, m_bEnableBlend(false)
 	, m_bEnablePolygonOffset(false)
+	, m_frontFace(GL_CCW)
 	, m_depthFunc(GL_LESS)
 	, m_srcBlendFactor(GL_SRC_ALPHA)
 	, m_dstBlendFactor(GL_ONE_MINUS_SRC_ALPHA)
@@ -147,7 +148,7 @@ void CMaterial::BindPipeline(void) const
 	if (m_bEnableCullFace) {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		glFrontFace(GL_CCW);
+		glFrontFace(m_frontFace);
 	}
 	else {
 		glDisable(GL_CULL_FACE);
@@ -155,7 +156,7 @@ void CMaterial::BindPipeline(void) const
 
 	if (m_bEnableDepthTest) {
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
+		glDepthFunc(m_depthFunc);
 	}
 	else {
 		glDisable(GL_DEPTH_TEST);
@@ -268,10 +269,10 @@ bool CMaterial::Load(const char *szFileName)
 		<Texture2DArray file_name="" name="" min_filter="" mag_filter="" address_mode="" />
 		<TextureCubeMap file_name="" name="" min_filter="" mag_filter="" address_mode="" />
 
-		<UniformVec1 name="" value="" />
-		<UniformVec2 name="" value="" />
-		<UniformVec3 name="" value="" />
-		<UniformVec4 name="" value="" />
+		<Uniform1f name="" value="" />
+		<Uniform2f name="" value="" />
+		<Uniform3f name="" value="" />
+		<Uniform4f name="" value="" />
 	</Material>
 	*/
 
@@ -494,7 +495,7 @@ bool CMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec1");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform1f");
 		if (pUniformNode == NULL) return true;
 
 		printf("\tLoadUniformVec1 ... ");
@@ -518,7 +519,7 @@ bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 						m_pUniformVec1s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec1", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform1f", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
@@ -532,10 +533,10 @@ bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec2");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform2f");
 		if (pUniformNode == NULL) return true;
 
-		printf("\tLoadUniform2f ... ");
+		printf("\tLoadUniformVec2 ... ");
 		{
 			do {
 				int err = 0;
@@ -556,7 +557,7 @@ bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 						m_pUniformVec2s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec2", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform2f", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
@@ -570,10 +571,10 @@ bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec3");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform3f");
 		if (pUniformNode == NULL) return true;
 
-		printf("\tLoadUniform3f ... ");
+		printf("\tLoadUniformVec3 ... ");
 		{
 			do {
 				int err = 0;
@@ -594,7 +595,7 @@ bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 						m_pUniformVec3s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec3", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform3f", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
@@ -608,10 +609,10 @@ bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 bool CMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 {
 	try {
-		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("UniformVec4");
+		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform4f");
 		if (pUniformNode == NULL) return true;
 
-		printf("\tLoadUniform4f ... ");
+		printf("\tLoadUniformVec4 ... ");
 		{
 			do {
 				int err = 0;
@@ -632,7 +633,7 @@ bool CMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 						m_pUniformVec4s[name]->Apply();
 					}
 				}
-			} while (pUniformNode = pMaterialNode->IterateChildren("UniformVec4", pUniformNode));
+			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform4f", pUniformNode));
 		}
 		printf("OK\n");
 		return true;
