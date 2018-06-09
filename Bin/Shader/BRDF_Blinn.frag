@@ -24,8 +24,8 @@ void main()
 	vec3 albedoColor = Gamma2Linear(texture(texAlbedo, inTexcoord).rgb);
 	vec3 specularColor = texture(texSpecular, inTexcoord).rgb;
 
-	float metallic = 0.5;
-	float roughness = 0.5;
+	float metallic = 0.7;
+	float roughness = 0.3;
 
 	vec3 pixelNormal = texture(texNormal, inTexcoord).rgb * 2.0 - 1.0;
 	pixelNormal = normalize(inTBN * pixelNormal);
