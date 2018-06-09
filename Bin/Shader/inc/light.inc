@@ -71,7 +71,7 @@ float D_GGX(float ndh, float roughness)
 
 float G_Neumann(float ndv, float ndl)
 {
-	return 1.0 / (4.0 * max(ndv, ndl));
+	return 0.25 / max(ndv, ndl);
 }
 
 float G_Schlick(float ndv, float ndl, float roughness)
