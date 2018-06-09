@@ -129,23 +129,6 @@ vec3 BRDF_Blinn(vec3 lightColor, vec3 L, vec3 H, vec3 V, vec3 N, vec3 albedoColo
 	return (diffuse + specular) * ndl * lightColor;
 }
 
-vec3 BRDF_BlinnGGX(vec3 lightColor, vec3 L, vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
-{
-	float ndl = max(dot(N, L), 0.0);
-	float ndh = max(dot(N, H), 0.0);
-	float ndv = max(dot(N, V), 0.0);
-
-	float D = D_GGX(ndh, roughness);
-	float G = G_Neumann(ndv, ndl);
-	vec3  F = vec3(metallic);
-
-	vec3 factor = vec3(1.0 - metallic);
-	vec3 diffuse = Diffuse_Lambert(albedoColor) * factor;
-	vec3 specular = D * F * G;
-
-	return (diffuse + specular) * ndl * lightColor;
-}
-
 vec3 BRDF_Pbr(vec3 lightColor, vec3 L, vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
 {
 	float ndl = max(dot(N, L), 0.0);
