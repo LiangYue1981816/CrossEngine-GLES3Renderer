@@ -56,9 +56,10 @@ vec3 Diffuse_Lambert(vec3 albedoColor)
 	return albedoColor / PI;
 }
 
-float D_Blinn(float ndh, float ldh, float a, float spec)
+float D_Blinn(float ndh, float roughness)
 {
-	return (a + 2.0) / (8.0 * PI) * pow(ndh, a) * (spec + (1.0 - spec) * (1.0 - ldh));
+	float a = (1.0 - roughness) * 128.0;
+	return (a + 2.0) / (8.0 * PI) * pow(ndh, a);
 }
 
 float D_GGX(float ndh, float roughness)
@@ -112,14 +113,14 @@ vec3 Env_Specular(vec3 SpecularColor, float ndv, float roughness)
 }
 
 
-vec3 BRDF_Blinn(vec3 lightColor, vec3 L, vec3 H, vec3 N, vec3 albedoColor, float metallic, float roughness)
+vec3 BRDF_Blinn(vec3 lightColor, vec3 L, vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
 {
 	float ndl = max(dot(N, L), 0.0);
 	float ndh = max(dot(N, H), 0.0);
-	float ldh = max(dot(L, H), 0.0);
+	float ndv = max(dot(N, V), 0.0);
 
-	float D = D_Blinn(ndh, ldh, (1.0 - roughness) * 128.0, 0.0);
-	vec3  F = vec3(metallic);
+	float D = D_Blinn(ndh, roughness);
+	vec3  F = F_Schlick(ndv, metallic, albedoColor);
 
 	vec3 factor = vec3(1.0 - metallic);
 	vec3 diffuse = Diffuse_Lambert(albedoColor) * factor;
