@@ -58,7 +58,7 @@ vec3 Diffuse_Lambert(vec3 albedoColor)
 
 float D_Blinn(float ndh, float roughness)
 {
-	float a = (1.0 - roughness) * 128.0;
+	float a = (1.0 - roughness) * 256.0;
 	return (a + 2.0) / (8.0 * PI) * pow(ndh, a);
 }
 
