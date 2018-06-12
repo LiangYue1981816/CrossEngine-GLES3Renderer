@@ -149,6 +149,24 @@ void CRenderer::SetDirectionLight(float dirx, float diry, float dirz, float red,
 	m_uniformDirectionLight.Apply();
 }
 
+void CRenderer::SetFogColor(float r, float g, float b)
+{
+	m_uniformFog.SetColor(r, g, b);
+	m_uniformFog.Apply();
+}
+
+void CRenderer::SetFogHeightDensity(float startHeight, float endHeight, float density)
+{
+	m_uniformFog.SetHeightDensity(startHeight, endHeight, density);
+	m_uniformFog.Apply();
+}
+
+void CRenderer::SetFogDistanceDensity(float startDistance, float endDistance, float density)
+{
+	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
+	m_uniformFog.Apply();
+}
+
 bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 {
 	CMaterial *pMaterial = NULL;
@@ -261,4 +279,5 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECTION_LIGHT_NAME), m_uniformDirectionLight.GetBuffer(), m_uniformDirectionLight.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 }

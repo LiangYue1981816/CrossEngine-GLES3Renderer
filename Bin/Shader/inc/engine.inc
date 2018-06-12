@@ -57,3 +57,11 @@
 		vec3 color;                                                                \
 		vec3 direction;                                                            \
 	} engineDirectionLight
+
+#define USE_ENGINE_FOG                                                         \
+	uniform Fog                                                                  \
+	{                                                                            \
+		vec3 color;                                                                \
+		vec3 heightDensity;                                                        \
+		vec3 distanceDensity;                                                      \
+	} engineFog

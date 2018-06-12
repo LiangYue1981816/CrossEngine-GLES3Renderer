@@ -70,6 +70,9 @@
     <ClInclude Include="GLES3Renderer\UniformBufferMat4.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\UniformBufferFog.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -163,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLES3Renderer\UniformBufferMat4.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformBufferFog.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

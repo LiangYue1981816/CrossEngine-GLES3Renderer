@@ -10,6 +10,15 @@
 #include "UniformBufferAmbientLight.h"
 #include "UniformBufferPointLight.h"
 #include "UniformBufferDirectionLight.h"
+#include "UniformBufferFog.h"
+
+
+#define ENGINE_CAMERA_NAME              "Camera"
+#define ENGINE_TRANSFORM_NAME           "Transform"
+#define ENGINE_AMBIENT_LIGHT_NAME       "AmbientLight"
+#define ENGINE_POINT_LIGHT_NAME         "PointLight"
+#define ENGINE_DIRECTION_LIGHT_NAME     "DirectionLight"
+#define ENGINE_FOG_NAME                 "Fog"
 
 
 class CRenderer
@@ -48,6 +57,10 @@ public:
 	void SetPointLight(float posx, float posy, float posz, float red, float green, float blue);
 	void SetDirectionLight(float dirx, float diry, float dirz, float red, float green, float blue);
 
+	void SetFogColor(float r, float g, float b);
+	void SetFogHeightDensity(float startHeight, float endHeight, float density);
+	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
+
 public:
 	bool LoadMaterial(const char *szFileName, GLuint materialid);
 	CMaterial* GetMaterial(GLuint id) const;
@@ -76,6 +89,7 @@ private:
 	CUniformBufferAmbientLight m_uniformAmbientLight;
 	CUniformBufferPointLight m_uniformPointLight;
 	CUniformBufferDirectionLight m_uniformDirectionLight;
+	CUniformBufferFog m_uniformFog;
 
 private:
 	GLuint m_material;

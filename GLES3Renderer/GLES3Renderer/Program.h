@@ -9,13 +9,6 @@
 #include "spirv-cross/spirv_cross.hpp"
 
 
-#define ENGINE_CAMERA_NAME              "Camera"
-#define ENGINE_TRANSFORM_NAME           "Transform"
-#define ENGINE_AMBIENT_LIGHT_NAME       "AmbientLight"
-#define ENGINE_POINT_LIGHT_NAME         "PointLight"
-#define ENGINE_DIRECTION_LIGHT_NAME     "DirectionLight"
-
-
 class CProgram
 {
 public:
