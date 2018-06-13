@@ -93,6 +93,11 @@ void CRenderer::SetFrameBuffer(GLuint fbo)
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 }
 
+void CRenderer::SetInputTexture(const char *szName, GLuint texture)
+{
+	m_inputTextures[HashValue(szName)] = texture;
+}
+
 void CRenderer::SetCameraPerspective(float fovy, float aspect, float zNear, float zFar)
 {
 	m_uniformCamera.SetPerspective(fovy, aspect, zNear, zFar);
@@ -248,7 +253,7 @@ void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 	glDrawElements(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL);
 }
 
-void CRenderer::DrawScreen(GLuint material, GLsizei numTextures, GLuint *textures, GLchar names[][260])
+void CRenderer::DrawScreen(GLuint material)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -257,10 +262,6 @@ void CRenderer::DrawScreen(GLuint material, GLsizei numTextures, GLuint *texture
 	if (m_material != material) {
 		m_material  = material;
 		BindMaterial(m_pMaterials[material]);
-	}
-
-	for (GLint index = 0; index < numTextures; index++) {
-		m_pMaterials[material]->GetProgram()->BindTexture2D(HashValue(names[index]), textures[index], 0, m_pMaterials[material]->GetTextureUnits() + index);
 	}
 
 	glDisable(GL_DEPTH_TEST);
@@ -280,4 +281,10 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECTION_LIGHT_NAME), m_uniformDirectionLight.GetBuffer(), m_uniformDirectionLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
+
+	GLuint index = 0;
+	for (const auto &itTexture : m_inputTextures) {
+		pMaterial->GetProgram()->BindTexture2D(itTexture.first, itTexture.second, 0, pMaterial->GetTextureUnits() + index);
+		index++;
+	}
 }

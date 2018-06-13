@@ -43,6 +43,7 @@ public:
 	void SetScissor(int x, int y, int width, int height);
 	void SetViewport(int x, int y, int width, int height);
 	void SetFrameBuffer(GLuint fbo);
+	void SetInputTexture(const char *szName, GLuint texture);
 
 public:
 	void SetCameraPerspective(float fovy, float aspect, float zNear, float zFar);
@@ -69,7 +70,7 @@ public:
 	void Clear(float red, float green, float blue, float alpha, float depth);
 	void DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer);
 	void DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformBufferTransform *pUniformTransform);
-	void DrawScreen(GLuint material, GLsizei numTextures, GLuint *textures, GLchar names[][260]);
+	void DrawScreen(GLuint material);
 
 private:
 	void BindMaterial(CMaterial *pMaterial);
@@ -94,6 +95,7 @@ private:
 private:
 	GLuint m_material;
 	std::map<GLuint, CMaterial*> m_pMaterials;
+	std::map<GLuint, GLuint> m_inputTextures;
 
 private:
 	static CRenderer *pInstance;
