@@ -282,9 +282,8 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECTION_LIGHT_NAME), m_uniformDirectionLight.GetBuffer(), m_uniformDirectionLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 
-	GLuint index = 0;
+	GLuint indexUnit = pMaterial->GetTextureUnits();
 	for (const auto &itTexture : m_inputTextures) {
-		pMaterial->GetProgram()->BindTexture2D(itTexture.first, itTexture.second, 0, pMaterial->GetTextureUnits() + index);
-		index++;
+		pMaterial->GetProgram()->BindTexture2D(itTexture.first, itTexture.second, 0, indexUnit++);
 	}
 }
