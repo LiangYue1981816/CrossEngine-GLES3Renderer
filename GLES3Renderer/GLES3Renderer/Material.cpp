@@ -138,8 +138,8 @@ void CMaterial::Bind(void) const
 	if (m_pProgram) {
 		m_pProgram->UseProgram();
 		BindPipeline();
-		BindTextures();
-		BindUniforms();
+		BindUniforms(m_pProgram);
+		BindTextures(m_pProgram, 0);
 	}
 }
 
@@ -186,49 +186,47 @@ void CMaterial::BindPipeline(void) const
 	}
 }
 
-void CMaterial::BindTextures(void) const
+void CMaterial::BindUniforms(CProgram *pProgram) const
 {
-	GLuint numTexUnits = 0;
+	for (const auto &itUniform : m_pUniformVec1s) {
+		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
+	}
 
+	for (const auto &itUniform : m_pUniformVec2s) {
+		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
+	}
+
+	for (const auto &itUniform : m_pUniformVec3s) {
+		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
+	}
+
+	for (const auto &itUniform : m_pUniformVec4s) {
+		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
+	}
+
+	for (const auto &itUniform : m_pUniformMat4s) {
+		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
+	}
+}
+
+void CMaterial::BindTextures(CProgram *pProgram, GLuint indexUnit) const
+{
 	for (const auto &itTexture : m_pTexture2ds) {
-		if (m_pProgram->BindTexture2D(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), numTexUnits)) {
-			numTexUnits++;
+		if (pProgram->BindTexture2D(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), indexUnit)) {
+			indexUnit++;
 		}
 	}
 
 	for (const auto &itTexture : m_pTexture2dArrays) {
-		if (m_pProgram->BindTextureArray(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), numTexUnits)) {
-			numTexUnits++;
+		if (pProgram->BindTextureArray(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), indexUnit)) {
+			indexUnit++;
 		}
 	}
 
 	for (const auto &itTexture : m_pTextureCubeMaps) {
-		if (m_pProgram->BindTextureCubeMap(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), numTexUnits)) {
-			numTexUnits++;
+		if (pProgram->BindTextureCubeMap(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), indexUnit)) {
+			indexUnit++;
 		}
-	}
-}
-
-void CMaterial::BindUniforms(void) const
-{
-	for (const auto &itUniform : m_pUniformVec1s) {
-		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
-	}
-
-	for (const auto &itUniform : m_pUniformVec2s) {
-		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
-	}
-
-	for (const auto &itUniform : m_pUniformVec3s) {
-		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
-	}
-
-	for (const auto &itUniform : m_pUniformVec4s) {
-		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
-	}
-
-	for (const auto &itUniform : m_pUniformMat4s) {
-		m_pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 }
 
@@ -737,7 +735,7 @@ CTexture2D* CMaterial::GetTexture2D(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsTextureValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2ds[name] == NULL) {
 			m_pTexture2ds[name] = new CTexture2D;
 		}
@@ -752,7 +750,7 @@ CTexture2DArray* CMaterial::GetTexture2DArray(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsTextureValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2dArrays[name] == NULL) {
 			m_pTexture2dArrays[name] = new CTexture2DArray;
 		}
@@ -767,7 +765,7 @@ CTextureCubeMap* CMaterial::GetTextureCubeMap(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsTextureValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTextureCubeMaps[name] == NULL) {
 			m_pTextureCubeMaps[name] = new CTextureCubeMap;
 		}
@@ -782,7 +780,7 @@ CUniformBufferVec1* CMaterial::GetUniformVec1(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec1s[name] == NULL) {
 			m_pUniformVec1s[name] = new CUniformBufferVec1;
 		}
@@ -797,7 +795,7 @@ CUniformBufferVec2* CMaterial::GetUniformVec2(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec2s[name] == NULL) {
 			m_pUniformVec2s[name] = new CUniformBufferVec2;
 		}
@@ -812,7 +810,7 @@ CUniformBufferVec3* CMaterial::GetUniformVec3(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec3s[name] == NULL) {
 			m_pUniformVec3s[name] = new CUniformBufferVec3;
 		}
@@ -827,7 +825,7 @@ CUniformBufferVec4* CMaterial::GetUniformVec4(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec4s[name] == NULL) {
 			m_pUniformVec4s[name] = new CUniformBufferVec4;
 		}
@@ -842,7 +840,7 @@ CUniformBufferMat4* CMaterial::GetUniformMat4(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
-	if (m_pProgram && m_pProgram->IsUniformValid(name)) {
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformMat4s[name] == NULL) {
 			m_pUniformMat4s[name] = new CUniformBufferMat4;
 		}

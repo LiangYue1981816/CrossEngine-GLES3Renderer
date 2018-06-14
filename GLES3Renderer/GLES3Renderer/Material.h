@@ -28,10 +28,10 @@ public:
 public:
 	void Bind(void) const;
 
-private:
+public:
 	void BindPipeline(void) const;
-	void BindTextures(void) const;
-	void BindUniforms(void) const;
+	void BindUniforms(CProgram *pProgram) const;
+	void BindTextures(CProgram *pProgram, GLuint indexUnit) const;
 
 public:
 	bool Create(const char *szFileName);

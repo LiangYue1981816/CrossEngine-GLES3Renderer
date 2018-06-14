@@ -96,7 +96,9 @@ private:
 private:
 	GLuint m_material;
 	std::map<GLuint, CMaterial*> m_pMaterials;
-	std::map<GLuint, GLuint> m_inputTextures;
+
+private:
+	CMaterial *m_pGlobalMaterial;
 
 private:
 	static CRenderer *pInstance;

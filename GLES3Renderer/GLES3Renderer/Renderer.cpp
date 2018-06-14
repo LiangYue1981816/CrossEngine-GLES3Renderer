@@ -26,6 +26,7 @@ void CRenderer::Destroy(void)
 }
 
 CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
+	: m_pGlobalMaterial(NULL)
 {
 	struct Vertex {
 		glm::vec3 position;
@@ -51,12 +52,17 @@ CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const 
 	strcpy(m_szMaterialPath, szMaterialPath);
 
 	m_material = -1;
+	m_pGlobalMaterial = new CMaterial;
 }
 
 CRenderer::~CRenderer(void)
 {
 	m_screenIndexBuffer.Destroy();
 	m_screenVertexBuffer.Destroy();
+
+	if (m_pGlobalMaterial) {
+		delete m_pGlobalMaterial;
+	}
 }
 
 const char* CRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -95,7 +101,7 @@ void CRenderer::SetFrameBuffer(GLuint fbo)
 
 void CRenderer::SetInputTexture(const char *szName, GLuint texture)
 {
-	m_inputTextures[HashValue(szName)] = texture;
+	m_pGlobalMaterial->GetTexture2D(szName)->Create(texture, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 }
 
 void CRenderer::SetCameraPerspective(float fovy, float aspect, float zNear, float zFar)
@@ -207,7 +213,7 @@ bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 CMaterial* CRenderer::GetMaterial(GLuint id) const
 {
 	const auto &itMaterial = m_pMaterials.find(id);
-	return itMaterial != m_pMaterials.end() ? itMaterial->second : NULL;
+	return itMaterial != m_pMaterials.end() ? itMaterial->second : m_pGlobalMaterial;
 }
 
 void CRenderer::Clear(float red, float green, float blue, float alpha, float depth)
@@ -282,8 +288,6 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECTION_LIGHT_NAME), m_uniformDirectionLight.GetBuffer(), m_uniformDirectionLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 
-	GLuint indexUnit = pMaterial->GetTextureUnits();
-	for (const auto &itTexture : m_inputTextures) {
-		pMaterial->GetProgram()->BindTexture2D(itTexture.first, itTexture.second, 0, indexUnit++);
-	}
+	m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());
+	m_pGlobalMaterial->BindTextures(pMaterial->GetProgram(), pMaterial->GetTextureUnits());
 }
