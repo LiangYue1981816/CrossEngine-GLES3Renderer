@@ -42,6 +42,7 @@ public:
 public:
 	void SetScissor(int x, int y, int width, int height);
 	void SetViewport(int x, int y, int width, int height);
+
 	void SetFrameBuffer(GLuint fbo);
 	void SetInputTexture(const char *szName, GLuint texture);
 
