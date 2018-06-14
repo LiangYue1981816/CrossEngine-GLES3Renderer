@@ -20,6 +20,9 @@
 
 class CMaterial
 {
+	friend class CRenderer;
+
+
 public:
 	CMaterial(void);
 	virtual ~CMaterial(void);
@@ -28,7 +31,7 @@ public:
 public:
 	void Bind(void) const;
 
-public:
+private:
 	void BindPipeline(void) const;
 	void BindUniforms(CProgram *pProgram) const;
 	void BindTextures(CProgram *pProgram, GLuint indexUnit) const;
