@@ -1,3 +1,6 @@
+#ifndef _ENGINE_INC_
+#define _ENGINE_INC_
+
 #define USE_VERTEX_ATTRIBUTE_POSITION  layout (location = 0) in vec3 inPosition
 #define USE_VERTEX_ATTRIBUTE_NORMAL    layout (location = 1) in vec3 inNormal
 #define USE_VERTEX_ATTRIBUTE_BINORMAL  layout (location = 2) in vec3 inBinormal
@@ -65,3 +68,5 @@
 		vec3 heightDensity;                                                        \
 		vec3 distanceDensity;                                                      \
 	} engineFog
+
+#endif

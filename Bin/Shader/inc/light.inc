@@ -1,4 +1,11 @@
+#ifndef _LIGHT_INC_
+#define _LIGHT_INC_
+
 #include "common.inc"
+
+USE_ENGINE_AMBIENT_LIGHT;
+USE_ENGINE_POINT_LIGHT;
+USE_ENGINE_DIRECTION_LIGHT;
 
 
 // ToneMapping
@@ -146,24 +153,53 @@ vec3 BRDF_Pbr(vec3 lightColor, vec3 L, vec3 H, vec3 V, vec3 N, vec3 albedoColor,
 	return (diffuse + specular) * ndl * lightColor;
 }
 
-vec3 BRDF_EnvSpecular(vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness, samplerCube env)
+vec3 BRDF_EnvSpecular(vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness, vec3 specularColor)
 {
 	float ndv = max(dot(N, V), 0.0);
 
 	vec3 F = F_Schlick(ndv, metallic, albedoColor);
 	vec3 R = reflect(-V, N);
+
+	return Env_Specular(F, ndv, roughness) * specularColor;
+}
+
+
+// High level functions
+vec3 AmbientLightingSH4(vec3 albedoColor, float metallic, vec3 normal)
+{
+	return Ambient_SH4(albedoColor, metallic, normal, engineAmbientLight.shRed0, engineAmbientLight.shGreen0, engineAmbientLight.shBlue0);
+}
+
+vec3 AmbientLightingSH9(vec3 albedoColor, float metallic, vec3 normal)
+{
+	return Ambient_SH9(albedoColor, metallic, normal, engineAmbientLight.shRed0, engineAmbientLight.shRed1, engineAmbientLight.shRed2, engineAmbientLight.shGreen0, engineAmbientLight.shGreen1, engineAmbientLight.shGreen2, engineAmbientLight.shBlue0, engineAmbientLight.shBlue1, engineAmbientLight.shBlue2);
+}
+
+vec3 BlinnDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, vec3 specularColor, float metallic, float roughness)
+{
+	return BRDF_Blinn(engineDirectionLight.color, engineDirectionLight.direction, H, V, N, albedoColor, specularColor, metallic, roughness);
+}
+
+vec3 PBRDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
+{
+	return BRDF_Pbr(engineDirectionLight.color, engineDirectionLight.direction, H, V, N, albedoColor, metallic, roughness);
+}
+
+vec3 EnvSpecular(vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness, vec3 specularColor)
+{
+	return BRDF_EnvSpecular(V, N, albedoColor, metallic, roughness, specularColor);
+}
+
+vec3 EnvSpecular(vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness, samplerCube env)
+{
 	vec3 specularColor = Gamma2Linear(textureLod(env, R, roughness * 8.0).rgb);
-
-	return Env_Specular(F, ndv, roughness) * specularColor;
+	return BRDF_EnvSpecular(V, N, albedoColor, metallic, roughness, specularColor);
 }
 
-vec3 BRDF_EnvSpecular(vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness, sampler2D env)
+vec3 EnvSpecular(vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness, sampler2D env)
 {
-	float ndv = max(dot(N, V), 0.0);
-
-	vec3 F = F_Schlick(ndv, metallic, albedoColor);
-	vec3 R = reflect(-V, N);
 	vec3 specularColor = Gamma2Linear(textureLod(env, SphericalSampleing(R), roughness * 8.0).rgb);
-
-	return Env_Specular(F, ndv, roughness) * specularColor;
+	return BRDF_EnvSpecular(V, N, albedoColor, metallic, roughness, specularColor);
 }
+
+#endif

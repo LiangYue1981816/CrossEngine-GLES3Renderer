@@ -1,4 +1,10 @@
+#ifndef _FOG_INC_
+#define _FOG_INC_
+
+#include "engine.inc"
 #include "common.inc"
+
+USE_ENGINE_FOG;
 
 
 float FogDensityLinear(vec3 cameraPosition, vec3 position)
@@ -46,7 +52,9 @@ float FogDensityExp2(vec3 cameraPosition, vec3 position)
 	return clamp(heightDensity + distanceDensity, 0.0, 1.0);
 }
 
-vec3 FogColor(vec3 color, vec3 fog, float density)
+vec3 FogColor(vec3 color, float density)
 {
-	return mix(color, fog, density);
+	return mix(color, engineFog.color, density);
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef _COMMON_INC_
+#define _COMMON_INC_
+
 #define PI 3.1415926535897932384626433832795
 
 
@@ -51,3 +54,5 @@ vec2 SphericalSampleing(vec3 v)
 
 	return uv;
 }
+
+#endif
