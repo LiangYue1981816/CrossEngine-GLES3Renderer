@@ -25,6 +25,7 @@ vec3 ToneMapping(vec3 color)
 	return clamp((color * (a * color + b)) / (color * (c * color + d) + e), 0.0, 1.0);
 }
 
+
 // Gamma
 vec3 Gamma2Linear(vec3 gamma)
 {
