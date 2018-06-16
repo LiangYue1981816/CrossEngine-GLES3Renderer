@@ -5,7 +5,7 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferCamera
+class CUniformCamera
 {
 private:
 	typedef struct Params {
@@ -17,8 +17,8 @@ private:
 
 
 public:
-	CUniformBufferCamera(void);
-	virtual ~CUniformBufferCamera(void);
+	CUniformCamera(void);
+	virtual ~CUniformCamera(void);
 
 
 public:

@@ -1,26 +1,26 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformBufferVec3.h"
+#include "UniformVec1.h"
 
 
-CUniformBufferVec3::CUniformBufferVec3(void)
+CUniformVec1::CUniformVec1(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_value), true);
 }
 
-CUniformBufferVec3::~CUniformBufferVec3(void)
+CUniformVec1::~CUniformVec1(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformBufferVec3::SetValue(float x, float y, float z)
+void CUniformVec1::SetValue(float value)
 {
 	m_bDirty = true;
-	m_value = glm::vec3(x, y, z);
+	m_value = value;
 }
 
-void CUniformBufferVec3::Apply(void)
+void CUniformVec1::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -28,12 +28,12 @@ void CUniformBufferVec3::Apply(void)
 	}
 }
 
-GLuint CUniformBufferVec3::GetSize(void) const
+GLuint CUniformVec1::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformBufferVec3::GetBuffer(void) const
+GLuint CUniformVec1::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

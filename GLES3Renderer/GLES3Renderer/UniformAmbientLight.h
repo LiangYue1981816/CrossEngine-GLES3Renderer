@@ -5,7 +5,7 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferAmbientLight
+class CUniformAmbientLight
 {
 private:
 	typedef struct Params {
@@ -26,8 +26,8 @@ private:
 
 
 public:
-	CUniformBufferAmbientLight(void);
-	virtual ~CUniformBufferAmbientLight(void);
+	CUniformAmbientLight(void);
+	virtual ~CUniformAmbientLight(void);
 
 
 public:

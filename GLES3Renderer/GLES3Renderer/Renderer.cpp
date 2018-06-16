@@ -92,6 +92,9 @@ void CRenderer::SetScissor(int x, int y, int width, int height)
 void CRenderer::SetViewport(int x, int y, int width, int height)
 {
 	glViewport(x, y, width, height);
+
+	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
+	m_uniformScreen.Apply();
 }
 
 void CRenderer::SetFrameBuffer(GLuint fbo)
@@ -104,16 +107,34 @@ void CRenderer::SetInputTexture(const char *szName, GLuint texture)
 	m_pGlobalMaterial->GetTexture2D(szName)->Create(texture, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 }
 
+void CRenderer::SetTime(float t, float dt)
+{
+	m_uniformTime.SetTime(t, dt);
+	m_uniformTime.Apply();
+}
+
 void CRenderer::SetCameraPerspective(float fovy, float aspect, float zNear, float zFar)
 {
 	m_uniformCamera.SetPerspective(fovy, aspect, zNear, zFar);
 	m_uniformCamera.Apply();
+
+	m_uniformZBuffer.SetZBuffer(zNear, zFar);
+	m_uniformZBuffer.Apply();
+
+	m_uniformProjection.SetProjection(zNear, zFar);
+	m_uniformPointLight.Apply();
 }
 
 void CRenderer::SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	m_uniformCamera.SetOrtho(left, right, bottom, top, zNear, zFar);
 	m_uniformCamera.Apply();
+
+	m_uniformZBuffer.SetZBuffer(zNear, zFar);
+	m_uniformZBuffer.Apply();
+
+	m_uniformProjection.SetProjection(zNear, zFar);
+	m_uniformPointLight.Apply();
 }
 
 void CRenderer::SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
@@ -240,7 +261,7 @@ void CRenderer::DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 	glDrawElementsInstanced(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL, pVertexBuffer->GetInstanceCount());
 }
 
-void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformBufferTransform *pUniformTransform)
+void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformTransform *pUniformTransform)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -282,6 +303,10 @@ void CRenderer::DrawScreen(GLuint material)
 void CRenderer::BindMaterial(CMaterial *pMaterial)
 {
 	pMaterial->Bind();
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SCREEN_NAME), m_uniformScreen.GetBuffer(), m_uniformScreen.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());

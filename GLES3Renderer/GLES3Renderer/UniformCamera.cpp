@@ -1,32 +1,32 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformBufferCamera.h"
+#include "UniformCamera.h"
 
 
-CUniformBufferCamera::CUniformBufferCamera(void)
+CUniformCamera::CUniformCamera(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformBufferCamera::~CUniformBufferCamera(void)
+CUniformCamera::~CUniformCamera(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformBufferCamera::SetPerspective(float fovy, float aspect, float zNear, float zFar)
+void CUniformCamera::SetPerspective(float fovy, float aspect, float zNear, float zFar)
 {
 	m_bDirty = true;
 	m_params.mtxProjection = glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
 }
 
-void CUniformBufferCamera::SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
+void CUniformCamera::SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	m_bDirty = true;
 	m_params.mtxProjection = glm::ortho(left, right, bottom, top, zNear, zFar);
 }
 
-void CUniformBufferCamera::SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
+void CUniformCamera::SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
 	m_bDirty = true;
 	m_params.mtxView = glm::lookAt(glm::vec3(eyex, eyey, eyez), glm::vec3(centerx, centery, centerz), glm::vec3(upx, upy, upz));
@@ -34,7 +34,7 @@ void CUniformBufferCamera::SetLookat(float eyex, float eyey, float eyez, float c
 	m_params.mtxViewInverseTranspose = glm::transpose(m_params.mtxViewInverse);
 }
 
-void CUniformBufferCamera::SetProjectionMatrix(const float *mtxProjection)
+void CUniformCamera::SetProjectionMatrix(const float *mtxProjection)
 {
 	m_bDirty = true;
 	m_params.mtxProjection[0][0] = mtxProjection[0];
@@ -55,7 +55,7 @@ void CUniformBufferCamera::SetProjectionMatrix(const float *mtxProjection)
 	m_params.mtxProjection[3][3] = mtxProjection[15];
 }
 
-void CUniformBufferCamera::SetViewMatrix(const float *mtxView)
+void CUniformCamera::SetViewMatrix(const float *mtxView)
 {
 	m_bDirty = true;
 	m_params.mtxView[0][0] = mtxView[0];
@@ -78,7 +78,7 @@ void CUniformBufferCamera::SetViewMatrix(const float *mtxView)
 	m_params.mtxViewInverseTranspose = glm::transpose(m_params.mtxViewInverse);
 }
 
-void CUniformBufferCamera::Apply(void)
+void CUniformCamera::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -86,12 +86,12 @@ void CUniformBufferCamera::Apply(void)
 	}
 }
 
-GLuint CUniformBufferCamera::GetSize(void) const
+GLuint CUniformCamera::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformBufferCamera::GetBuffer(void) const
+GLuint CUniformCamera::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformBufferAmbientLight.h"
+#include "UniformAmbientLight.h"
 
 
 static void SHRotationMatrix0(float rotation0[1][1])
@@ -126,18 +126,18 @@ static void SHRotate(float shRedRotate[9], float shGreenRotate[9], float shBlueR
 	}
 }
 
-CUniformBufferAmbientLight::CUniformBufferAmbientLight(void)
+CUniformAmbientLight::CUniformAmbientLight(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformBufferAmbientLight::~CUniformBufferAmbientLight(void)
+CUniformAmbientLight::~CUniformAmbientLight(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformBufferAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9])
+void CUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9])
 {
 	m_bDirty = true;
 	m_params.shRed0 = glm::vec4(shRed[0], shRed[1], shRed[2], 0.0);
@@ -152,7 +152,7 @@ void CUniformBufferAmbientLight::SetSH(float shRed[9], float shGreen[9], float s
 	m_params.rotationMatrix = glm::mat4();
 }
 
-void CUniformBufferAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9], float angle, float axisx, float axisy, float axisz)
+void CUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9], float angle, float axisx, float axisy, float axisz)
 {
 	/*
 	float shRedRotate[9] = { 0.0f };
@@ -174,7 +174,7 @@ void CUniformBufferAmbientLight::SetSH(float shRed[9], float shGreen[9], float s
 	m_params.rotationMatrix = glm::rotate(glm::mat4(), -angle, glm::vec3(axisx, axisy, axisz));
 }
 
-void CUniformBufferAmbientLight::Apply(void)
+void CUniformAmbientLight::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -182,12 +182,12 @@ void CUniformBufferAmbientLight::Apply(void)
 	}
 }
 
-GLuint CUniformBufferAmbientLight::GetSize(void) const
+GLuint CUniformAmbientLight::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformBufferAmbientLight::GetBuffer(void) const
+GLuint CUniformAmbientLight::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

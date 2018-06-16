@@ -4,15 +4,24 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferVec4
+class CUniformTime
 {
-public:
-	CUniformBufferVec4(void);
-	virtual ~CUniformBufferVec4(void);
+private:
+	typedef struct Params {
+		glm::vec4 time;
+		glm::vec4 sinTime;
+		glm::vec4 cosTime;
+		glm::vec4 deltaTime;
+	} Params;
 
 
 public:
-	void SetValue(float x, float y, float z, float w);
+	CUniformTime(void);
+	virtual ~CUniformTime(void);
+
+
+public:
+	void SetTime(float t, float dt);
 	void Apply(void);
 
 public:
@@ -22,6 +31,6 @@ public:
 
 private:
 	bool m_bDirty;
-	glm::vec4 m_value;
+	Params m_params;
 	CUniformBuffer m_uniformBuffer;
 };

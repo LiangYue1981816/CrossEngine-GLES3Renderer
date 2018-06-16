@@ -5,14 +5,22 @@
 #include "FrameBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
-#include "UniformBufferCamera.h"
-#include "UniformBufferTransform.h"
-#include "UniformBufferAmbientLight.h"
-#include "UniformBufferPointLight.h"
-#include "UniformBufferDirectionLight.h"
-#include "UniformBufferFog.h"
+#include "UniformTime.h"
+#include "UniformScreen.h"
+#include "UniformZBuffer.h"
+#include "UniformProjection.h"
+#include "UniformCamera.h"
+#include "UniformTransform.h"
+#include "UniformAmbientLight.h"
+#include "UniformPointLight.h"
+#include "UniformDirectionLight.h"
+#include "UniformFog.h"
 
 
+#define ENGINE_TIME_NAME                "Time"
+#define ENGINE_SCREEN_NAME              "Screen"
+#define ENGINE_ZBUFFER_NAME             "ZBuffer"
+#define ENGINE_PROJECTION_NAME          "Projection"
 #define ENGINE_CAMERA_NAME              "Camera"
 #define ENGINE_TRANSFORM_NAME           "Transform"
 #define ENGINE_AMBIENT_LIGHT_NAME       "AmbientLight"
@@ -47,6 +55,9 @@ public:
 	void SetInputTexture(const char *szName, GLuint texture);
 
 public:
+	void SetTime(float t, float dt);
+
+public:
 	void SetCameraPerspective(float fovy, float aspect, float zNear, float zFar);
 	void SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
@@ -70,7 +81,7 @@ public:
 public:
 	void Clear(float red, float green, float blue, float alpha, float depth);
 	void DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer);
-	void DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformBufferTransform *pUniformTransform);
+	void DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformTransform *pUniformTransform);
 	void DrawScreen(GLuint material);
 
 private:
@@ -87,11 +98,15 @@ private:
 	CVertexBuffer m_screenVertexBuffer;
 
 private:
-	CUniformBufferCamera m_uniformCamera;
-	CUniformBufferAmbientLight m_uniformAmbientLight;
-	CUniformBufferPointLight m_uniformPointLight;
-	CUniformBufferDirectionLight m_uniformDirectionLight;
-	CUniformBufferFog m_uniformFog;
+	CUniformTime m_uniformTime;
+	CUniformScreen m_uniformScreen;
+	CUniformZBuffer m_uniformZBuffer;
+	CUniformProjection m_uniformProjection;
+	CUniformCamera m_uniformCamera;
+	CUniformAmbientLight m_uniformAmbientLight;
+	CUniformPointLight m_uniformPointLight;
+	CUniformDirectionLight m_uniformDirectionLight;
+	CUniformFog m_uniformFog;
 
 private:
 	GLuint m_material;

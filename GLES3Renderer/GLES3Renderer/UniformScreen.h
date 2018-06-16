@@ -4,15 +4,21 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferVec2
+class CUniformScreen
 {
-public:
-	CUniformBufferVec2(void);
-	virtual ~CUniformBufferVec2(void);
+private:
+	typedef struct Params {
+		glm::vec4 screen;
+	} Params;
 
 
 public:
-	void SetValue(float x, float y);
+	CUniformScreen(void);
+	virtual ~CUniformScreen(void);
+
+
+public:
+	void SetScreen(float width, float height);
 	void Apply(void);
 
 public:
@@ -22,6 +28,6 @@ public:
 
 private:
 	bool m_bDirty;
-	glm::vec2 m_value;
+	Params m_params;
 	CUniformBuffer m_uniformBuffer;
 };

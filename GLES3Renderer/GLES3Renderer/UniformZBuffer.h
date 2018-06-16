@@ -4,15 +4,21 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferMat4
+class CUniformZBuffer
 {
-public:
-	CUniformBufferMat4(void);
-	virtual ~CUniformBufferMat4(void);
+private:
+	typedef struct Params {
+		glm::vec4 zbuffer;
+	} Params;
 
 
 public:
-	void SetValue(const float *matrix);
+	CUniformZBuffer(void);
+	virtual ~CUniformZBuffer(void);
+
+
+public:
+	void SetZBuffer(float zNear, float zFar);
 	void Apply(void);
 
 public:
@@ -22,6 +28,6 @@ public:
 
 private:
 	bool m_bDirty;
-	glm::mat4 m_value;
+	Params m_params;
 	CUniformBuffer m_uniformBuffer;
 };

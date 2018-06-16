@@ -4,22 +4,22 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferDirectionLight
+class CUniformPointLight
 {
 private:
 	typedef struct Params {
 		glm::vec4 color;
-		glm::vec4 direction;
+		glm::vec4 position;
 	} Params;
 
 
 public:
-	CUniformBufferDirectionLight(void);
-	virtual ~CUniformBufferDirectionLight(void);
+	CUniformPointLight(void);
+	virtual ~CUniformPointLight(void);
 
 
 public:
-	void SetDirection(float x, float y, float z);
+	void SetPosition(float x, float y, float z);
 	void SetColor(float r, float g, float b);
 	void Apply(void);
 

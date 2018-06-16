@@ -9,6 +9,13 @@
     <ClInclude Include="GLES3Renderer\tinyxml\tinyxml.h">
       <Filter>GLES3Renderer\Header Files\xml</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="GLES3Renderer\FrameBuffer.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\IndexBuffer.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GLES3Renderer\Material.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
@@ -27,50 +34,55 @@
     <ClInclude Include="GLES3Renderer\TextureCubeMap.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\UniformAmbientLight.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GLES3Renderer\UniformBuffer.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferCamera.h">
+    <ClInclude Include="GLES3Renderer\UniformCamera.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferDirectionLight.h">
+    <ClInclude Include="GLES3Renderer\UniformDirectionLight.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferPointLight.h">
+    <ClInclude Include="GLES3Renderer\UniformFog.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferTransform.h">
+    <ClInclude Include="GLES3Renderer\UniformMat4.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferVec1.h">
+    <ClInclude Include="GLES3Renderer\UniformPointLight.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferVec2.h">
+    <ClInclude Include="GLES3Renderer\UniformScreen.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferVec3.h">
+    <ClInclude Include="GLES3Renderer\UniformTime.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferVec4.h">
+    <ClInclude Include="GLES3Renderer\UniformTransform.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\FrameBuffer.h">
+    <ClInclude Include="GLES3Renderer\UniformVec1.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferAmbientLight.h">
+    <ClInclude Include="GLES3Renderer\UniformVec2.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\IndexBuffer.h">
+    <ClInclude Include="GLES3Renderer\UniformVec3.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\UniformVec4.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\VertexBuffer.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="GLES3Renderer\UniformBufferMat4.h">
+    <ClInclude Include="GLES3Renderer\UniformZBuffer.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformBufferFog.h">
+    <ClInclude Include="GLES3Renderer\UniformProjection.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -88,51 +100,6 @@
     </ClCompile>
     <ClCompile Include="GLES3Renderer\tinyxml\tinyxmlparser.cpp">
       <Filter>GLES3Renderer\Source Files\xml</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\Material.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\Program.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\Renderer.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\Texture2D.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\Texture2DArray.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\TextureCubeMap.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBuffer.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferCamera.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferDirectionLight.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferPointLight.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferTransform.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferVec1.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferVec2.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferVec3.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferVec4.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLES3Renderer\spirv-cross\spirv_cfg.cpp">
       <Filter>spirv-cross</Filter>
@@ -152,23 +119,80 @@
     <ClCompile Include="GLES3Renderer\spirv-cross\spirv_msl.cpp">
       <Filter>spirv-cross</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLES3Renderer\FrameBuffer.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferAmbientLight.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLES3Renderer\IndexBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLES3Renderer\Material.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\Program.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\Renderer.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\Texture2D.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\Texture2DArray.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\TextureCubeMap.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformAmbientLight.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformBuffer.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformCamera.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformDirectionLight.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformFog.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformMat4.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformPointLight.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformScreen.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformTime.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformTransform.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformVec1.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformVec2.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformVec3.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformVec4.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GLES3Renderer\VertexBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="GLES3Renderer\UniformBufferMat4.cpp">
+    <ClCompile Include="GLES3Renderer\UniformZBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformBufferFog.cpp">
+    <ClCompile Include="GLES3Renderer\UniformProjection.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

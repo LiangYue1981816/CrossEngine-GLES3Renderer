@@ -5,17 +5,19 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferTransform
+class CUniformTransform
 {
 private:
 	typedef struct Params {
-		glm::mat4 mtxTransform;
+		glm::mat4 mtxWorld;
+		glm::mat4 mtxWorldInverse;
+		glm::mat4 mtxWorldInverseTranspose;
 	} Params;
 
 
 public:
-	CUniformBufferTransform(void);
-	virtual ~CUniformBufferTransform(void);
+	CUniformTransform(void);
+	virtual ~CUniformTransform(void);
 
 
 public:

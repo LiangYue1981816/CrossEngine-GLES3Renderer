@@ -4,15 +4,15 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferVec1
+class CUniformVec4
 {
 public:
-	CUniformBufferVec1(void);
-	virtual ~CUniformBufferVec1(void);
+	CUniformVec4(void);
+	virtual ~CUniformVec4(void);
 
 
 public:
-	void SetValue(float value);
+	void SetValue(float x, float y, float z, float w);
 	void Apply(void);
 
 public:
@@ -22,6 +22,6 @@ public:
 
 private:
 	bool m_bDirty;
-	float m_value;
+	glm::vec4 m_value;
 	CUniformBuffer m_uniformBuffer;
 };

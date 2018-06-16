@@ -5,7 +5,7 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferFog
+class CUniformFog
 {
 private:
 	typedef struct Params {
@@ -16,8 +16,8 @@ private:
 
 
 public:
-	CUniformBufferFog(void);
-	virtual ~CUniformBufferFog(void);
+	CUniformFog(void);
+	virtual ~CUniformFog(void);
 
 
 public:

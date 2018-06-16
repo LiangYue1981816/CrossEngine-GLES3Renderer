@@ -4,15 +4,21 @@
 #include "UniformBuffer.h"
 
 
-class CUniformBufferVec3
+class CUniformProjection
 {
-public:
-	CUniformBufferVec3(void);
-	virtual ~CUniformBufferVec3(void);
+private:
+	typedef struct Params {
+		glm::vec4 projection;
+	} Params;
 
 
 public:
-	void SetValue(float x, float y, float z);
+	CUniformProjection(void);
+	virtual ~CUniformProjection(void);
+
+
+public:
+	void SetProjection(float zNear, float zFar);
 	void Apply(void);
 
 public:
@@ -22,6 +28,6 @@ public:
 
 private:
 	bool m_bDirty;
-	glm::vec3 m_value;
+	Params m_params;
 	CUniformBuffer m_uniformBuffer;
 };

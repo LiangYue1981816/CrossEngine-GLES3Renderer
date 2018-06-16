@@ -14,6 +14,33 @@
 #define USE_INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL3 layout (location = 11) in vec4 inInstanceTransformMatrixCol3
 
 
+#define USE_ENGINE_TIME                                                        \
+	uniform Time                                                                 \
+	{                                                                            \
+		vec4 time;                                                                 \
+		vec4 sinTime;                                                              \
+		vec4 cosTime;                                                              \
+		vec4 deltaTime;                                                            \
+	} engineTime
+
+#define USE_ENGINE_SCREEN                                                      \
+	uniform Screen                                                               \
+	{                                                                            \
+		vec4 screen;                                                               \
+	} engineScreen
+
+#define USE_ENGINE_ZBUFFER                                                     \
+	uniform ZBuffer                                                              \
+	{                                                                            \
+		vec4 zbuffer;                                                              \
+	} engineZBuffer
+
+#define USE_ENGINE_PROJECTION                                                  \
+	uniform Projection                                                           \
+	{                                                                            \
+		vec4 projection;                                                           \
+	} engineProjection
+
 #define USE_ENGINE_CAMERA                                                      \
 	uniform Camera                                                               \
 	{                                                                            \
@@ -26,7 +53,9 @@
 #define USE_ENGINE_TRANSFORM                                                   \
 	uniform Transform                                                            \
 	{                                                                            \
-		mat4 transformMatrix;                                                      \
+		mat4 worldMatrix;                                                          \
+		mat4 worldInverseMatrix;                                                   \
+		mat4 worldInverseTransposeMatrix;                                          \
 	} engineTransform
 
 #define USE_ENGINE_AMBIENT_LIGHT                                               \
@@ -70,10 +99,22 @@
 	} engineFog
 
 
+USE_ENGINE_TIME;
+USE_ENGINE_SCREEN;
+USE_ENGINE_ZBUFFER;
+USE_ENGINE_PROJECTION;
+
 USE_ENGINE_CAMERA;
 #define projectionMatrix engineCamera.projectionMatrix
 #define viewMatrix engineCamera.viewMatrix
 #define viewInverseMatrix engineCamera.viewInverseMatrix
 #define viewInverseTransposeMatrix engineCamera.viewInverseTransposeMatrix
+
+/*
+USE_ENGINE_TRANSFORM;
+#define worldMatrix engineTransform.worldMatrix
+#define worldInverseMatrix engineTransform.worldInverseMatrix
+#define worldInverseTransposeMatrix engineTransform.worldInverseTransposeMatrix
+*/
 
 #endif

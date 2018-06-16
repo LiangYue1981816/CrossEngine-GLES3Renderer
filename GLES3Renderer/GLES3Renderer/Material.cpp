@@ -512,7 +512,7 @@ bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec1s[name] = new CUniformBufferVec1) {
+					if (m_pUniformVec1s[name] = new CUniformVec1) {
 						m_pUniformVec1s[name]->SetValue(value);
 						m_pUniformVec1s[name]->Apply();
 					}
@@ -550,7 +550,7 @@ bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec2s[name] = new CUniformBufferVec2) {
+					if (m_pUniformVec2s[name] = new CUniformVec2) {
 						m_pUniformVec2s[name]->SetValue(value[0], value[1]);
 						m_pUniformVec2s[name]->Apply();
 					}
@@ -588,7 +588,7 @@ bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec3s[name] = new CUniformBufferVec3) {
+					if (m_pUniformVec3s[name] = new CUniformVec3) {
 						m_pUniformVec3s[name]->SetValue(value[0], value[1], value[2]);
 						m_pUniformVec3s[name]->Apply();
 					}
@@ -626,7 +626,7 @@ bool CMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec4s[name] = new CUniformBufferVec4) {
+					if (m_pUniformVec4s[name] = new CUniformVec4) {
 						m_pUniformVec4s[name]->SetValue(value[0], value[1], value[2], value[3]);
 						m_pUniformVec4s[name]->Apply();
 					}
@@ -776,13 +776,13 @@ CTextureCubeMap* CMaterial::GetTextureCubeMap(const char *szName)
 	return NULL;
 }
 
-CUniformBufferVec1* CMaterial::GetUniformVec1(const char *szName)
+CUniformVec1* CMaterial::GetUniformVec1(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec1s[name] == NULL) {
-			m_pUniformVec1s[name] = new CUniformBufferVec1;
+			m_pUniformVec1s[name] = new CUniformVec1;
 		}
 
 		return m_pUniformVec1s[name];
@@ -791,13 +791,13 @@ CUniformBufferVec1* CMaterial::GetUniformVec1(const char *szName)
 	return NULL;
 }
 
-CUniformBufferVec2* CMaterial::GetUniformVec2(const char *szName)
+CUniformVec2* CMaterial::GetUniformVec2(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec2s[name] == NULL) {
-			m_pUniformVec2s[name] = new CUniformBufferVec2;
+			m_pUniformVec2s[name] = new CUniformVec2;
 		}
 
 		return m_pUniformVec2s[name];
@@ -806,13 +806,13 @@ CUniformBufferVec2* CMaterial::GetUniformVec2(const char *szName)
 	return NULL;
 }
 
-CUniformBufferVec3* CMaterial::GetUniformVec3(const char *szName)
+CUniformVec3* CMaterial::GetUniformVec3(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec3s[name] == NULL) {
-			m_pUniformVec3s[name] = new CUniformBufferVec3;
+			m_pUniformVec3s[name] = new CUniformVec3;
 		}
 
 		return m_pUniformVec3s[name];
@@ -821,13 +821,13 @@ CUniformBufferVec3* CMaterial::GetUniformVec3(const char *szName)
 	return NULL;
 }
 
-CUniformBufferVec4* CMaterial::GetUniformVec4(const char *szName)
+CUniformVec4* CMaterial::GetUniformVec4(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec4s[name] == NULL) {
-			m_pUniformVec4s[name] = new CUniformBufferVec4;
+			m_pUniformVec4s[name] = new CUniformVec4;
 		}
 
 		return m_pUniformVec4s[name];
@@ -836,13 +836,13 @@ CUniformBufferVec4* CMaterial::GetUniformVec4(const char *szName)
 	return NULL;
 }
 
-CUniformBufferMat4* CMaterial::GetUniformMat4(const char *szName)
+CUniformMat4* CMaterial::GetUniformMat4(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformMat4s[name] == NULL) {
-			m_pUniformMat4s[name] = new CUniformBufferMat4;
+			m_pUniformMat4s[name] = new CUniformMat4;
 		}
 
 		return m_pUniformMat4s[name];

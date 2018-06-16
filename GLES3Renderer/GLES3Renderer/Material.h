@@ -7,15 +7,11 @@
 #include "Texture2D.h"
 #include "Texture2DArray.h"
 #include "TextureCubeMap.h"
-#include "UniformBufferVec1.h"
-#include "UniformBufferVec2.h"
-#include "UniformBufferVec3.h"
-#include "UniformBufferVec4.h"
-#include "UniformBufferMat4.h"
-#include "UniformBufferCamera.h"
-#include "UniformBufferAmbientLight.h"
-#include "UniformBufferPointLight.h"
-#include "UniformBufferDirectionLight.h"
+#include "UniformVec1.h"
+#include "UniformVec2.h"
+#include "UniformVec3.h"
+#include "UniformVec4.h"
+#include "UniformMat4.h"
 
 
 class CMaterial
@@ -66,11 +62,11 @@ public:
 	CTexture2DArray* GetTexture2DArray(const char *szName);
 	CTextureCubeMap* GetTextureCubeMap(const char *szName);
 
-	CUniformBufferVec1* GetUniformVec1(const char *szName);
-	CUniformBufferVec2* GetUniformVec2(const char *szName);
-	CUniformBufferVec3* GetUniformVec3(const char *szName);
-	CUniformBufferVec4* GetUniformVec4(const char *szName);
-	CUniformBufferMat4* GetUniformMat4(const char *szName);
+	CUniformVec1* GetUniformVec1(const char *szName);
+	CUniformVec2* GetUniformVec2(const char *szName);
+	CUniformVec3* GetUniformVec3(const char *szName);
+	CUniformVec4* GetUniformVec4(const char *szName);
+	CUniformMat4* GetUniformMat4(const char *szName);
 
 	GLuint GetTextureUnits(void) const;
 
@@ -93,11 +89,11 @@ private:
 	std::map<GLuint, CTexture2DArray*> m_pTexture2dArrays;
 	std::map<GLuint, CTextureCubeMap*> m_pTextureCubeMaps;
 
-	std::map<GLuint, CUniformBufferVec1*> m_pUniformVec1s;
-	std::map<GLuint, CUniformBufferVec2*> m_pUniformVec2s;
-	std::map<GLuint, CUniformBufferVec3*> m_pUniformVec3s;
-	std::map<GLuint, CUniformBufferVec4*> m_pUniformVec4s;
-	std::map<GLuint, CUniformBufferMat4*> m_pUniformMat4s;
+	std::map<GLuint, CUniformVec1*> m_pUniformVec1s;
+	std::map<GLuint, CUniformVec2*> m_pUniformVec2s;
+	std::map<GLuint, CUniformVec3*> m_pUniformVec3s;
+	std::map<GLuint, CUniformVec4*> m_pUniformVec4s;
+	std::map<GLuint, CUniformMat4*> m_pUniformMat4s;
 
 private:
 	CProgram *m_pProgram;
