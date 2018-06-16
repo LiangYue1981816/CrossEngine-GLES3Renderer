@@ -13,8 +13,6 @@ USE_INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL1;
 USE_INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL2;
 USE_INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL3;
 
-USE_ENGINE_CAMERA;
-
 layout (location = 0) out vec2 outTexcoord;
 layout (location = 1) out vec3 outHalfDirection;
 layout (location = 2) out vec3 outViewDirection;

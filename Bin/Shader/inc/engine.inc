@@ -69,4 +69,7 @@
 		vec3 distanceDensity;                                                      \
 	} engineFog
 
+
+USE_ENGINE_CAMERA;
+
 #endif
