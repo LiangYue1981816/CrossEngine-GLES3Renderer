@@ -3,9 +3,6 @@ precision mediump float;
 #include "engine.inc"
 #include "light.inc"
 
-USE_ENGINE_AMBIENT_LIGHT;
-USE_ENGINE_DIRECTION_LIGHT;
-
 uniform sampler2D texAO;
 uniform sampler2D texAlbedo;
 uniform sampler2D texNormal;
@@ -32,10 +29,10 @@ void main()
 	vec3 pixelNormal = texture(texNormal, inTexcoord).rgb * 2.0 - 1.0;
 	pixelNormal = normalize(inTBN * pixelNormal);
 
-	vec3 envAmbientColor = Ambient_SH9(albedoColor, metallic, (engineAmbientLight.rotationMatrix * vec4(pixelNormal, 0.0)).xyz, engineAmbientLight.shRed0, engineAmbientLight.shRed1, engineAmbientLight.shRed2, engineAmbientLight.shGreen0, engineAmbientLight.shGreen1, engineAmbientLight.shGreen2, engineAmbientLight.shBlue0, engineAmbientLight.shBlue1, engineAmbientLight.shBlue2);
-	vec3 envSpecularColor = BRDF_EnvSpecular(inViewDirection, pixelNormal, albedoColor, metallic, roughness, texEnv);
-	vec3 lightColor = BRDF_Pbr(engineDirectionLight.color, engineDirectionLight.direction, inHalfDirection, inViewDirection, pixelNormal, albedoColor, metallic, roughness);
-	vec3 final = (envAmbientColor + envSpecularColor + lightColor) * ao;
+	vec3 ambientColor = AmbientLightingSH9(albedoColor, metallic, pixelNormal);
+	vec3 specularColor = EnvSpecular(inViewDirection, pixelNormal, albedoColor, metallic, roughness, texEnv);
+	vec3 lightColor = PBRDirectionLighting(inHalfDirection, inViewDirection, pixelNormal, albedoColor, metallic, roughness);
+	vec3 final = (ambientColor + specularColor + lightColor) * ao;
 
 	outFragColor.rgb = Linear2Gamma(final);
 	outFragColor.a = 1.0;

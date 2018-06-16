@@ -32,17 +32,17 @@
 #define USE_ENGINE_AMBIENT_LIGHT                                               \
 	uniform AmbientLight                                                         \
 	{                                                                            \
-		vec3 shRed0;                                                               \
-		vec3 shRed1;                                                               \
-		vec3 shRed2;                                                               \
+		vec4 shRed0;                                                               \
+		vec4 shRed1;                                                               \
+		vec4 shRed2;                                                               \
 		                                                                           \
-		vec3 shGreen0;                                                             \
-		vec3 shGreen1;                                                             \
-		vec3 shGreen2;                                                             \
+		vec4 shGreen0;                                                             \
+		vec4 shGreen1;                                                             \
+		vec4 shGreen2;                                                             \
 		                                                                           \
-		vec3 shBlue0;                                                              \
-		vec3 shBlue1;                                                              \
-		vec3 shBlue2;                                                              \
+		vec4 shBlue0;                                                              \
+		vec4 shBlue1;                                                              \
+		vec4 shBlue2;                                                              \
 		                                                                           \
 		mat4 rotationMatrix;                                                       \
 	} engineAmbientLight
