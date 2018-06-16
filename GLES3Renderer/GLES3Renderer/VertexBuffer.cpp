@@ -40,6 +40,17 @@ static GLuint GetStride(GLuint format, const ATTRIBUTE *attributes, GLuint count
 	return stride;
 }
 
+static GLuint GetAttributeSize(GLuint attribute, const ATTRIBUTE *attributes, GLuint count)
+{
+	for (GLuint indexAttribute = 0; indexAttribute < count; indexAttribute++) {
+		if (attribute == attributes[indexAttribute].flag) {
+			return attributes[indexAttribute].size;
+		}
+	}
+
+	return 0;
+}
+
 static GLuint GetAttributeOffset(GLuint format, GLuint attribute, const ATTRIBUTE *attributes, GLuint count)
 {
 	GLuint offset = 0;
@@ -77,6 +88,11 @@ static GLuint GetAttributeLocation(GLuint attribute, const ATTRIBUTE *attributes
 static GLuint GetVertexStride(GLuint format)
 {
 	return GetStride(format, vertexAttributes, VERTEX_ATTRIBUTE_COUNT);
+}
+
+static GLuint GetVertexAttributeSize(GLuint attribute)
+{
+	return GetAttributeSize(attribute, vertexAttributes, VERTEX_ATTRIBUTE_COUNT);
 }
 
 static GLuint GetVertexAttributeOffset(GLuint format, GLuint attribute)

@@ -122,7 +122,7 @@ void CRenderer::SetCameraPerspective(float fovy, float aspect, float zNear, floa
 	m_uniformZBuffer.Apply();
 
 	m_uniformProjection.SetProjection(zNear, zFar);
-	m_uniformPointLight.Apply();
+	m_uniformProjection.Apply();
 }
 
 void CRenderer::SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
@@ -134,7 +134,7 @@ void CRenderer::SetCameraOrtho(float left, float right, float bottom, float top,
 	m_uniformZBuffer.Apply();
 
 	m_uniformProjection.SetProjection(zNear, zFar);
-	m_uniformPointLight.Apply();
+	m_uniformProjection.Apply();
 }
 
 void CRenderer::SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
