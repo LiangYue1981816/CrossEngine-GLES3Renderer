@@ -27,7 +27,7 @@ void main()
 	pixelNormal = normalize(inTBN * pixelNormal);
 
 	vec3 ambientColor = AmbientLightingSH9(albedoColor, 0.0, pixelNormal);
-	vec3 lightColor = BlinnDirectionLighting(inHalfDirection, inViewDirection, pixelNormal, albedoColor, specularColor, metallic, roughness);
+	vec3 lightColor = BlinnMainDirectionLighting(inHalfDirection, inViewDirection, pixelNormal, albedoColor, specularColor, metallic, roughness);
 	vec3 final = ambientColor + lightColor;
 
 	outFragColor.rgb = Linear2Gamma(final);

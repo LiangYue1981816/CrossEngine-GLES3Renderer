@@ -7,16 +7,22 @@ USE_ENGINE_AMBIENT_LIGHT;
 USE_ENGINE_POINT_LIGHT;
 USE_ENGINE_DIRECTION_LIGHT;
 
+#define mainPointLightColor enginePointLight.color
+#define mainPointLightPosition enginePointLight.position
+
+#define mainDirectionLightColor engineDirectionLight.color
+#define mainDirectionLightDirection engineDirectionLight.direction
+
 
 // ToneMapping
-vec3 ToneMapping(vec3 x)
+vec3 ToneMapping(vec3 color)
 {
 	float a = 2.51;
 	float b = 0.03;
 	float c = 2.43;
 	float d = 0.59;
 	float e = 0.14;
-	return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+	return clamp((color * (a * color + b)) / (color * (c * color + d) + e), 0.0, 1.0);
 }
 
 // Gamma
@@ -175,12 +181,12 @@ vec3 AmbientLightingSH9(vec3 albedoColor, float metallic, vec3 normal)
 	return Ambient_SH9(albedoColor, metallic, (engineAmbientLight.rotationMatrix * vec4(normal, 0.0)).xyz, engineAmbientLight.shRed0.xyz, engineAmbientLight.shRed1.xyz, engineAmbientLight.shRed2.xyz, engineAmbientLight.shGreen0.xyz, engineAmbientLight.shGreen1.xyz, engineAmbientLight.shGreen2.xyz, engineAmbientLight.shBlue0.xyz, engineAmbientLight.shBlue1.xyz, engineAmbientLight.shBlue2.xyz);
 }
 
-vec3 BlinnDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, vec3 specularColor, float metallic, float roughness)
+vec3 BlinnMainDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, vec3 specularColor, float metallic, float roughness)
 {
 	return BRDF_Blinn(engineDirectionLight.color, engineDirectionLight.direction, H, V, N, albedoColor, specularColor, metallic, roughness);
 }
 
-vec3 PBRDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
+vec3 PBRMainDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
 {
 	return BRDF_Pbr(engineDirectionLight.color, engineDirectionLight.direction, H, V, N, albedoColor, metallic, roughness);
 }
