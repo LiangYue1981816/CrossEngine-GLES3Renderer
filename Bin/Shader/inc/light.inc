@@ -182,14 +182,14 @@ vec3 AmbientLightingSH9(vec3 albedoColor, float metallic, vec3 normal)
 	return Ambient_SH9(albedoColor, metallic, (engineAmbientLight.rotationMatrix * vec4(normal, 0.0)).xyz, engineAmbientLight.shRed0.xyz, engineAmbientLight.shRed1.xyz, engineAmbientLight.shRed2.xyz, engineAmbientLight.shGreen0.xyz, engineAmbientLight.shGreen1.xyz, engineAmbientLight.shGreen2.xyz, engineAmbientLight.shBlue0.xyz, engineAmbientLight.shBlue1.xyz, engineAmbientLight.shBlue2.xyz);
 }
 
-vec3 BlinnMainDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, vec3 specularColor, float metallic, float roughness)
+vec3 BlinnDirectionLighting(vec3 lightColor, vec3 lightDirection, vec3 H, vec3 V, vec3 N, vec3 albedoColor, vec3 specularColor, float metallic, float roughness)
 {
-	return BRDF_Blinn(engineDirectionLight.color, engineDirectionLight.direction, H, V, N, albedoColor, specularColor, metallic, roughness);
+	return BRDF_Blinn(lightColor, lightDirection, H, V, N, albedoColor, specularColor, metallic, roughness);
 }
 
-vec3 PBRMainDirectionLighting(vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
+vec3 PBRDirectionLighting(vec3 lightColor, vec3 lightDirection, vec3 H, vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness)
 {
-	return BRDF_Pbr(engineDirectionLight.color, engineDirectionLight.direction, H, V, N, albedoColor, metallic, roughness);
+	return BRDF_Pbr(lightColor, lightDirection, H, V, N, albedoColor, metallic, roughness);
 }
 
 vec3 EnvSpecular(vec3 V, vec3 N, vec3 albedoColor, float metallic, float roughness, vec3 specularColor)
