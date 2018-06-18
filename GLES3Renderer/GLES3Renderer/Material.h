@@ -54,6 +54,8 @@ public:
 	void SetEnableDepthWrite(bool bEnable);
 	void SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor);
 	void SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units);
+	void SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha);
+	void SetEnableDepthMask(bool bEnable);
 
 public:
 	CProgram* GetProgram(void);
@@ -77,6 +79,11 @@ private:
 	bool m_bEnableDepthWrite;
 	bool m_bEnableBlend;
 	bool m_bEnablePolygonOffset;
+	bool m_bEnableDepthMask;
+	bool m_bEnableColorMaskRed;
+	bool m_bEnableColorMaskGreen;
+	bool m_bEnableColorMaskBlue;
+	bool m_bEnableColorMaskAlpha;
 	GLenum m_frontFace;
 	GLenum m_depthFunc;
 	GLenum m_srcBlendFactor;

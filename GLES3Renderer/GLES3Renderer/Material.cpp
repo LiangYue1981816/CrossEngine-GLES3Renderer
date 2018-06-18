@@ -118,6 +118,11 @@ CMaterial::CMaterial(void)
 	, m_bEnableDepthWrite(true)
 	, m_bEnableBlend(false)
 	, m_bEnablePolygonOffset(false)
+	, m_bEnableDepthMask(true)
+	, m_bEnableColorMaskRed(true)
+	, m_bEnableColorMaskGreen(true)
+	, m_bEnableColorMaskBlue(true)
+	, m_bEnableColorMaskAlpha(true)
 	, m_frontFace(GL_CCW)
 	, m_depthFunc(GL_LESS)
 	, m_srcBlendFactor(GL_SRC_ALPHA)
@@ -184,6 +189,9 @@ void CMaterial::BindPipeline(void) const
 	else {
 		glDisable(GL_POLYGON_OFFSET_FILL);
 	}
+
+	glDepthMask(m_bEnableDepthMask);
+	glColorMask(m_bEnableColorMaskRed, m_bEnableColorMaskGreen, m_bEnableColorMaskBlue, m_bEnableColorMaskAlpha);
 }
 
 void CMaterial::BindUniforms(CProgram *pProgram) const
@@ -323,6 +331,17 @@ bool CMaterial::LoadBase(TiXmlNode *pMaterialNode)
 				m_bEnablePolygonOffset = pOffsetNode->ToElement()->AttributeBool("enable");
 				m_polygonOffsetFactor = pOffsetNode->ToElement()->AttributeFloat1("factor");
 				m_polygonOffsetUnits = pOffsetNode->ToElement()->AttributeFloat1("units");
+			}
+
+			if (TiXmlNode *pColorMaskNode = pMaterialNode->FirstChild("ColorMask")) {
+				m_bEnableColorMaskRed = pColorMaskNode->ToElement()->AttributeBool("enable_red");
+				m_bEnableColorMaskGreen = pColorMaskNode->ToElement()->AttributeBool("enable_green");
+				m_bEnableColorMaskBlue = pColorMaskNode->ToElement()->AttributeBool("enable_blue");
+				m_bEnableColorMaskAlpha = pColorMaskNode->ToElement()->AttributeBool("enable_alpha");
+			}
+
+			if (TiXmlNode *pDepthMaskNode = pMaterialNode->FirstChild("DepthMask")) {
+				m_bEnableDepthMask = pDepthMaskNode->ToElement()->AttributeBool("enable");
 			}
 		}
 		printf("OK\n");
@@ -720,6 +739,19 @@ void CMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat uni
 	m_bEnablePolygonOffset = bEnable;
 	m_polygonOffsetFactor = factor;
 	m_polygonOffsetUnits = units;
+}
+
+void CMaterial::SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
+{
+	m_bEnableColorMaskRed = bEnableRed;
+	m_bEnableColorMaskGreen = bEnableGreen;
+	m_bEnableColorMaskBlue = bEnableBlue;
+	m_bEnableColorMaskAlpha = bEnableAlpha;
+}
+
+void CMaterial::SetEnableDepthMask(bool bEnable)
+{
+	m_bEnableDepthMask = bEnable;
 }
 
 CProgram* CMaterial::GetProgram(void)
