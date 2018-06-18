@@ -268,6 +268,8 @@ bool CMaterial::Load(const char *szFileName)
 		<Depth enable_test="" enable_write="" depth_func="" />
 		<Blend enable="" src_factor="" dst_factor="" />
 		<Offset enable="" factor="" units="" />
+		<DepthMask enable="" />
+		<ColorMask enable_red="" enable_green="" enable_blue="" enable_alpha="" />
 
 		<Program vertex_file_name="" fragment_file_name="" />
 
