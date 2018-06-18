@@ -335,15 +335,15 @@ bool CMaterial::LoadBase(TiXmlNode *pMaterialNode)
 				m_polygonOffsetUnits = pOffsetNode->ToElement()->AttributeFloat1("units");
 			}
 
+			if (TiXmlNode *pDepthMaskNode = pMaterialNode->FirstChild("DepthMask")) {
+				m_bEnableDepthMask = pDepthMaskNode->ToElement()->AttributeBool("enable");
+			}
+
 			if (TiXmlNode *pColorMaskNode = pMaterialNode->FirstChild("ColorMask")) {
 				m_bEnableColorMaskRed = pColorMaskNode->ToElement()->AttributeBool("enable_red");
 				m_bEnableColorMaskGreen = pColorMaskNode->ToElement()->AttributeBool("enable_green");
 				m_bEnableColorMaskBlue = pColorMaskNode->ToElement()->AttributeBool("enable_blue");
 				m_bEnableColorMaskAlpha = pColorMaskNode->ToElement()->AttributeBool("enable_alpha");
-			}
-
-			if (TiXmlNode *pDepthMaskNode = pMaterialNode->FirstChild("DepthMask")) {
-				m_bEnableDepthMask = pDepthMaskNode->ToElement()->AttributeBool("enable");
 			}
 		}
 		printf("OK\n");
@@ -743,17 +743,17 @@ void CMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat uni
 	m_polygonOffsetUnits = units;
 }
 
+void CMaterial::SetEnableDepthMask(bool bEnable)
+{
+	m_bEnableDepthMask = bEnable;
+}
+
 void CMaterial::SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
 {
 	m_bEnableColorMaskRed = bEnableRed;
 	m_bEnableColorMaskGreen = bEnableGreen;
 	m_bEnableColorMaskBlue = bEnableBlue;
 	m_bEnableColorMaskAlpha = bEnableAlpha;
-}
-
-void CMaterial::SetEnableDepthMask(bool bEnable)
-{
-	m_bEnableDepthMask = bEnable;
 }
 
 CProgram* CMaterial::GetProgram(void)
