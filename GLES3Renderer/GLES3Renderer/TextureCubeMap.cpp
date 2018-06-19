@@ -15,19 +15,19 @@ CTextureCubeMap::CTextureCubeMap(void)
 	, m_height(0)
 	, m_mipLevels(0)
 {
-
+	glGenTextures(1, &m_texture);
+	glGenSamplers(1, &m_sampler);
 }
 
 CTextureCubeMap::~CTextureCubeMap(void)
 {
-	Destroy();
+	glDeleteTextures(1, &m_texture);
+	glDeleteSamplers(1, &m_sampler);
 }
 
 bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
-		Destroy();
-
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -51,8 +51,6 @@ bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum ma
 		return true;
 	}
 	catch (int err) {
-		Destroy();
-
 		printf("Fail(%d)\n", err);
 		return false;
 	}
@@ -61,8 +59,6 @@ bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum ma
 bool CTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
-		Destroy();
-
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -74,8 +70,6 @@ bool CTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter,
 		return true;
 	}
 	catch (int err) {
-		Destroy();
-
 		printf("Fail(%d)\n", err);
 		return false;
 	}
@@ -84,8 +78,6 @@ bool CTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter,
 bool CTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
-		Destroy();
-
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -97,8 +89,6 @@ bool CTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width
 		return true;
 	}
 	catch (int err) {
-		Destroy();
-
 		printf("Fail(%d)\n", err);
 		return false;
 	}
@@ -119,7 +109,6 @@ bool CTextureCubeMap::CreateImage(GLenum format, GLenum internalFormat, GLsizei 
 	m_height = height;
 	m_mipLevels = mipLevels;
 
-	glGenTextures(1, &m_texture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
 	glTexStorage2D(GL_TEXTURE_CUBE_MAP, m_mipLevels, m_internalFormat, m_width, m_height);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -129,7 +118,6 @@ bool CTextureCubeMap::CreateImage(GLenum format, GLenum internalFormat, GLsizei 
 
 bool CTextureCubeMap::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
-	glGenSamplers(1, &m_sampler);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MIN_FILTER, minFilter);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MAG_FILTER, magFilter);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_WRAP_S, addressMode);
@@ -137,20 +125,6 @@ bool CTextureCubeMap::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum a
 	glSamplerParameteri(m_sampler, GL_TEXTURE_WRAP_R, addressMode);
 
 	return true;
-}
-
-void CTextureCubeMap::Destroy(void)
-{
-	if (m_texture) {
-		glDeleteTextures(1, &m_texture);
-	}
-
-	if (m_sampler) {
-		glDeleteSamplers(1, &m_sampler);
-	}
-
-	m_texture = 0;
-	m_sampler = 0;
 }
 
 bool CTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture)

@@ -16,19 +16,19 @@ CTexture2DArray::CTexture2DArray(void)
 	, m_mipLevels(0)
 	, m_arrayLayers(0)
 {
-
+	glGenTextures(1, &m_texture);
+	glGenSamplers(1, &m_sampler);
 }
 
 CTexture2DArray::~CTexture2DArray(void)
 {
-	Destroy();
+	glDeleteTextures(1, &m_texture);
+	glDeleteSamplers(1, &m_sampler);
 }
 
 bool CTexture2DArray::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
-		Destroy();
-
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -52,8 +52,6 @@ bool CTexture2DArray::Create(const char *szFileName, GLenum minFilter, GLenum ma
 		return true;
 	}
 	catch (int err) {
-		Destroy();
-
 		printf("Fail(%d)\n", err);
 		return false;
 	}
@@ -62,8 +60,6 @@ bool CTexture2DArray::Create(const char *szFileName, GLenum minFilter, GLenum ma
 bool CTexture2DArray::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
-		Destroy();
-
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -75,8 +71,6 @@ bool CTexture2DArray::Create(GLuint texture, GLenum minFilter, GLenum magFilter,
 		return true;
 	}
 	catch (int err) {
-		Destroy();
-
 		printf("Fail(%d)\n", err);
 		return false;
 	}
@@ -85,8 +79,6 @@ bool CTexture2DArray::Create(GLuint texture, GLenum minFilter, GLenum magFilter,
 bool CTexture2DArray::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLint arrayLayers, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
-		Destroy();
-
 		printf("\t\tCreate ... ");
 		{
 			int err = 0;
@@ -98,8 +90,6 @@ bool CTexture2DArray::Create(GLenum format, GLenum internalFormat, GLsizei width
 		return true;
 	}
 	catch (int err) {
-		Destroy();
-
 		printf("Fail(%d)\n", err);
 		return false;
 	}
@@ -121,7 +111,6 @@ bool CTexture2DArray::CreateImage(GLenum format, GLenum internalFormat, GLsizei 
 	m_mipLevels = mipLevels;
 	m_arrayLayers = arrayLayers;
 
-	glGenTextures(1, &m_texture);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, m_texture);
 	glTexStorage3D(GL_TEXTURE_2D_ARRAY, m_mipLevels, m_internalFormat, m_width, m_height, m_arrayLayers);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
@@ -131,7 +120,6 @@ bool CTexture2DArray::CreateImage(GLenum format, GLenum internalFormat, GLsizei 
 
 bool CTexture2DArray::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
-	glGenSamplers(1, &m_sampler);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MIN_FILTER, minFilter);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MAG_FILTER, magFilter);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_WRAP_S, addressMode);
@@ -139,20 +127,6 @@ bool CTexture2DArray::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum a
 	glSamplerParameteri(m_sampler, GL_TEXTURE_WRAP_R, addressMode);
 
 	return true;
-}
-
-void CTexture2DArray::Destroy(void)
-{
-	if (m_texture) {
-		glDeleteTextures(1, &m_texture);
-	}
-
-	if (m_sampler) {
-		glDeleteSamplers(1, &m_sampler);
-	}
-
-	m_texture = 0;
-	m_sampler = 0;
 }
 
 bool CTexture2DArray::TransferTexture2DArray(const gli::texture2d_array &texture)

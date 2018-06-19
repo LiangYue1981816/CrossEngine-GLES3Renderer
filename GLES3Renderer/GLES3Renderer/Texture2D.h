@@ -14,7 +14,6 @@ public:
 	bool Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	bool Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	bool Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode);
-	void Destroy(void);
 
 private:
 	bool CreateImage(GLuint texture);
