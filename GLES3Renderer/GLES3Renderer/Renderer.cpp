@@ -92,9 +92,7 @@ void CRenderer::SetScissor(int x, int y, int width, int height)
 void CRenderer::SetViewport(int x, int y, int width, int height)
 {
 	glViewport(x, y, width, height);
-
 	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
-	m_uniformScreen.Apply();
 }
 
 void CRenderer::SetFrameBuffer(GLuint fbo)
@@ -110,93 +108,72 @@ void CRenderer::SetInputTexture(const char *szName, GLuint texture)
 void CRenderer::SetTime(float t, float dt)
 {
 	m_uniformTime.SetTime(t, dt);
-	m_uniformTime.Apply();
 }
 
 void CRenderer::SetCameraPerspective(float fovy, float aspect, float zNear, float zFar)
 {
 	m_uniformCamera.SetPerspective(fovy, aspect, zNear, zFar);
-	m_uniformCamera.Apply();
-
 	m_uniformZBuffer.SetZBuffer(zNear, zFar);
-	m_uniformZBuffer.Apply();
-
 	m_uniformProjection.SetProjection(zNear, zFar);
-	m_uniformProjection.Apply();
 }
 
 void CRenderer::SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	m_uniformCamera.SetOrtho(left, right, bottom, top, zNear, zFar);
-	m_uniformCamera.Apply();
-
 	m_uniformZBuffer.SetZBuffer(zNear, zFar);
-	m_uniformZBuffer.Apply();
-
 	m_uniformProjection.SetProjection(zNear, zFar);
-	m_uniformProjection.Apply();
 }
 
 void CRenderer::SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
 	m_uniformCamera.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
-	m_uniformCamera.Apply();
 }
 
 void CRenderer::SetProjectionMatrix(const float *mtxProjection)
 {
 	m_uniformCamera.SetProjectionMatrix(mtxProjection);
-	m_uniformCamera.Apply();
 }
 
 void CRenderer::SetViewMatrix(const float *mtxView)
 {
 	m_uniformCamera.SetViewMatrix(mtxView);
-	m_uniformCamera.Apply();
 }
 
 void CRenderer::SetAmbientLight(float shRed[9], float shGreen[9], float shBlue[9])
 {
 	m_uniformAmbientLight.SetSH(shRed, shGreen, shBlue);
-	m_uniformAmbientLight.Apply();
 }
 
 void CRenderer::SetAmbientLight(float shRed[9], float shGreen[9], float shBlue[9], float angle, float axisx, float axisy, float axisz)
 {
 	m_uniformAmbientLight.SetSH(shRed, shGreen, shBlue, angle, axisx, axisy, axisz);
-	m_uniformAmbientLight.Apply();
 }
 
 void CRenderer::SetPointLight(float posx, float posy, float posz, float red, float green, float blue)
 {
 	m_uniformPointLight.SetPosition(posx, posy, posz);
 	m_uniformPointLight.SetColor(red, green, blue);
-	m_uniformPointLight.Apply();
 }
 
 void CRenderer::SetDirectionLight(float dirx, float diry, float dirz, float red, float green, float blue)
 {
 	m_uniformDirectionLight.SetDirection(-dirx, -diry, -dirz);
 	m_uniformDirectionLight.SetColor(red, green, blue);
-	m_uniformDirectionLight.Apply();
 }
 
 void CRenderer::SetFogColor(float r, float g, float b)
 {
 	m_uniformFog.SetColor(r, g, b);
-	m_uniformFog.Apply();
 }
 
 void CRenderer::SetFogHeightDensity(float startHeight, float endHeight, float density)
 {
 	m_uniformFog.SetHeightDensity(startHeight, endHeight, density);
-	m_uniformFog.Apply();
 }
 
 void CRenderer::SetFogDistanceDensity(float startDistance, float endDistance, float density)
 {
 	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
-	m_uniformFog.Apply();
 }
 
 bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
@@ -302,6 +279,16 @@ void CRenderer::DrawScreen(GLuint material)
 
 void CRenderer::BindMaterial(CMaterial *pMaterial)
 {
+	m_uniformTime.Apply();
+	m_uniformScreen.Apply();
+	m_uniformZBuffer.Apply();
+	m_uniformProjection.Apply();
+	m_uniformCamera.Apply();
+	m_uniformAmbientLight.Apply();
+	m_uniformPointLight.Apply();
+	m_uniformDirectionLight.Apply();
+	m_uniformFog.Apply();
+
 	pMaterial->Bind();
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SCREEN_NAME), m_uniformScreen.GetBuffer(), m_uniformScreen.GetSize());
