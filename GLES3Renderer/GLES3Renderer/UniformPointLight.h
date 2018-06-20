@@ -10,6 +10,7 @@ private:
 	typedef struct Params {
 		glm::vec4 color;
 		glm::vec4 position;
+		glm::vec4 attenuation;
 	} Params;
 
 
@@ -21,6 +22,7 @@ public:
 public:
 	void SetPosition(float x, float y, float z);
 	void SetColor(float r, float g, float b);
+	void SetAttenuation(float linear, float square, float constant);
 	void Apply(void);
 
 public:

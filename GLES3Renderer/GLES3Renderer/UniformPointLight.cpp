@@ -26,6 +26,12 @@ void CUniformPointLight::SetColor(float r, float g, float b)
 	m_params.color = glm::vec4(r, g, b, 0.0f);
 }
 
+void CUniformPointLight::SetAttenuation(float linear, float square, float constant)
+{
+	m_bDirty = true;
+	m_params.attenuation = glm::vec4(linear, square, constant, 0.0f);
+}
+
 void CUniformPointLight::Apply(void)
 {
 	if (m_bDirty) {
