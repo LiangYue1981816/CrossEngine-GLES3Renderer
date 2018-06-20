@@ -107,7 +107,7 @@
     <ClInclude Include="GLES3Renderer\UniformAmbientLight.h" />
     <ClInclude Include="GLES3Renderer\UniformBuffer.h" />
     <ClInclude Include="GLES3Renderer\UniformCamera.h" />
-    <ClInclude Include="GLES3Renderer\UniformDirectionLight.h" />
+    <ClInclude Include="GLES3Renderer\UniformDirectLight.h" />
     <ClInclude Include="GLES3Renderer\UniformFog.h" />
     <ClInclude Include="GLES3Renderer\UniformMat4.h" />
     <ClInclude Include="GLES3Renderer\UniformPointLight.h" />
@@ -137,7 +137,7 @@
     <ClCompile Include="GLES3Renderer\UniformAmbientLight.cpp" />
     <ClCompile Include="GLES3Renderer\UniformBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\UniformCamera.cpp" />
-    <ClCompile Include="GLES3Renderer\UniformDirectionLight.cpp" />
+    <ClCompile Include="GLES3Renderer\UniformDirectLight.cpp" />
     <ClCompile Include="GLES3Renderer\UniformFog.cpp" />
     <ClCompile Include="GLES3Renderer\UniformMat4.cpp" />
     <ClCompile Include="GLES3Renderer\UniformPointLight.cpp" />

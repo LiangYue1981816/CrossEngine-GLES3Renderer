@@ -13,7 +13,7 @@
 #include "UniformTransform.h"
 #include "UniformAmbientLight.h"
 #include "UniformPointLight.h"
-#include "UniformDirectionLight.h"
+#include "UniformDirectLight.h"
 #include "UniformFog.h"
 
 

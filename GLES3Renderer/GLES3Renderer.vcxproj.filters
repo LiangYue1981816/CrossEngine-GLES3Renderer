@@ -43,9 +43,6 @@
     <ClInclude Include="GLES3Renderer\UniformCamera.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\UniformDirectionLight.h">
-      <Filter>GLES3Renderer\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GLES3Renderer\UniformFog.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
@@ -83,6 +80,9 @@
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\UniformProjection.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\UniformDirectLight.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -153,9 +153,6 @@
     <ClCompile Include="GLES3Renderer\UniformCamera.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLES3Renderer\UniformDirectionLight.cpp">
-      <Filter>GLES3Renderer\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GLES3Renderer\UniformFog.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
@@ -193,6 +190,9 @@
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLES3Renderer\UniformProjection.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\UniformDirectLight.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
