@@ -139,26 +139,39 @@ void CRenderer::SetViewMatrix(const float *mtxView)
 	m_uniformCamera.SetViewMatrix(mtxView);
 }
 
-void CRenderer::SetAmbientLight(float shRed[9], float shGreen[9], float shBlue[9])
+void CRenderer::SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9])
 {
 	m_uniformAmbientLight.SetSH(shRed, shGreen, shBlue);
 }
 
-void CRenderer::SetAmbientLight(float shRed[9], float shGreen[9], float shBlue[9], float angle, float axisx, float axisy, float axisz)
+void CRenderer::SetAmbientLightRotation(float angle, float axisx, float axisy, float axisz)
 {
-	m_uniformAmbientLight.SetSH(shRed, shGreen, shBlue, angle, axisx, axisy, axisz);
+	m_uniformAmbientLight.SetRotation(angle, axisx, axisy, axisz);
 }
 
-void CRenderer::SetPointLight(float posx, float posy, float posz, float red, float green, float blue)
+void CRenderer::SetPointLightColor(float red, float green, float blue)
 {
-	m_uniformPointLight.SetPosition(posx, posy, posz);
 	m_uniformPointLight.SetColor(red, green, blue);
 }
 
-void CRenderer::SetDirectionLight(float dirx, float diry, float dirz, float red, float green, float blue)
+void CRenderer::SetPointLightPosition(float posx, float posy, float posz)
 {
-	m_uniformDirectionLight.SetDirection(-dirx, -diry, -dirz);
-	m_uniformDirectionLight.SetColor(red, green, blue);
+	m_uniformPointLight.SetPosition(posx, posy, posz);
+}
+
+void CRenderer::SetPointLightAttenuation(float linear, float square, float constant)
+{
+	m_uniformPointLight.SetAttenuation(linear, square, constant);
+}
+
+void CRenderer::SetDirectLightColor(float red, float green, float blue)
+{
+	m_uniformDirectLight.SetColor(red, green, blue);
+}
+
+void CRenderer::SetDirectLightDirection(float dirx, float diry, float dirz)
+{
+	m_uniformDirectLight.SetDirection(-dirx, -diry, -dirz);
 }
 
 void CRenderer::SetFogColor(float r, float g, float b)
@@ -286,7 +299,7 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	m_uniformCamera.Apply();
 	m_uniformAmbientLight.Apply();
 	m_uniformPointLight.Apply();
-	m_uniformDirectionLight.Apply();
+	m_uniformDirectLight.Apply();
 	m_uniformFog.Apply();
 
 	pMaterial->Bind();
@@ -297,7 +310,7 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECTION_LIGHT_NAME), m_uniformDirectionLight.GetBuffer(), m_uniformDirectionLight.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 
 	m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());

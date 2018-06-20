@@ -149,10 +149,9 @@ void CUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[
 	m_params.shBlue0 = glm::vec4(shBlue[0], shBlue[1], shBlue[2], 0.0);
 	m_params.shBlue1 = glm::vec4(shBlue[3], shBlue[4], shBlue[5], 0.0);
 	m_params.shBlue2 = glm::vec4(shBlue[6], shBlue[7], shBlue[8], 0.0);
-	m_params.rotationMatrix = glm::mat4();
 }
 
-void CUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9], float angle, float axisx, float axisy, float axisz)
+void CUniformAmbientLight::SetRotation(float angle, float axisx, float axisy, float axisz)
 {
 	/*
 	float shRedRotate[9] = { 0.0f };
@@ -162,15 +161,6 @@ void CUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[
 	SetSH(shRedRotate, shGreenRotate, shBlueRotate);
 	*/
 	m_bDirty = true;
-	m_params.shRed0 = glm::vec4(shRed[0], shRed[1], shRed[2], 0.0);
-	m_params.shRed1 = glm::vec4(shRed[3], shRed[4], shRed[5], 0.0);
-	m_params.shRed2 = glm::vec4(shRed[6], shRed[7], shRed[8], 0.0);
-	m_params.shGreen0 = glm::vec4(shGreen[0], shGreen[1], shGreen[2], 0.0);
-	m_params.shGreen1 = glm::vec4(shGreen[3], shGreen[4], shGreen[5], 0.0);
-	m_params.shGreen2 = glm::vec4(shGreen[6], shGreen[7], shGreen[8], 0.0);
-	m_params.shBlue0 = glm::vec4(shBlue[0], shBlue[1], shBlue[2], 0.0);
-	m_params.shBlue1 = glm::vec4(shBlue[3], shBlue[4], shBlue[5], 0.0);
-	m_params.shBlue2 = glm::vec4(shBlue[6], shBlue[7], shBlue[8], 0.0);
 	m_params.rotationMatrix = glm::rotate(glm::mat4(), -angle, glm::vec3(axisx, axisy, axisz));
 }
 

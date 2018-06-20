@@ -27,7 +27,7 @@ void main()
 	vec3 worldViewDirection = worldCameraPosition - worldPosition;
 	worldViewDirection = normalize(worldViewDirection);
 
-	vec3 worldHalfDirection = mainDirectionLightDirection + worldViewDirection;
+	vec3 worldHalfDirection = mainDirectLightDirection + worldViewDirection;
 	worldHalfDirection = normalize(worldHalfDirection);
 
 	vec3 worldNormal = (worldMatrix * vec4(inNormal, 0.0f)).xyz;

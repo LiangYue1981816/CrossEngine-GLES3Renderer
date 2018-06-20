@@ -29,7 +29,7 @@ void main()
 	pixelNormal = normalize(inTBN * pixelNormal);
 
 	vec3 ambientColor = AmbientLightingSH9(albedoColor, metallic, pixelNormal);
-	vec3 lightColor = PBRLighting(mainDirectionLightColor, mainDirectionLightDirection, inHalfDirection, inViewDirection, pixelNormal, albedoColor, metallic, roughness);
+	vec3 lightColor = PBRLighting(mainDirectLightColor, mainDirectLightDirection, inHalfDirection, inViewDirection, pixelNormal, albedoColor, metallic, roughness);
 	vec3 final = (ambientColor + lightColor) * ao;
 
 	outFragColor.rgb = Linear2Gamma(final);

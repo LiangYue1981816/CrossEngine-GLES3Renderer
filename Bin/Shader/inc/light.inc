@@ -5,13 +5,13 @@
 
 USE_ENGINE_AMBIENT_LIGHT;
 USE_ENGINE_POINT_LIGHT;
-USE_ENGINE_DIRECTION_LIGHT;
+USE_ENGINE_DIRECT_LIGHT;
 
 #define mainPointLightColor enginePointLight.color
 #define mainPointLightPosition enginePointLight.position
 
-#define mainDirectionLightColor engineDirectionLight.color
-#define mainDirectionLightDirection engineDirectionLight.direction
+#define mainDirectLightColor engineDirectLight.color
+#define mainDirectLightDirection engineDirectLight.direction
 
 
 // ToneMapping

@@ -32,7 +32,7 @@ public:
 
 public:
 	void SetSH(float shRed[9], float shGreen[9], float shBlue[9]);
-	void SetSH(float shRed[9], float shGreen[9], float shBlue[9], float angle, float axisx, float axisy, float axisz);
+	void SetRotation(float angle, float axisx, float axisy, float axisz);
 	void Apply(void);
 
 public:

@@ -4,7 +4,7 @@
 #include "UniformBuffer.h"
 
 
-class CUniformDirectionLight
+class CUniformDirectLight
 {
 private:
 	typedef struct Params {
@@ -14,8 +14,8 @@ private:
 
 
 public:
-	CUniformDirectionLight(void);
-	virtual ~CUniformDirectionLight(void);
+	CUniformDirectLight(void);
+	virtual ~CUniformDirectLight(void);
 
 
 public:

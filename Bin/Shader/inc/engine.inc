@@ -84,12 +84,12 @@
 		vec3 attenuation;                                                          \
 	} enginePointLight
 
-#define USE_ENGINE_DIRECTION_LIGHT                                             \
-	uniform DirectionLight                                                       \
+#define USE_ENGINE_DIRECT_LIGHT                                                \
+	uniform DirectLight                                                          \
 	{                                                                            \
 		vec3 color;                                                                \
 		vec3 direction;                                                            \
-	} engineDirectionLight
+	} engineDirectLight
 
 #define USE_ENGINE_FOG                                                         \
 	uniform Fog                                                                  \

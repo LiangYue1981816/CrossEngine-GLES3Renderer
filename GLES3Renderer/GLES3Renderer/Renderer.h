@@ -25,7 +25,7 @@
 #define ENGINE_TRANSFORM_NAME           "Transform"
 #define ENGINE_AMBIENT_LIGHT_NAME       "AmbientLight"
 #define ENGINE_POINT_LIGHT_NAME         "PointLight"
-#define ENGINE_DIRECTION_LIGHT_NAME     "DirectionLight"
+#define ENGINE_DIRECT_LIGHT_NAME        "DirectLight"
 #define ENGINE_FOG_NAME                 "Fog"
 
 
@@ -65,10 +65,15 @@ public:
 	void SetViewMatrix(const float *mtxView);
 
 public:
-	void SetAmbientLight(float shRed[9], float shGreen[9], float shBlue[9]);
-	void SetAmbientLight(float shRed[9], float shGreen[9], float shBlue[9], float angle, float axisx, float axisy, float axisz);
-	void SetPointLight(float posx, float posy, float posz, float red, float green, float blue);
-	void SetDirectionLight(float dirx, float diry, float dirz, float red, float green, float blue);
+	void SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9]);
+	void SetAmbientLightRotation(float angle, float axisx, float axisy, float axisz);
+
+	void SetPointLightColor(float red, float green, float blue);
+	void SetPointLightPosition(float posx, float posy, float posz);
+	void SetPointLightAttenuation(float linear, float square, float constant);
+
+	void SetDirectLightColor(float red, float green, float blue);
+	void SetDirectLightDirection(float dirx, float diry, float dirz);
 
 	void SetFogColor(float r, float g, float b);
 	void SetFogHeightDensity(float startHeight, float endHeight, float density);
@@ -105,7 +110,7 @@ private:
 	CUniformCamera m_uniformCamera;
 	CUniformAmbientLight m_uniformAmbientLight;
 	CUniformPointLight m_uniformPointLight;
-	CUniformDirectionLight m_uniformDirectionLight;
+	CUniformDirectLight m_uniformDirectLight;
 	CUniformFog m_uniformFog;
 
 private:
