@@ -55,4 +55,9 @@ vec2 SphericalSampleing(vec3 v)
 	return uv;
 }
 
+float Attenuation(float dis, float linear, float square, float constant)
+{
+	return 1.0 / (constant + linear * dis + square * dis * dis);
+}
+
 #endif

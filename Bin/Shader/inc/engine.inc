@@ -81,6 +81,7 @@
 	{                                                                            \
 		vec3 color;                                                                \
 		vec3 position;                                                             \
+		vec3 attenuation;                                                          \
 	} enginePointLight
 
 #define USE_ENGINE_DIRECTION_LIGHT                                             \
