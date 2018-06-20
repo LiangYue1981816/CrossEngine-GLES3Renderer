@@ -20,8 +20,8 @@ public:
 
 
 public:
-	void SetPosition(float x, float y, float z);
 	void SetColor(float r, float g, float b);
+	void SetPosition(float x, float y, float z);
 	void SetAttenuation(float linear, float square, float constant);
 	void Apply(void);
 

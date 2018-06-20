@@ -14,16 +14,16 @@ CUniformPointLight::~CUniformPointLight(void)
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformPointLight::SetPosition(float x, float y, float z)
-{
-	m_bDirty = true;
-	m_params.position = glm::vec4(x, y, z, 0.0f);
-}
-
 void CUniformPointLight::SetColor(float r, float g, float b)
 {
 	m_bDirty = true;
 	m_params.color = glm::vec4(r, g, b, 0.0f);
+}
+
+void CUniformPointLight::SetPosition(float x, float y, float z)
+{
+	m_bDirty = true;
+	m_params.position = glm::vec4(x, y, z, 0.0f);
 }
 
 void CUniformPointLight::SetAttenuation(float linear, float square, float constant)

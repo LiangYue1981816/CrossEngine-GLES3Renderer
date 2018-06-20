@@ -19,8 +19,8 @@ public:
 
 
 public:
-	void SetDirection(float x, float y, float z);
 	void SetColor(float r, float g, float b);
+	void SetDirection(float x, float y, float z);
 	void Apply(void);
 
 public:

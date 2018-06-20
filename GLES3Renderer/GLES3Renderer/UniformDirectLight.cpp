@@ -14,16 +14,16 @@ CUniformDirectLight::~CUniformDirectLight(void)
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformDirectLight::SetDirection(float x, float y, float z)
-{
-	m_bDirty = true;
-	m_params.direction = glm::normalize(glm::vec4(x, y, z, 0.0));
-}
-
 void CUniformDirectLight::SetColor(float r, float g, float b)
 {
 	m_bDirty = true;
 	m_params.color = glm::vec4(r, g, b, 0.0);
+}
+
+void CUniformDirectLight::SetDirection(float x, float y, float z)
+{
+	m_bDirty = true;
+	m_params.direction = glm::normalize(glm::vec4(x, y, z, 0.0));
 }
 
 void CUniformDirectLight::Apply(void)
