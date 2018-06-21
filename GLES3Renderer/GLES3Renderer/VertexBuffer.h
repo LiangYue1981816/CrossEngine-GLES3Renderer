@@ -46,9 +46,19 @@ public:
 	bool CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint vertexFormat, GLuint instanceFormat);
 	void Destroy(void);
 
+private:
+	void CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint vertexFormat);
+	void CreateInstanceBuffer(GLuint instanceFormat);
+	void CreateVertexArrayObject(GLuint vertexFormat, GLuint instanceFormat);
+	void SetupFormate(GLuint vertexFormat, GLuint instanceFormat);
+
 public:
 	GLuint GetVertexCount(void) const;
 	GLuint GetInstanceCount(void) const;
+
+public:
+	GLuint GetVertexFormat(void) const;
+	GLuint GetInstanceFormat(void) const;
 
 
 private:
@@ -57,6 +67,10 @@ private:
 	GLuint m_vertexBuffer;
 	GLuint m_instanceBuffer;
 	GLuint m_instanceBufferSize;
+
+private:
+	GLuint m_vertexFormat;
+	GLuint m_instanceFormat;
 
 private:
 	bool m_bDirty;
