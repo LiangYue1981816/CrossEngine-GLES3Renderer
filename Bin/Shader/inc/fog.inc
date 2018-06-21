@@ -11,7 +11,7 @@ float FogDensityLinear(vec3 cameraPosition, vec3 position)
 {
 	float distance = length(position - cameraPosition);
 
-	float heightDensity = clamp((engineFog.heightDensity.x - position.y) / (engineFog.heightDensity.x - engineFog.heightDensity.y), 0.0, 1.0) * engineFog.heightDensity.z;
+	float heightDensity = clamp((engineFog.heightDensity.y - position.y) / (engineFog.heightDensity.y - engineFog.heightDensity.x), 0.0, 1.0) * engineFog.heightDensity.z;
 	float distanceDensity = clamp((distance - engineFog.distanceDensity.x) / (engineFog.distanceDensity.y - engineFog.distanceDensity.x), 0.0, 1.0) * engineFog.distanceDensity.z;
 
 	return clamp(heightDensity + distanceDensity, 0.0, 1.0);
