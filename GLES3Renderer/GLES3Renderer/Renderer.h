@@ -10,12 +10,12 @@
 #include "UniformZBuffer.h"
 #include "UniformProjection.h"
 #include "UniformCamera.h"
+#include "UniformFog.h"
 #include "UniformTransform.h"
 #include "UniformAmbientLight.h"
 #include "UniformPointLight.h"
 #include "UniformDirectLight.h"
 #include "UniformShadowLight.h"
-#include "UniformFog.h"
 
 
 #define ENGINE_TIME_NAME                "Time"
