@@ -129,24 +129,29 @@ void CRenderer::SetCameraLookat(float eyex, float eyey, float eyez, float center
 	m_uniformCamera.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
-void CRenderer::SetProjectionMatrix(const float *mtxProjection)
+void CRenderer::SetCameraProjectionMatrix(const float *mtxProjection)
 {
 	m_uniformCamera.SetProjectionMatrix(mtxProjection);
 }
 
-void CRenderer::SetViewMatrix(const float *mtxView)
+void CRenderer::SetCameraViewMatrix(const float *mtxView)
 {
 	m_uniformCamera.SetViewMatrix(mtxView);
 }
 
-void CRenderer::SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
+void CRenderer::SetFogColor(float r, float g, float b)
 {
-	m_uniformShadowLight.SetOrtho(left, right, bottom, top, zNear, zFar);
+	m_uniformFog.SetColor(r, g, b);
 }
 
-void CRenderer::SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
+void CRenderer::SetFogHeightDensity(float startHeight, float endHeight, float density)
 {
-	m_uniformShadowLight.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
+	m_uniformFog.SetHeightDensity(startHeight, endHeight, density);
+}
+
+void CRenderer::SetFogDistanceDensity(float startDistance, float endDistance, float density)
+{
+	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
 }
 
 void CRenderer::SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9])
@@ -184,19 +189,14 @@ void CRenderer::SetDirectLightDirection(float dirx, float diry, float dirz)
 	m_uniformDirectLight.SetDirection(-dirx, -diry, -dirz);
 }
 
-void CRenderer::SetFogColor(float r, float g, float b)
+void CRenderer::SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
-	m_uniformFog.SetColor(r, g, b);
+	m_uniformShadowLight.SetOrtho(left, right, bottom, top, zNear, zFar);
 }
 
-void CRenderer::SetFogHeightDensity(float startHeight, float endHeight, float density)
+void CRenderer::SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
-	m_uniformFog.SetHeightDensity(startHeight, endHeight, density);
-}
-
-void CRenderer::SetFogDistanceDensity(float startDistance, float endDistance, float density)
-{
-	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
+	m_uniformShadowLight.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
 bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
@@ -307,11 +307,11 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	m_uniformZBuffer.Apply();
 	m_uniformProjection.Apply();
 	m_uniformCamera.Apply();
+	m_uniformFog.Apply();
 	m_uniformAmbientLight.Apply();
 	m_uniformPointLight.Apply();
 	m_uniformDirectLight.Apply();
 	m_uniformShadowLight.Apply();
-	m_uniformFog.Apply();
 
 	pMaterial->Bind();
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
@@ -319,11 +319,11 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_LIGHT_NAME), m_uniformShadowLight.GetBuffer(), m_uniformShadowLight.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 
 	m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());
 	m_pGlobalMaterial->BindTextures(pMaterial->GetProgram(), pMaterial->GetTextureUnits());

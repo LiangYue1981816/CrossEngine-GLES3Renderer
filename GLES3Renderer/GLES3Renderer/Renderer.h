@@ -24,11 +24,11 @@
 #define ENGINE_PROJECTION_NAME          "Projection"
 #define ENGINE_CAMERA_NAME              "Camera"
 #define ENGINE_TRANSFORM_NAME           "Transform"
+#define ENGINE_FOG_NAME                 "Fog"
 #define ENGINE_AMBIENT_LIGHT_NAME       "AmbientLight"
 #define ENGINE_POINT_LIGHT_NAME         "PointLight"
 #define ENGINE_DIRECT_LIGHT_NAME        "DirectLight"
 #define ENGINE_SHADOW_LIGHT_NAME        "ShadowLight"
-#define ENGINE_FOG_NAME                 "Fog"
 
 
 class CRenderer
@@ -63,12 +63,13 @@ public:
 	void SetCameraPerspective(float fovy, float aspect, float zNear, float zFar);
 	void SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
-	void SetProjectionMatrix(const float *mtxProjection);
-	void SetViewMatrix(const float *mtxView);
+	void SetCameraProjectionMatrix(const float *mtxProjection);
+	void SetCameraViewMatrix(const float *mtxView);
 
 public:
-	void SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
-	void SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
+	void SetFogColor(float r, float g, float b);
+	void SetFogHeightDensity(float startHeight, float endHeight, float density);
+	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
 
 public:
 	void SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9]);
@@ -81,9 +82,9 @@ public:
 	void SetDirectLightColor(float red, float green, float blue);
 	void SetDirectLightDirection(float dirx, float diry, float dirz);
 
-	void SetFogColor(float r, float g, float b);
-	void SetFogHeightDensity(float startHeight, float endHeight, float density);
-	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
+public:
+	void SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
+	void SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
 
 public:
 	bool LoadMaterial(const char *szFileName, GLuint materialid);
@@ -114,11 +115,11 @@ private:
 	CUniformZBuffer m_uniformZBuffer;
 	CUniformProjection m_uniformProjection;
 	CUniformCamera m_uniformCamera;
+	CUniformFog m_uniformFog;
 	CUniformAmbientLight m_uniformAmbientLight;
 	CUniformPointLight m_uniformPointLight;
 	CUniformDirectLight m_uniformDirectLight;
 	CUniformShadowLight m_uniformShadowLight;
-	CUniformFog m_uniformFog;
 
 private:
 	GLuint m_material;
