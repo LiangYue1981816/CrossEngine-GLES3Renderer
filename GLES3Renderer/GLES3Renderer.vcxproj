@@ -113,6 +113,7 @@
     <ClInclude Include="GLES3Renderer\UniformPointLight.h" />
     <ClInclude Include="GLES3Renderer\UniformProjection.h" />
     <ClInclude Include="GLES3Renderer\UniformScreen.h" />
+    <ClInclude Include="GLES3Renderer\UniformShadowLight.h" />
     <ClInclude Include="GLES3Renderer\UniformTime.h" />
     <ClInclude Include="GLES3Renderer\UniformTransform.h" />
     <ClInclude Include="GLES3Renderer\UniformVec1.h" />
@@ -143,6 +144,7 @@
     <ClCompile Include="GLES3Renderer\UniformPointLight.cpp" />
     <ClCompile Include="GLES3Renderer\UniformProjection.cpp" />
     <ClCompile Include="GLES3Renderer\UniformScreen.cpp" />
+    <ClCompile Include="GLES3Renderer\UniformShadowLight.cpp" />
     <ClCompile Include="GLES3Renderer\UniformTime.cpp" />
     <ClCompile Include="GLES3Renderer\UniformTransform.cpp" />
     <ClCompile Include="GLES3Renderer\UniformVec1.cpp" />

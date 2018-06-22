@@ -139,6 +139,16 @@ void CRenderer::SetViewMatrix(const float *mtxView)
 	m_uniformCamera.SetViewMatrix(mtxView);
 }
 
+void CRenderer::SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
+{
+	m_uniformShadowLight.SetOrtho(left, right, bottom, top, zNear, zFar);
+}
+
+void CRenderer::SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
+{
+	m_uniformShadowLight.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
+}
+
 void CRenderer::SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9])
 {
 	m_uniformAmbientLight.SetSH(shRed, shGreen, shBlue);
@@ -300,6 +310,7 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	m_uniformAmbientLight.Apply();
 	m_uniformPointLight.Apply();
 	m_uniformDirectLight.Apply();
+	m_uniformShadowLight.Apply();
 	m_uniformFog.Apply();
 
 	pMaterial->Bind();
@@ -311,6 +322,7 @@ void CRenderer::BindMaterial(CMaterial *pMaterial)
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
+	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_LIGHT_NAME), m_uniformShadowLight.GetBuffer(), m_uniformShadowLight.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 
 	m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());
