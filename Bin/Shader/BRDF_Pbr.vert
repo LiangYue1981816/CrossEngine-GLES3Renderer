@@ -23,7 +23,7 @@ void main()
 	mat4 worldMatrix = mat4(inInstanceTransformMatrixCol0, inInstanceTransformMatrixCol1, inInstanceTransformMatrixCol2, inInstanceTransformMatrixCol3);
 
 	vec3 worldPosition = (worldMatrix * vec4(inPosition.xyz, 1.0)).xyz;
-	vec3 worldCameraPosition = (viewInverseMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+	vec3 worldCameraPosition = (cameraViewInverseMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
 	vec3 worldViewDirection = worldCameraPosition - worldPosition;
 	worldViewDirection = normalize(worldViewDirection);
 
@@ -45,5 +45,5 @@ void main()
 	outViewDirection = worldViewDirection;
 	outTBN = tbn;
 
-	gl_Position = projectionMatrix * viewMatrix * worldMatrix * vec4(inPosition.xyz, 1.0);
+	gl_Position = cameraProjectionMatrix * cameraViewMatrix * worldMatrix * vec4(inPosition.xyz, 1.0);
 }
