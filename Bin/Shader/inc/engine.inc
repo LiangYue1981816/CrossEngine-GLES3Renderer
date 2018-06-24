@@ -41,6 +41,14 @@
 		vec4 projection;                                                           \
 	} engineProjection
 
+#define USE_ENGINE_TRANSFORM                                                   \
+	uniform Transform                                                            \
+	{                                                                            \
+		mat4 worldMatrix;                                                          \
+		mat4 worldInverseMatrix;                                                   \
+		mat4 worldInverseTransposeMatrix;                                          \
+	} engineTransform
+	
 #define USE_ENGINE_CAMERA                                                      \
 	uniform Camera                                                               \
 	{                                                                            \
@@ -49,14 +57,6 @@
 		mat4 viewInverseMatrix;                                                    \
 		mat4 viewInverseTransposeMatrix;                                           \
 	} engineCamera
-
-#define USE_ENGINE_TRANSFORM                                                   \
-	uniform Transform                                                            \
-	{                                                                            \
-		mat4 worldMatrix;                                                          \
-		mat4 worldInverseMatrix;                                                   \
-		mat4 worldInverseTransposeMatrix;                                          \
-	} engineTransform
 
 #define USE_ENGINE_AMBIENT_LIGHT                                               \
 	uniform AmbientLight                                                         \
