@@ -14,53 +14,53 @@
 #define USE_INSTANCE_ATTRIBUTE_TRANSFORM_MATRIX_COL3 layout (location = 11) in vec4 inInstanceTransformMatrixCol3
 
 
-#define USE_ENGINE_TIME                                                        \
-	uniform Time                                                                 \
-	{                                                                            \
+#define USE_ENGINE_TIME                                                            \
+	uniform Time                                                                   \
+	{                                                                              \
 		vec4 time;                                                                 \
 		vec4 sinTime;                                                              \
 		vec4 cosTime;                                                              \
 		vec4 deltaTime;                                                            \
 	} engineTime
 
-#define USE_ENGINE_SCREEN                                                      \
-	uniform Screen                                                               \
-	{                                                                            \
+#define USE_ENGINE_SCREEN                                                          \
+	uniform Screen                                                                 \
+	{                                                                              \
 		vec4 screen;                                                               \
 	} engineScreen
 
-#define USE_ENGINE_ZBUFFER                                                     \
-	uniform ZBuffer                                                              \
-	{                                                                            \
+#define USE_ENGINE_ZBUFFER                                                         \
+	uniform ZBuffer                                                                \
+	{                                                                              \
 		vec4 zbuffer;                                                              \
 	} engineZBuffer
 
-#define USE_ENGINE_PROJECTION                                                  \
-	uniform Projection                                                           \
-	{                                                                            \
+#define USE_ENGINE_PROJECTION                                                      \
+	uniform Projection                                                             \
+	{                                                                              \
 		vec4 projection;                                                           \
 	} engineProjection
 
-#define USE_ENGINE_TRANSFORM                                                   \
-	uniform Transform                                                            \
-	{                                                                            \
+#define USE_ENGINE_TRANSFORM                                                       \
+	uniform Transform                                                              \
+	{                                                                              \
 		mat4 worldMatrix;                                                          \
 		mat4 worldInverseMatrix;                                                   \
 		mat4 worldInverseTransposeMatrix;                                          \
 	} engineTransform
 	
-#define USE_ENGINE_CAMERA                                                      \
-	uniform Camera                                                               \
-	{                                                                            \
+#define USE_ENGINE_CAMERA                                                          \
+	uniform Camera                                                                 \
+	{                                                                              \
 		mat4 projectionMatrix;                                                     \
 		mat4 viewMatrix;                                                           \
 		mat4 viewInverseMatrix;                                                    \
 		mat4 viewInverseTransposeMatrix;                                           \
 	} engineCamera
 
-#define USE_ENGINE_AMBIENT_LIGHT                                               \
-	uniform AmbientLight                                                         \
-	{                                                                            \
+#define USE_ENGINE_AMBIENT_LIGHT                                                   \
+	uniform AmbientLight                                                           \
+	{                                                                              \
 		vec4 shRed0;                                                               \
 		vec4 shRed1;                                                               \
 		vec4 shRed2;                                                               \
@@ -76,24 +76,24 @@
 		mat4 rotationMatrix;                                                       \
 	} engineAmbientLight
 
-#define USE_ENGINE_POINT_LIGHT                                                 \
-	uniform PointLight                                                           \
-	{                                                                            \
+#define USE_ENGINE_POINT_LIGHT                                                     \
+	uniform PointLight                                                             \
+	{                                                                              \
 		vec3 color;                                                                \
 		vec3 position;                                                             \
 		vec3 attenuation;                                                          \
 	} enginePointLight
 
-#define USE_ENGINE_DIRECT_LIGHT                                                \
-	uniform DirectLight                                                          \
-	{                                                                            \
+#define USE_ENGINE_DIRECT_LIGHT                                                    \
+	uniform DirectLight                                                            \
+	{                                                                              \
 		vec3 color;                                                                \
 		vec3 direction;                                                            \
 	} engineDirectLight
 
-#define USE_ENGINE_FOG                                                         \
-	uniform Fog                                                                  \
-	{                                                                            \
+#define USE_ENGINE_FOG                                                             \
+	uniform Fog                                                                    \
+	{                                                                              \
 		vec3 color;                                                                \
 		vec3 heightDensity;                                                        \
 		vec3 distanceDensity;                                                      \
