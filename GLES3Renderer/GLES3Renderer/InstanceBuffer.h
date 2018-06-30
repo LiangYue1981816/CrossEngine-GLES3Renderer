@@ -21,12 +21,13 @@ public:
 	bool CreateInstanceBuffer(GLuint format);
 	void Destroy(void);
 
-private:
-	void SetupFormat(GLuint format);
+public:
+	void SetupFormat(void) const;
 
 public:
 	GLuint GetInstanceCount(void) const;
 	GLuint GetInstanceFormat(void) const;
+	GLuint GetInstanceBuffer(void) const;
 
 
 private:

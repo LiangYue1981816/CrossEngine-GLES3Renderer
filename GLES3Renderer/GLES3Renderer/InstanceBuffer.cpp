@@ -90,19 +90,19 @@ void CInstanceBuffer::Destroy(void)
 	m_instanceBufferSize = 0;
 }
 
-void CInstanceBuffer::SetupFormat(GLuint format)
+void CInstanceBuffer::SetupFormat(void) const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
 	{
-		GLuint instanceStride = GetInstanceStride(format);
+		GLuint instanceStride = GetInstanceStride(m_instanceFormat);
 
 		for (GLuint indexAttribute = 0; indexAttribute < INSTANCE_ATTRIBUTE_COUNT; indexAttribute++) {
 			GLuint attribute = (1 << indexAttribute);
 
-			if (format & attribute) {
+			if (m_instanceFormat & attribute) {
 				GLuint location = GetInstanceAttributeLocation(attribute);
 				GLuint components = GetInstanceAttributeComponents(attribute);
-				GLuint offset = GetInstanceAttributeOffset(format, attribute);
+				GLuint offset = GetInstanceAttributeOffset(m_instanceFormat, attribute);
 
 				glEnableVertexAttribArray(location);
 				glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, instanceStride, (const void *)offset);
@@ -121,4 +121,9 @@ GLuint CInstanceBuffer::GetInstanceCount(void) const
 GLuint CInstanceBuffer::GetInstanceFormat(void) const
 {
 	return m_instanceFormat;
+}
+
+GLuint CInstanceBuffer::GetInstanceBuffer(void) const
+{
+	return m_instanceBuffer;
 }
