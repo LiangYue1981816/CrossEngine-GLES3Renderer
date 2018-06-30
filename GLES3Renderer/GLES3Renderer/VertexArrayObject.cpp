@@ -17,11 +17,6 @@ CVertexArrayObject::~CVertexArrayObject(void)
 	Destroy();
 }
 
-void CVertexArrayObject::Bind(void) const
-{
-	glBindVertexArray(m_vao);
-}
-
 bool CVertexArrayObject::CreateVertexArrayObject(const CIndexBuffer *pIndexBuffer, const CVertexBuffer *pVertexBuffer, const CInstanceBuffer *pInstanceBuffer)
 {
 	glGenVertexArrays(1, &m_vao);
@@ -50,4 +45,9 @@ void CVertexArrayObject::Destroy(void)
 	}
 
 	m_vao = 0;
+}
+
+GLuint CVertexArrayObject::GetVertexArrayObject(void) const
+{
+	return m_vao;
 }

@@ -98,6 +98,7 @@
     <ClInclude Include="GLES3Renderer\IndexBuffer.h" />
     <ClInclude Include="GLES3Renderer\InstanceBuffer.h" />
     <ClInclude Include="GLES3Renderer\Material.h" />
+    <ClInclude Include="GLES3Renderer\Mesh.h" />
     <ClInclude Include="GLES3Renderer\Program.h" />
     <ClInclude Include="GLES3Renderer\Renderer.h" />
     <ClInclude Include="GLES3Renderer\Texture2D.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="GLES3Renderer\IndexBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\InstanceBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\Material.cpp" />
+    <ClCompile Include="GLES3Renderer\Mesh.cpp" />
     <ClCompile Include="GLES3Renderer\Program.cpp" />
     <ClCompile Include="GLES3Renderer\Renderer.cpp" />
     <ClCompile Include="GLES3Renderer\Texture2D.cpp" />

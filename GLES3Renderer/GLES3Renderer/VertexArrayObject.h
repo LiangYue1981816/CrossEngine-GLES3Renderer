@@ -12,11 +12,11 @@ public:
 
 
 public:
-	void Bind(void) const;
-
-public:
 	bool CreateVertexArrayObject(const CIndexBuffer *pIndexBuffer, const CVertexBuffer *pVertexBuffer, const CInstanceBuffer *pInstanceBuffer);
 	void Destroy(void);
+
+public:
+	GLuint GetVertexArrayObject(void) const;
 
 
 private:
