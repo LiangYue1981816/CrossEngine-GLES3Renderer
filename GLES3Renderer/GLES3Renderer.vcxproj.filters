@@ -94,6 +94,9 @@
     <ClInclude Include="GLES3Renderer\VertexAttribute.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\VertexArrayObject.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -211,6 +214,9 @@
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLES3Renderer\VertexAttribute.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\VertexArrayObject.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

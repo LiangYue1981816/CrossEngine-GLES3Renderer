@@ -16,11 +16,6 @@ CIndexBuffer::~CIndexBuffer(void)
 	Destroy();
 }
 
-void CIndexBuffer::Bind(void)
-{
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
-}
-
 bool CIndexBuffer::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
 {
 	m_indexType = type;
@@ -51,4 +46,9 @@ GLenum CIndexBuffer::GetIndexType(void) const
 GLuint CIndexBuffer::GetIndexCount(void) const
 {
 	return m_indexCount;
+}
+
+GLuint CIndexBuffer::GetIndexBuffer(void) const
+{
+	return m_indexBuffer;
 }

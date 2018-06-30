@@ -122,6 +122,7 @@
     <ClInclude Include="GLES3Renderer\UniformVec3.h" />
     <ClInclude Include="GLES3Renderer\UniformVec4.h" />
     <ClInclude Include="GLES3Renderer\UniformZBuffer.h" />
+    <ClInclude Include="GLES3Renderer\VertexArrayObject.h" />
     <ClInclude Include="GLES3Renderer\VertexAttribute.h" />
     <ClInclude Include="GLES3Renderer\VertexBuffer.h" />
     <ClInclude Include="Mesh.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="GLES3Renderer\UniformVec3.cpp" />
     <ClCompile Include="GLES3Renderer\UniformVec4.cpp" />
     <ClCompile Include="GLES3Renderer\UniformZBuffer.cpp" />
+    <ClCompile Include="GLES3Renderer\VertexArrayObject.cpp" />
     <ClCompile Include="GLES3Renderer\VertexAttribute.cpp" />
     <ClCompile Include="GLES3Renderer\VertexBuffer.cpp" />
     <ClCompile Include="main.cpp" />

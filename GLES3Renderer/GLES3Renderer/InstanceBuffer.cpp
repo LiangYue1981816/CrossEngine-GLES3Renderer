@@ -4,7 +4,7 @@
 #include "VertexAttribute.h"
 
 
-static const int INSTANCE_BUFFER_SIZE = 4 * 1024;
+static const int INSTANCE_BUFFER_SIZE = 1 * 1024;
 
 CInstanceBuffer::CInstanceBuffer(void)
 	: m_instanceFormat(0)
@@ -92,25 +92,21 @@ void CInstanceBuffer::Destroy(void)
 
 void CInstanceBuffer::SetupFormat(void) const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
-	{
-		GLuint instanceStride = GetInstanceStride(m_instanceFormat);
+	GLuint instanceStride = GetInstanceStride(m_instanceFormat);
 
-		for (GLuint indexAttribute = 0; indexAttribute < INSTANCE_ATTRIBUTE_COUNT; indexAttribute++) {
-			GLuint attribute = (1 << indexAttribute);
+	for (GLuint indexAttribute = 0; indexAttribute < INSTANCE_ATTRIBUTE_COUNT; indexAttribute++) {
+		GLuint attribute = (1 << indexAttribute);
 
-			if (m_instanceFormat & attribute) {
-				GLuint location = GetInstanceAttributeLocation(attribute);
-				GLuint components = GetInstanceAttributeComponents(attribute);
-				GLuint offset = GetInstanceAttributeOffset(m_instanceFormat, attribute);
+		if (m_instanceFormat & attribute) {
+			GLuint location = GetInstanceAttributeLocation(attribute);
+			GLuint components = GetInstanceAttributeComponents(attribute);
+			GLuint offset = GetInstanceAttributeOffset(m_instanceFormat, attribute);
 
-				glEnableVertexAttribArray(location);
-				glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, instanceStride, (const void *)offset);
-				glVertexAttribDivisor(location, 1);
-			}
+			glEnableVertexAttribArray(location);
+			glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, instanceStride, (const void *)offset);
+			glVertexAttribDivisor(location, 1);
 		}
 	}
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 GLuint CInstanceBuffer::GetInstanceCount(void) const

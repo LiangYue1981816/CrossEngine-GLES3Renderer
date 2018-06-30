@@ -11,15 +11,13 @@ public:
 
 
 public:
-	void Bind(void);
-
-public:
 	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
 	void Destroy(void);
 
 public:
 	GLenum GetIndexType(void) const;
 	GLuint GetIndexCount(void) const;
+	GLuint GetIndexBuffer(void) const;
 
 
 private:
