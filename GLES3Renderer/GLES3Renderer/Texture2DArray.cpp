@@ -7,6 +7,7 @@
 CTexture2DArray::CTexture2DArray(void)
 	: m_texture(0)
 	, m_sampler(0)
+	, m_external(GL_FALSE)
 
 	, m_format(GL_RGBA)
 	, m_internalFormat(GL_RGBA)
@@ -22,7 +23,10 @@ CTexture2DArray::CTexture2DArray(void)
 
 CTexture2DArray::~CTexture2DArray(void)
 {
-	glDeleteTextures(1, &m_texture);
+	if (m_external == GL_TRUE) {
+		glDeleteTextures(1, &m_texture);
+	}
+
 	glDeleteSamplers(1, &m_sampler);
 }
 
@@ -98,6 +102,7 @@ bool CTexture2DArray::Create(GLenum format, GLenum internalFormat, GLsizei width
 bool CTexture2DArray::CreateImage(GLuint texture)
 {
 	m_texture = texture;
+	m_external = GL_TRUE;
 	return true;
 }
 

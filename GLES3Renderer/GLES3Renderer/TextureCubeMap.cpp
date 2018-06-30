@@ -7,6 +7,7 @@
 CTextureCubeMap::CTextureCubeMap(void)
 	: m_texture(0)
 	, m_sampler(0)
+	, m_external(GL_FALSE)
 
 	, m_format(GL_RGBA)
 	, m_internalFormat(GL_RGBA)
@@ -21,7 +22,10 @@ CTextureCubeMap::CTextureCubeMap(void)
 
 CTextureCubeMap::~CTextureCubeMap(void)
 {
-	glDeleteTextures(1, &m_texture);
+	if (m_external == GL_TRUE) {
+		glDeleteTextures(1, &m_texture);
+	}
+
 	glDeleteSamplers(1, &m_sampler);
 }
 
@@ -97,6 +101,7 @@ bool CTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width
 bool CTextureCubeMap::CreateImage(GLuint texture)
 {
 	m_texture = texture;
+	m_external = GL_TRUE;
 	return true;
 }
 

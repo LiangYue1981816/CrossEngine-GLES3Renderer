@@ -43,4 +43,5 @@ private:
 private:
 	GLuint m_texture;
 	GLuint m_sampler;
+	GLboolean m_external;
 };
