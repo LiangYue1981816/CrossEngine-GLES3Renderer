@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "IndexBuffer.h"
 #include "InstanceBuffer.h"
+#include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include "VertexArrayObject.h"
 

@@ -2,10 +2,11 @@
 #include <vector>
 #include "glew.h"
 #include "glm/glm.hpp"
+#include "InstanceBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
-#include "InstanceBuffer.h"
 #include "VertexArrayObject.h"
+#include "VertexAttribute.h"
 
 
 class CMesh
