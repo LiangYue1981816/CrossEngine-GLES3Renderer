@@ -29,15 +29,18 @@ void CGfxMesh::Bind(void) const
 		return;
 	}
 
-	if (m_pInstanceBuffer->GetInstanceBuffer() == 0) {
-		m_pInstanceBuffer->CreateInstanceBuffer(INSTANCE_ATTRIBUTE_TRANSFORM);
-	}
+	glBindVertexArray(0);
+	{
+		if (m_pInstanceBuffer->GetInstanceBuffer() == 0) {
+			m_pInstanceBuffer->CreateInstanceBuffer(INSTANCE_ATTRIBUTE_TRANSFORM);
+		}
 
-	if (m_pVertexArrayObject->GetVertexArrayObject() == 0) {
-		m_pVertexArrayObject->CreateVertexArrayObject(m_pIndexBuffer, m_pVertexBuffer, m_pInstanceBuffer);
-	}
+		if (m_pVertexArrayObject->GetVertexArrayObject() == 0) {
+			m_pVertexArrayObject->CreateVertexArrayObject(m_pIndexBuffer, m_pVertexBuffer, m_pInstanceBuffer);
+		}
 
-	m_pInstanceBuffer->UpdateInstance();
+		m_pInstanceBuffer->UpdateInstance();
+	}
 	glBindVertexArray(m_pVertexArrayObject->GetVertexArrayObject());
 }
 
