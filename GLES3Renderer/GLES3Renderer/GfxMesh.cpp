@@ -76,7 +76,7 @@ void CGfxMesh::AddInstance(const glm::mat4 &mtxTransform)
 
 GLenum CGfxMesh::GetIndexType(void) const
 {
-	return m_pIndexBuffer->GetIndexBuffer();
+	return m_pIndexBuffer->GetIndexType();
 }
 
 GLuint CGfxMesh::GetIndexCount(void) const
