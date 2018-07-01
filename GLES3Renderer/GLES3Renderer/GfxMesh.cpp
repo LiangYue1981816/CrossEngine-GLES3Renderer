@@ -1,22 +1,21 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "Mesh.h"
-#include "VertexAttribute.h"
+#include "GfxMesh.h"
 
 
-CMesh::CMesh(void)
+CGfxMesh::CGfxMesh(void)
 	: m_pIndexBuffer(NULL)
 	, m_pVertexBuffer(NULL)
 	, m_pInstanceBuffer(NULL)
 	, m_pVertexArrayObject(NULL)
 {
-	m_pIndexBuffer = new CIndexBuffer;
-	m_pVertexBuffer = new CVertexBuffer;
-	m_pInstanceBuffer = new CInstanceBuffer;
-	m_pVertexArrayObject = new CVertexArrayObject;
+	m_pIndexBuffer = new CGfxIndexBuffer;
+	m_pVertexBuffer = new CGfxVertexBuffer;
+	m_pInstanceBuffer = new CGfxInstanceBuffer;
+	m_pVertexArrayObject = new CGfxVertexArrayObject;
 }
 
-CMesh::~CMesh(void)
+CGfxMesh::~CGfxMesh(void)
 {
 	delete m_pIndexBuffer;
 	delete m_pVertexBuffer;
@@ -24,7 +23,7 @@ CMesh::~CMesh(void)
 	delete m_pVertexArrayObject;
 }
 
-void CMesh::Bind(void) const
+void CGfxMesh::Bind(void) const
 {
 	if (m_pIndexBuffer->GetIndexBuffer() == 0 || m_pVertexBuffer->GetVertexBuffer() == 0) {
 		return;
@@ -42,17 +41,17 @@ void CMesh::Bind(void) const
 	glBindVertexArray(m_pVertexArrayObject->GetVertexArrayObject());
 }
 
-bool CMesh::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
+bool CGfxMesh::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
 {
 	return m_pIndexBuffer->CreateIndexBuffer(size, pBuffer, bDynamic, type);
 }
 
-bool CMesh::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format)
+bool CGfxMesh::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format)
 {
 	return m_pVertexBuffer->CreateVertexBuffer(size, pBuffer, bDynamic, format);
 }
 
-void CMesh::Destroy(void)
+void CGfxMesh::Destroy(void)
 {
 	m_pIndexBuffer->Destroy();
 	m_pVertexBuffer->Destroy();
@@ -60,32 +59,32 @@ void CMesh::Destroy(void)
 	m_pVertexArrayObject->Destroy();
 }
 
-void CMesh::ClearInstance(void)
+void CGfxMesh::ClearInstance(void)
 {
 	m_pInstanceBuffer->Clear();
 }
 
-void CMesh::SetInstance(const glm::mat4 &mtxTransform)
+void CGfxMesh::SetInstance(const glm::mat4 &mtxTransform)
 {
 	m_pInstanceBuffer->SetInstance(mtxTransform);
 }
 
-void CMesh::AddInstance(const glm::mat4 &mtxTransform)
+void CGfxMesh::AddInstance(const glm::mat4 &mtxTransform)
 {
 	m_pInstanceBuffer->AddInstance(mtxTransform);
 }
 
-GLenum CMesh::GetIndexType(void) const
+GLenum CGfxMesh::GetIndexType(void) const
 {
 	return m_pIndexBuffer->GetIndexBuffer();
 }
 
-GLuint CMesh::GetIndexCount(void) const
+GLuint CGfxMesh::GetIndexCount(void) const
 {
 	return m_pIndexBuffer->GetIndexCount();
 }
 
-GLuint CMesh::GetInstanceCount(void) const
+GLuint CGfxMesh::GetInstanceCount(void) const
 {
 	return m_pInstanceBuffer->GetInstanceCount();
 }

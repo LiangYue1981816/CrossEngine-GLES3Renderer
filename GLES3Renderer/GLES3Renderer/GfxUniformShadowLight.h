@@ -2,10 +2,10 @@
 #include "glew.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "UniformBuffer.h"
+#include "GfxUniformBuffer.h"
 
 
-class CUniformShadowLight
+class CGfxUniformShadowLight
 {
 private:
 	typedef struct Params {
@@ -16,8 +16,8 @@ private:
 
 
 public:
-	CUniformShadowLight(void);
-	virtual ~CUniformShadowLight(void);
+	CGfxUniformShadowLight(void);
+	virtual ~CGfxUniformShadowLight(void);
 
 
 public:
@@ -33,5 +33,5 @@ public:
 private:
 	bool m_bDirty;
 	Params m_params;
-	CUniformBuffer m_uniformBuffer;
+	CGfxUniformBuffer m_uniformBuffer;
 };

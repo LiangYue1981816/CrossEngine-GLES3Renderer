@@ -1,22 +1,22 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "Renderer.h"
+#include "GfxRenderer.h"
 
 
-CRenderer* CRenderer::pInstance = NULL;
-CRenderer* CRenderer::GetInstance(void)
+CGfxRenderer* CGfxRenderer::pInstance = NULL;
+CGfxRenderer* CGfxRenderer::GetInstance(void)
 {
 	return pInstance;
 }
 
-void CRenderer::Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
+void CGfxRenderer::Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
 {
 	if (pInstance == NULL) {
-		pInstance = new CRenderer(szShaderPath, szTexturePath, szMaterialPath);
+		pInstance = new CGfxRenderer(szShaderPath, szTexturePath, szMaterialPath);
 	}
 }
 
-void CRenderer::Destroy(void)
+void CGfxRenderer::Destroy(void)
 {
 	if (pInstance) {
 		delete pInstance;
@@ -25,7 +25,7 @@ void CRenderer::Destroy(void)
 	pInstance = NULL;
 }
 
-CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
+CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
 	: m_pGlobalMaterial(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
@@ -49,155 +49,155 @@ CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const 
 	};
 
 	m_meshScreen.CreateIndexBuffer(sizeof(indices), indices, false, GL_UNSIGNED_INT);
-	m_meshScreen.CreateVertexBuffer(sizeof(vertices), vertices, false, VERTEX_ATTRIBUTE_POSITION | VERTEX_ATTRIBUTE_TEXCOORD0, 0);
+	m_meshScreen.CreateVertexBuffer(sizeof(vertices), vertices, false, VERTEX_ATTRIBUTE_POSITION | VERTEX_ATTRIBUTE_TEXCOORD0);
 
 	m_material = -1;
-	m_pGlobalMaterial = new CMaterial;
+	m_pGlobalMaterial = new CGfxMaterial;
 }
 
-CRenderer::~CRenderer(void)
+CGfxRenderer::~CGfxRenderer(void)
 {
 	m_meshScreen.Destroy();
 	delete m_pGlobalMaterial;
 }
 
-const char* CRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
+const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
 {
 	sprintf(szFullPath, "%s/%s", m_szShaderPath, szFileName);
 	return szFullPath;
 }
 
-const char* CRenderer::GetTextureFullPath(const char *szFileName, char *szFullPath) const
+const char* CGfxRenderer::GetTextureFullPath(const char *szFileName, char *szFullPath) const
 {
 	sprintf(szFullPath, "%s/%s", m_szTexturePath, szFileName);
 	return szFullPath;
 }
 
-const char* CRenderer::GetMaterialFullPath(const char *szFileName, char *szFullPath) const
+const char* CGfxRenderer::GetMaterialFullPath(const char *szFileName, char *szFullPath) const
 {
 	sprintf(szFullPath, "%s/%s", m_szMaterialPath, szFileName);
 	return szFullPath;
 }
 
-void CRenderer::SetScissor(int x, int y, int width, int height)
+void CGfxRenderer::SetScissor(int x, int y, int width, int height)
 {
 	glEnable(GL_SCISSOR_TEST);
 	glScissor(x, y, width, height);
 }
 
-void CRenderer::SetViewport(int x, int y, int width, int height)
+void CGfxRenderer::SetViewport(int x, int y, int width, int height)
 {
 	glViewport(x, y, width, height);
 	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
 }
 
-void CRenderer::SetFrameBuffer(GLuint fbo)
+void CGfxRenderer::SetFrameBuffer(GLuint fbo)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 }
 
-void CRenderer::SetInputTexture(const char *szName, GLuint texture)
+void CGfxRenderer::SetInputTexture(const char *szName, GLuint texture)
 {
 	m_pGlobalMaterial->GetTexture2D(szName)->Create(texture, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 }
 
-void CRenderer::SetTime(float t, float dt)
+void CGfxRenderer::SetTime(float t, float dt)
 {
 	m_uniformTime.SetTime(t, dt);
 }
 
-void CRenderer::SetCameraPerspective(float fovy, float aspect, float zNear, float zFar)
+void CGfxRenderer::SetCameraPerspective(float fovy, float aspect, float zNear, float zFar)
 {
 	m_uniformCamera.SetPerspective(fovy, aspect, zNear, zFar);
 	m_uniformZBuffer.SetZBuffer(zNear, zFar);
 	m_uniformProjection.SetProjection(zNear, zFar);
 }
 
-void CRenderer::SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
+void CGfxRenderer::SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	m_uniformCamera.SetOrtho(left, right, bottom, top, zNear, zFar);
 	m_uniformZBuffer.SetZBuffer(zNear, zFar);
 	m_uniformProjection.SetProjection(zNear, zFar);
 }
 
-void CRenderer::SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
+void CGfxRenderer::SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
 	m_uniformCamera.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
-void CRenderer::SetCameraProjectionMatrix(const float *mtxProjection)
+void CGfxRenderer::SetCameraProjectionMatrix(const float *mtxProjection)
 {
 	m_uniformCamera.SetProjectionMatrix(mtxProjection);
 }
 
-void CRenderer::SetCameraViewMatrix(const float *mtxView)
+void CGfxRenderer::SetCameraViewMatrix(const float *mtxView)
 {
 	m_uniformCamera.SetViewMatrix(mtxView);
 }
 
-void CRenderer::SetFogColor(float r, float g, float b)
+void CGfxRenderer::SetFogColor(float r, float g, float b)
 {
 	m_uniformFog.SetColor(r, g, b);
 }
 
-void CRenderer::SetFogHeightDensity(float startHeight, float endHeight, float density)
+void CGfxRenderer::SetFogHeightDensity(float startHeight, float endHeight, float density)
 {
 	m_uniformFog.SetHeightDensity(startHeight, endHeight, density);
 }
 
-void CRenderer::SetFogDistanceDensity(float startDistance, float endDistance, float density)
+void CGfxRenderer::SetFogDistanceDensity(float startDistance, float endDistance, float density)
 {
 	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
 }
 
-void CRenderer::SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9])
+void CGfxRenderer::SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9])
 {
 	m_uniformAmbientLight.SetSH(shRed, shGreen, shBlue);
 }
 
-void CRenderer::SetAmbientLightRotation(float angle, float axisx, float axisy, float axisz)
+void CGfxRenderer::SetAmbientLightRotation(float angle, float axisx, float axisy, float axisz)
 {
 	m_uniformAmbientLight.SetRotation(angle, axisx, axisy, axisz);
 }
 
-void CRenderer::SetPointLightColor(float red, float green, float blue)
+void CGfxRenderer::SetPointLightColor(float red, float green, float blue)
 {
 	m_uniformPointLight.SetColor(red, green, blue);
 }
 
-void CRenderer::SetPointLightPosition(float posx, float posy, float posz)
+void CGfxRenderer::SetPointLightPosition(float posx, float posy, float posz)
 {
 	m_uniformPointLight.SetPosition(posx, posy, posz);
 }
 
-void CRenderer::SetPointLightAttenuation(float linear, float square, float constant)
+void CGfxRenderer::SetPointLightAttenuation(float linear, float square, float constant)
 {
 	m_uniformPointLight.SetAttenuation(linear, square, constant);
 }
 
-void CRenderer::SetDirectLightColor(float red, float green, float blue)
+void CGfxRenderer::SetDirectLightColor(float red, float green, float blue)
 {
 	m_uniformDirectLight.SetColor(red, green, blue);
 }
 
-void CRenderer::SetDirectLightDirection(float dirx, float diry, float dirz)
+void CGfxRenderer::SetDirectLightDirection(float dirx, float diry, float dirz)
 {
 	m_uniformDirectLight.SetDirection(-dirx, -diry, -dirz);
 }
 
-void CRenderer::SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
+void CGfxRenderer::SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	m_uniformShadowLight.SetOrtho(left, right, bottom, top, zNear, zFar);
 }
 
-void CRenderer::SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
+void CGfxRenderer::SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
 	m_uniformShadowLight.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
-bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
+bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 {
-	CMaterial *pMaterial = NULL;
+	CGfxMaterial *pMaterial = NULL;
 
 	try {
 		int err = 0;
@@ -206,7 +206,7 @@ bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 			throw err++;
 		}
 
-		if ((pMaterial = new CMaterial) == NULL) {
+		if ((pMaterial = new CGfxMaterial) == NULL) {
 			throw err++;
 		}
 
@@ -227,20 +227,20 @@ bool CRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 	}
 }
 
-CMaterial* CRenderer::GetMaterial(GLuint id) const
+CGfxMaterial* CGfxRenderer::GetMaterial(GLuint id) const
 {
 	const auto &itMaterial = m_pMaterials.find(id);
 	return itMaterial != m_pMaterials.end() ? itMaterial->second : m_pGlobalMaterial;
 }
 
-void CRenderer::Clear(float red, float green, float blue, float alpha, float depth)
+void CGfxRenderer::Clear(float red, float green, float blue, float alpha, float depth)
 {
 	glClearColor(red, green, blue, alpha);
 	glClearDepthf(depth);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void CRenderer::DrawInstance(GLuint material, CMesh *pMesh)
+void CGfxRenderer::DrawInstance(GLuint material, CGfxMesh *pMesh)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -255,7 +255,7 @@ void CRenderer::DrawInstance(GLuint material, CMesh *pMesh)
 	glDrawElementsInstanced(GL_TRIANGLES, pMesh->GetIndexCount(), pMesh->GetIndexType(), NULL, pMesh->GetInstanceCount());
 }
 
-void CRenderer::DrawElements(GLuint material, CMesh *pMesh, const CUniformTransform *pUniformTransform)
+void CGfxRenderer::DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -272,7 +272,7 @@ void CRenderer::DrawElements(GLuint material, CMesh *pMesh, const CUniformTransf
 	glDrawElements(GL_TRIANGLES, pMesh->GetIndexCount(), pMesh->GetIndexType(), NULL);
 }
 
-void CRenderer::DrawScreen(GLuint material)
+void CGfxRenderer::DrawScreen(GLuint material)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -290,7 +290,7 @@ void CRenderer::DrawScreen(GLuint material)
 	glDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
 }
 
-void CRenderer::BindMaterial(CMaterial *pMaterial)
+void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
 {
 	m_uniformTime.Apply();
 	m_uniformScreen.Apply();

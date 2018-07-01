@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformAmbientLight.h"
+#include "GfxUniformAmbientLight.h"
 
 
 static void SHRotationMatrix0(float rotation0[1][1])
@@ -126,18 +126,18 @@ static void SHRotate(float shRedRotate[9], float shGreenRotate[9], float shBlueR
 	}
 }
 
-CUniformAmbientLight::CUniformAmbientLight(void)
+CGfxUniformAmbientLight::CGfxUniformAmbientLight(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformAmbientLight::~CUniformAmbientLight(void)
+CGfxUniformAmbientLight::~CGfxUniformAmbientLight(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9])
+void CGfxUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9])
 {
 	m_bDirty = true;
 	m_params.shRed0 = glm::vec4(shRed[0], shRed[1], shRed[2], 0.0);
@@ -151,7 +151,7 @@ void CUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[
 	m_params.shBlue2 = glm::vec4(shBlue[6], shBlue[7], shBlue[8], 0.0);
 }
 
-void CUniformAmbientLight::SetRotation(float angle, float axisx, float axisy, float axisz)
+void CGfxUniformAmbientLight::SetRotation(float angle, float axisx, float axisy, float axisz)
 {
 	/*
 	float shRedRotate[9] = { 0.0f };
@@ -164,7 +164,7 @@ void CUniformAmbientLight::SetRotation(float angle, float axisx, float axisy, fl
 	m_params.rotationMatrix = glm::rotate(glm::mat4(), -angle, glm::vec3(axisx, axisy, axisz));
 }
 
-void CUniformAmbientLight::Apply(void)
+void CGfxUniformAmbientLight::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -172,12 +172,12 @@ void CUniformAmbientLight::Apply(void)
 	}
 }
 
-GLuint CUniformAmbientLight::GetSize(void) const
+GLuint CGfxUniformAmbientLight::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformAmbientLight::GetBuffer(void) const
+GLuint CGfxUniformAmbientLight::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

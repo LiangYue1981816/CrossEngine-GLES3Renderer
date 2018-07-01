@@ -3,11 +3,11 @@
 #include "gli/gli.hpp"
 
 
-class CTextureCubeMap
+class CGfxTextureCubeMap
 {
 public:
-	CTextureCubeMap(void);
-	virtual ~CTextureCubeMap(void);
+	CGfxTextureCubeMap(void);
+	virtual ~CGfxTextureCubeMap(void);
 
 
 public:

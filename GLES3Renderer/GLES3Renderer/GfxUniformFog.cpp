@@ -1,38 +1,38 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformFog.h"
+#include "GfxUniformFog.h"
 
 
-CUniformFog::CUniformFog(void)
+CGfxUniformFog::CGfxUniformFog(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformFog::~CUniformFog(void)
+CGfxUniformFog::~CGfxUniformFog(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformFog::SetColor(float r, float g, float b)
+void CGfxUniformFog::SetColor(float r, float g, float b)
 {
 	m_bDirty = true;
 	m_params.color = glm::vec4(r, g, b, 0.0f);
 }
 
-void CUniformFog::SetHeightDensity(float startHeight, float endHeight, float density)
+void CGfxUniformFog::SetHeightDensity(float startHeight, float endHeight, float density)
 {
 	m_bDirty = true;
 	m_params.heightDensity = glm::vec4(startHeight, endHeight, density, 0.0f);
 }
 
-void CUniformFog::SetDistanceDensity(float startDistance, float endDistance, float density)
+void CGfxUniformFog::SetDistanceDensity(float startDistance, float endDistance, float density)
 {
 	m_bDirty = true;
 	m_params.distanceDensity = glm::vec4(startDistance, endDistance, density, 0.0f);
 }
 
-void CUniformFog::Apply(void)
+void CGfxUniformFog::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -40,12 +40,12 @@ void CUniformFog::Apply(void)
 	}
 }
 
-GLuint CUniformFog::GetSize(void) const
+GLuint CGfxUniformFog::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformFog::GetBuffer(void) const
+GLuint CGfxUniformFog::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

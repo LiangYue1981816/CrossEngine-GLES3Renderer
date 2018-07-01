@@ -1,38 +1,38 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformPointLight.h"
+#include "GfxUniformPointLight.h"
 
 
-CUniformPointLight::CUniformPointLight(void)
+CGfxUniformPointLight::CGfxUniformPointLight(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformPointLight::~CUniformPointLight(void)
+CGfxUniformPointLight::~CGfxUniformPointLight(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformPointLight::SetColor(float r, float g, float b)
+void CGfxUniformPointLight::SetColor(float r, float g, float b)
 {
 	m_bDirty = true;
 	m_params.color = glm::vec4(r, g, b, 0.0f);
 }
 
-void CUniformPointLight::SetPosition(float x, float y, float z)
+void CGfxUniformPointLight::SetPosition(float x, float y, float z)
 {
 	m_bDirty = true;
 	m_params.position = glm::vec4(x, y, z, 0.0f);
 }
 
-void CUniformPointLight::SetAttenuation(float linear, float square, float constant)
+void CGfxUniformPointLight::SetAttenuation(float linear, float square, float constant)
 {
 	m_bDirty = true;
 	m_params.attenuation = glm::vec4(linear, square, constant, 0.0f);
 }
 
-void CUniformPointLight::Apply(void)
+void CGfxUniformPointLight::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -40,12 +40,12 @@ void CUniformPointLight::Apply(void)
 	}
 }
 
-GLuint CUniformPointLight::GetSize(void) const
+GLuint CGfxUniformPointLight::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformPointLight::GetBuffer(void) const
+GLuint CGfxUniformPointLight::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

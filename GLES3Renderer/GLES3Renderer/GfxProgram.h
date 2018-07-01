@@ -9,11 +9,11 @@
 #include "spirv-cross/spirv_cross.hpp"
 
 
-class CProgram
+class CGfxProgram
 {
 public:
-	CProgram(void);
-	virtual ~CProgram(void);
+	CGfxProgram(void);
+	virtual ~CGfxProgram(void);
 
 
 public:

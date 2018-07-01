@@ -11,14 +11,9 @@ CMesh::~CMesh(void)
 	Free();
 }
 
-CIndexBuffer* CMesh::GetIndexBuffer(void)
+CGfxMesh* CMesh::GetMesh(void)
 {
-	return &m_indexBuffer;
-}
-
-CVertexBuffer* CMesh::GetVertexBuffer(void)
-{
-	return &m_vertexBuffer;
+	return &m_mesh;
 }
 
 bool CMesh::Load(const char *szFileName)
@@ -66,8 +61,8 @@ bool CMesh::Load(const char *szFileName)
 		fseek(pFile, header.vertexBufferOffset, SEEK_SET);
 		fread(pVertexBuffer, header.vertexBufferSize, 1, pFile);
 
-		m_indexBuffer.CreateIndexBuffer(header.indexBufferSize, pIndexBuffer, false, GL_UNSIGNED_INT);
-		m_vertexBuffer.CreateVertexBuffer(header.vertexBufferSize, pVertexBuffer, false, format, INSTANCE_ATTRIBUTE_TRANSFORM);
+		m_mesh.CreateIndexBuffer(header.indexBufferSize, pIndexBuffer, false, GL_UNSIGNED_INT);
+		m_mesh.CreateVertexBuffer(header.vertexBufferSize, pVertexBuffer, false, format);
 
 		free(pIndexBuffer);
 		free(pVertexBuffer);
@@ -82,11 +77,10 @@ bool CMesh::Load(const char *szFileName)
 
 void CMesh::Free(void)
 {
-	m_indexBuffer.Destroy();
-	m_vertexBuffer.Destroy();
+	m_mesh.Destroy();
 }
 
 void CMesh::SetTransform(const glm::mat4 &mtxTransform)
 {
-	m_vertexBuffer.SetInstance(mtxTransform);
+	m_mesh.SetInstance(mtxTransform);
 }

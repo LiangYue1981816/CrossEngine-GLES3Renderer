@@ -1,21 +1,21 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformTransform.h"
+#include "GfxUniformTransform.h"
 
 
-CUniformTransform::CUniformTransform(void)
+CGfxUniformTransform::CGfxUniformTransform(void)
 	: m_bDirty(false)
 {
 	Identity();
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformTransform::~CUniformTransform(void)
+CGfxUniformTransform::~CGfxUniformTransform(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformTransform::Identity(void)
+void CGfxUniformTransform::Identity(void)
 {
 	m_bDirty = true;
 	m_mtxScale = glm::scale(glm::mat4(), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -26,7 +26,7 @@ void CUniformTransform::Identity(void)
 	m_params.mtxWorldInverseTranspose = glm::mat4();
 }
 
-void CUniformTransform::SetScale(float x, float y, float z)
+void CGfxUniformTransform::SetScale(float x, float y, float z)
 {
 	m_bDirty = true;
 	m_mtxScale = glm::scale(glm::mat4(), glm::vec3(x, y, z));
@@ -35,7 +35,7 @@ void CUniformTransform::SetScale(float x, float y, float z)
 	m_params.mtxWorldInverseTranspose = glm::transpose(m_params.mtxWorldInverse);
 }
 
-void CUniformTransform::SetRotate(float angle, float x, float y, float z)
+void CGfxUniformTransform::SetRotate(float angle, float x, float y, float z)
 {
 	m_bDirty = true;
 	m_mtxRotate = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
@@ -44,7 +44,7 @@ void CUniformTransform::SetRotate(float angle, float x, float y, float z)
 	m_params.mtxWorldInverseTranspose = glm::transpose(m_params.mtxWorldInverse);
 }
 
-void CUniformTransform::SetTranslate(float x, float y, float z)
+void CGfxUniformTransform::SetTranslate(float x, float y, float z)
 {
 	m_bDirty = true;
 	m_mtxTranslate = glm::translate(glm::mat4(), glm::vec3(x, y, z));
@@ -53,7 +53,7 @@ void CUniformTransform::SetTranslate(float x, float y, float z)
 	m_params.mtxWorldInverseTranspose = glm::transpose(m_params.mtxWorldInverse);
 }
 
-void CUniformTransform::SetTransform(const glm::mat4 &mtxTransform)
+void CGfxUniformTransform::SetTransform(const glm::mat4 &mtxTransform)
 {
 	m_bDirty = true;
 	m_params.mtxWorld = mtxTransform;
@@ -61,7 +61,7 @@ void CUniformTransform::SetTransform(const glm::mat4 &mtxTransform)
 	m_params.mtxWorldInverseTranspose = glm::transpose(m_params.mtxWorldInverse);
 }
 
-void CUniformTransform::Apply(void)
+void CGfxUniformTransform::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -69,12 +69,12 @@ void CUniformTransform::Apply(void)
 	}
 }
 
-GLuint CUniformTransform::GetSize(void) const
+GLuint CGfxUniformTransform::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformTransform::GetBuffer(void) const
+GLuint CGfxUniformTransform::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

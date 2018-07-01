@@ -2,11 +2,11 @@
 #include "glew.h"
 
 
-class CUniformBuffer
+class CGfxUniformBuffer
 {
 public:
-	CUniformBuffer(void);
-	virtual ~CUniformBuffer(void);
+	CGfxUniformBuffer(void);
+	virtual ~CGfxUniformBuffer(void);
 
 
 public:

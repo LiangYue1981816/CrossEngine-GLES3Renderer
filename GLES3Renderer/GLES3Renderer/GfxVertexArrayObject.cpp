@@ -1,23 +1,23 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "InstanceBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBuffer.h"
-#include "VertexArrayObject.h"
+#include "GfxInstanceBuffer.h"
+#include "GfxIndexBuffer.h"
+#include "GfxVertexBuffer.h"
+#include "GfxVertexArrayObject.h"
 
 
-CVertexArrayObject::CVertexArrayObject(void)
+CGfxVertexArrayObject::CGfxVertexArrayObject(void)
 	: m_vao(0)
 {
 
 }
 
-CVertexArrayObject::~CVertexArrayObject(void)
+CGfxVertexArrayObject::~CGfxVertexArrayObject(void)
 {
 	Destroy();
 }
 
-bool CVertexArrayObject::CreateVertexArrayObject(const CIndexBuffer *pIndexBuffer, const CVertexBuffer *pVertexBuffer, const CInstanceBuffer *pInstanceBuffer)
+bool CGfxVertexArrayObject::CreateVertexArrayObject(const CGfxIndexBuffer *pIndexBuffer, const CGfxVertexBuffer *pVertexBuffer, const CGfxInstanceBuffer *pInstanceBuffer)
 {
 	glGenVertexArrays(1, &m_vao);
 
@@ -36,9 +36,11 @@ bool CVertexArrayObject::CreateVertexArrayObject(const CIndexBuffer *pIndexBuffe
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	return true;
 }
 
-void CVertexArrayObject::Destroy(void)
+void CGfxVertexArrayObject::Destroy(void)
 {
 	if (m_vao) {
 		glDeleteVertexArrays(1, &m_vao);
@@ -47,7 +49,7 @@ void CVertexArrayObject::Destroy(void)
 	m_vao = 0;
 }
 
-GLuint CVertexArrayObject::GetVertexArrayObject(void) const
+GLuint CGfxVertexArrayObject::GetVertexArrayObject(void) const
 {
 	return m_vao;
 }

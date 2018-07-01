@@ -3,25 +3,25 @@
 #include <vector>
 #include "tinyxml/tinyxml.h"
 #include "tinyxml/tinystr.h"
-#include "Program.h"
-#include "Texture2D.h"
-#include "Texture2DArray.h"
-#include "TextureCubeMap.h"
-#include "UniformVec1.h"
-#include "UniformVec2.h"
-#include "UniformVec3.h"
-#include "UniformVec4.h"
-#include "UniformMat4.h"
+#include "GfxProgram.h"
+#include "GfxTexture2D.h"
+#include "GfxTexture2DArray.h"
+#include "GfxTextureCubeMap.h"
+#include "GfxUniformVec1.h"
+#include "GfxUniformVec2.h"
+#include "GfxUniformVec3.h"
+#include "GfxUniformVec4.h"
+#include "GfxUniformMat4.h"
 
 
-class CMaterial
+class CGfxMaterial
 {
-	friend class CRenderer;
+	friend class CGfxRenderer;
 
 
 public:
-	CMaterial(void);
-	virtual ~CMaterial(void);
+	CGfxMaterial(void);
+	virtual ~CGfxMaterial(void);
 
 
 public:
@@ -29,8 +29,8 @@ public:
 
 private:
 	void BindPipeline(void) const;
-	void BindUniforms(CProgram *pProgram) const;
-	void BindTextures(CProgram *pProgram, GLuint indexUnit) const;
+	void BindUniforms(CGfxProgram *pProgram) const;
+	void BindTextures(CGfxProgram *pProgram, GLuint indexUnit) const;
 
 public:
 	bool Create(const char *szFileName);
@@ -58,17 +58,17 @@ public:
 	void SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha);
 
 public:
-	CProgram* GetProgram(void);
+	CGfxProgram* GetProgram(void);
 
-	CTexture2D* GetTexture2D(const char *szName);
-	CTexture2DArray* GetTexture2DArray(const char *szName);
-	CTextureCubeMap* GetTextureCubeMap(const char *szName);
+	CGfxTexture2D* GetTexture2D(const char *szName);
+	CGfxTexture2DArray* GetTexture2DArray(const char *szName);
+	CGfxTextureCubeMap* GetTextureCubeMap(const char *szName);
 
-	CUniformVec1* GetUniformVec1(const char *szName);
-	CUniformVec2* GetUniformVec2(const char *szName);
-	CUniformVec3* GetUniformVec3(const char *szName);
-	CUniformVec4* GetUniformVec4(const char *szName);
-	CUniformMat4* GetUniformMat4(const char *szName);
+	CGfxUniformVec1* GetUniformVec1(const char *szName);
+	CGfxUniformVec2* GetUniformVec2(const char *szName);
+	CGfxUniformVec3* GetUniformVec3(const char *szName);
+	CGfxUniformVec4* GetUniformVec4(const char *szName);
+	CGfxUniformMat4* GetUniformMat4(const char *szName);
 
 	GLuint GetTextureUnits(void) const;
 
@@ -92,16 +92,16 @@ private:
 	GLfloat m_polygonOffsetUnits;
 
 private:
-	std::map<GLuint, CTexture2D*> m_pTexture2ds;
-	std::map<GLuint, CTexture2DArray*> m_pTexture2dArrays;
-	std::map<GLuint, CTextureCubeMap*> m_pTextureCubeMaps;
+	std::map<GLuint, CGfxTexture2D*> m_pTexture2ds;
+	std::map<GLuint, CGfxTexture2DArray*> m_pTexture2dArrays;
+	std::map<GLuint, CGfxTextureCubeMap*> m_pTextureCubeMaps;
 
-	std::map<GLuint, CUniformVec1*> m_pUniformVec1s;
-	std::map<GLuint, CUniformVec2*> m_pUniformVec2s;
-	std::map<GLuint, CUniformVec3*> m_pUniformVec3s;
-	std::map<GLuint, CUniformVec4*> m_pUniformVec4s;
-	std::map<GLuint, CUniformMat4*> m_pUniformMat4s;
+	std::map<GLuint, CGfxUniformVec1*> m_pUniformVec1s;
+	std::map<GLuint, CGfxUniformVec2*> m_pUniformVec2s;
+	std::map<GLuint, CGfxUniformVec3*> m_pUniformVec3s;
+	std::map<GLuint, CGfxUniformVec4*> m_pUniformVec4s;
+	std::map<GLuint, CGfxUniformMat4*> m_pUniformMat4s;
 
 private:
-	CProgram *m_pProgram;
+	CGfxProgram *m_pProgram;
 };

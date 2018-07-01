@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Renderer.h"
+#include "GfxRenderer.h"
 
 
 class CMesh
@@ -10,8 +10,7 @@ public:
 
 
 public:
-	CIndexBuffer* GetIndexBuffer(void);
-	CVertexBuffer* GetVertexBuffer(void);
+	CGfxMesh* GetMesh(void);
 
 public:
 	bool Load(const char *szFileName);
@@ -22,6 +21,5 @@ public:
 
 
 private:
-	CIndexBuffer m_indexBuffer;
-	CVertexBuffer m_vertexBuffer;
+	CGfxMesh m_mesh;
 };

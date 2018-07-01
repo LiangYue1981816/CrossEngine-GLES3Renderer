@@ -1,21 +1,21 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformBuffer.h"
+#include "GfxUniformBuffer.h"
 
 
-CUniformBuffer::CUniformBuffer(void)
+CGfxUniformBuffer::CGfxUniformBuffer(void)
 	: m_buffer(0)
 	, m_size(0)
 {
 
 }
 
-CUniformBuffer::~CUniformBuffer(void)
+CGfxUniformBuffer::~CGfxUniformBuffer(void)
 {
 	Destroy();
 }
 
-bool CUniformBuffer::Create(const void *pBuffer, size_t size, bool bDynamic)
+bool CGfxUniformBuffer::Create(const void *pBuffer, size_t size, bool bDynamic)
 {
 	Destroy();
 
@@ -28,7 +28,7 @@ bool CUniformBuffer::Create(const void *pBuffer, size_t size, bool bDynamic)
 	return SetData(pBuffer, size);
 }
 
-void CUniformBuffer::Destroy(void)
+void CGfxUniformBuffer::Destroy(void)
 {
 	if (m_buffer) {
 		glDeleteBuffers(1, &m_buffer);
@@ -38,7 +38,7 @@ void CUniformBuffer::Destroy(void)
 	m_buffer = 0;
 }
 
-bool CUniformBuffer::SetData(const void *pBuffer, size_t size, size_t offset)
+bool CGfxUniformBuffer::SetData(const void *pBuffer, size_t size, size_t offset)
 {
 	if (m_size < size) {
 		return false;
@@ -51,12 +51,12 @@ bool CUniformBuffer::SetData(const void *pBuffer, size_t size, size_t offset)
 	return true;
 }
 
-GLuint CUniformBuffer::GetSize(void) const
+GLuint CGfxUniformBuffer::GetSize(void) const
 {
 	return m_size;
 }
 
-GLuint CUniformBuffer::GetBuffer(void) const
+GLuint CGfxUniformBuffer::GetBuffer(void) const
 {
 	return m_buffer;
 }

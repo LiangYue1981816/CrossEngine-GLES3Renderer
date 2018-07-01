@@ -4,11 +4,11 @@
 #include "glm/glm.hpp"
 
 
-class CVertexBuffer
+class CGfxVertexBuffer
 {
 public:
-	CVertexBuffer(void);
-	virtual ~CVertexBuffer(void);
+	CGfxVertexBuffer(void);
+	virtual ~CGfxVertexBuffer(void);
 
 
 public:

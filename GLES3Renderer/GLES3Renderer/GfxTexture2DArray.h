@@ -3,11 +3,11 @@
 #include "gli/gli.hpp"
 
 
-class CTexture2DArray
+class CGfxTexture2DArray
 {
 public:
-	CTexture2DArray(void);
-	virtual ~CTexture2DArray(void);
+	CGfxTexture2DArray(void);
+	virtual ~CGfxTexture2DArray(void);
 
 
 public:

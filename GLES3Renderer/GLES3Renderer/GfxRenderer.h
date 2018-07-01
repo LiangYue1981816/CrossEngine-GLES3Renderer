@@ -1,20 +1,20 @@
 #pragma once
 #include <map>
 #include "glew.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "FrameBuffer.h"
-#include "UniformTime.h"
-#include "UniformScreen.h"
-#include "UniformZBuffer.h"
-#include "UniformProjection.h"
-#include "UniformCamera.h"
-#include "UniformFog.h"
-#include "UniformTransform.h"
-#include "UniformAmbientLight.h"
-#include "UniformPointLight.h"
-#include "UniformDirectLight.h"
-#include "UniformShadowLight.h"
+#include "GfxMesh.h"
+#include "GfxMaterial.h"
+#include "GfxFrameBuffer.h"
+#include "GfxUniformTime.h"
+#include "GfxUniformScreen.h"
+#include "GfxUniformZBuffer.h"
+#include "GfxUniformProjection.h"
+#include "GfxUniformCamera.h"
+#include "GfxUniformFog.h"
+#include "GfxUniformTransform.h"
+#include "GfxUniformAmbientLight.h"
+#include "GfxUniformPointLight.h"
+#include "GfxUniformDirectLight.h"
+#include "GfxUniformShadowLight.h"
 
 
 #define ENGINE_TIME_NAME                "Time"
@@ -30,17 +30,17 @@
 #define ENGINE_SHADOW_LIGHT_NAME        "ShadowLight"
 
 
-class CRenderer
+class CGfxRenderer
 {
 public:
-	static CRenderer* GetInstance(void);
+	static CGfxRenderer* GetInstance(void);
 	static void Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath);
 	static void Destroy(void);
 
 
 private:
-	CRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath);
-	virtual ~CRenderer(void);
+	CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath);
+	virtual ~CGfxRenderer(void);
 
 
 public:
@@ -87,16 +87,16 @@ public:
 
 public:
 	bool LoadMaterial(const char *szFileName, GLuint materialid);
-	CMaterial* GetMaterial(GLuint id) const;
+	CGfxMaterial* GetMaterial(GLuint id) const;
 
 public:
 	void Clear(float red, float green, float blue, float alpha, float depth);
-	void DrawInstance(GLuint material, CMesh *pMesh);
-	void DrawElements(GLuint material, CMesh *pMesh, const CUniformTransform *pUniformTransform);
+	void DrawInstance(GLuint material, CGfxMesh *pMesh);
+	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform);
 	void DrawScreen(GLuint material);
 
 private:
-	void BindMaterial(CMaterial *pMaterial);
+	void BindMaterial(CGfxMaterial *pMaterial);
 
 
 private:
@@ -105,27 +105,27 @@ private:
 	char m_szMaterialPath[260];
 
 private:
-	CMesh m_meshScreen;
+	CGfxMesh m_meshScreen;
 
 private:
-	CUniformTime m_uniformTime;
-	CUniformScreen m_uniformScreen;
-	CUniformZBuffer m_uniformZBuffer;
-	CUniformProjection m_uniformProjection;
-	CUniformCamera m_uniformCamera;
-	CUniformFog m_uniformFog;
-	CUniformAmbientLight m_uniformAmbientLight;
-	CUniformPointLight m_uniformPointLight;
-	CUniformDirectLight m_uniformDirectLight;
-	CUniformShadowLight m_uniformShadowLight;
+	CGfxUniformTime m_uniformTime;
+	CGfxUniformScreen m_uniformScreen;
+	CGfxUniformZBuffer m_uniformZBuffer;
+	CGfxUniformProjection m_uniformProjection;
+	CGfxUniformCamera m_uniformCamera;
+	CGfxUniformFog m_uniformFog;
+	CGfxUniformAmbientLight m_uniformAmbientLight;
+	CGfxUniformPointLight m_uniformPointLight;
+	CGfxUniformDirectLight m_uniformDirectLight;
+	CGfxUniformShadowLight m_uniformShadowLight;
 
 private:
 	GLuint m_material;
-	std::map<GLuint, CMaterial*> m_pMaterials;
+	std::map<GLuint, CGfxMaterial*> m_pMaterials;
 
 private:
-	CMaterial *m_pGlobalMaterial;
+	CGfxMaterial *m_pGlobalMaterial;
 
 private:
-	static CRenderer *pInstance;
+	static CGfxRenderer *pInstance;
 };

@@ -3,11 +3,11 @@
 #include "glm/glm.hpp"
 
 
-class CIndexBuffer
+class CGfxIndexBuffer
 {
 public:
-	CIndexBuffer(void);
-	virtual ~CIndexBuffer(void);
+	CGfxIndexBuffer(void);
+	virtual ~CGfxIndexBuffer(void);
 
 
 public:

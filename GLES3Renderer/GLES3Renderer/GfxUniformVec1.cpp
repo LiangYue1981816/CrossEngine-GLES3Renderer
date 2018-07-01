@@ -1,26 +1,26 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformVec1.h"
+#include "GfxUniformVec1.h"
 
 
-CUniformVec1::CUniformVec1(void)
+CGfxUniformVec1::CGfxUniformVec1(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_value), true);
 }
 
-CUniformVec1::~CUniformVec1(void)
+CGfxUniformVec1::~CGfxUniformVec1(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformVec1::SetValue(float value)
+void CGfxUniformVec1::SetValue(float value)
 {
 	m_bDirty = true;
 	m_value = value;
 }
 
-void CUniformVec1::Apply(void)
+void CGfxUniformVec1::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -28,12 +28,12 @@ void CUniformVec1::Apply(void)
 	}
 }
 
-GLuint CUniformVec1::GetSize(void) const
+GLuint CGfxUniformVec1::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformVec1::GetBuffer(void) const
+GLuint CGfxUniformVec1::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

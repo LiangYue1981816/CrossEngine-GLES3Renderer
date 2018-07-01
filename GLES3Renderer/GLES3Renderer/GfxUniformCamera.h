@@ -2,10 +2,10 @@
 #include "glew.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "UniformBuffer.h"
+#include "GfxUniformBuffer.h"
 
 
-class CUniformCamera
+class CGfxUniformCamera
 {
 private:
 	typedef struct Params {
@@ -17,8 +17,8 @@ private:
 
 
 public:
-	CUniformCamera(void);
-	virtual ~CUniformCamera(void);
+	CGfxUniformCamera(void);
+	virtual ~CGfxUniformCamera(void);
 
 
 public:
@@ -37,5 +37,5 @@ public:
 private:
 	bool m_bDirty;
 	Params m_params;
-	CUniformBuffer m_uniformBuffer;
+	CGfxUniformBuffer m_uniformBuffer;
 };

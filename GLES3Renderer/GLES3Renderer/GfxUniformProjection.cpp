@@ -1,26 +1,26 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformProjection.h"
+#include "GfxUniformProjection.h"
 
 
-CUniformProjection::CUniformProjection(void)
+CGfxUniformProjection::CGfxUniformProjection(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformProjection::~CUniformProjection(void)
+CGfxUniformProjection::~CGfxUniformProjection(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformProjection::SetProjection(float zNear, float zFar)
+void CGfxUniformProjection::SetProjection(float zNear, float zFar)
 {
 	m_bDirty = true;
 	m_params.projection = glm::vec4(1.0f, zNear, zFar, 1.0f / zFar);
 }
 
-void CUniformProjection::Apply(void)
+void CGfxUniformProjection::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -28,12 +28,12 @@ void CUniformProjection::Apply(void)
 	}
 }
 
-GLuint CUniformProjection::GetSize(void) const
+GLuint CGfxUniformProjection::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformProjection::GetBuffer(void) const
+GLuint CGfxUniformProjection::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

@@ -1,10 +1,9 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "Texture2D.h"
-#include "Renderer.h"
+#include "GfxRenderer.h"
 
 
-CTexture2D::CTexture2D(void)
+CGfxTexture2D::CGfxTexture2D(void)
 	: m_texture(0)
 	, m_sampler(0)
 	, m_external(GL_FALSE)
@@ -20,7 +19,7 @@ CTexture2D::CTexture2D(void)
 	glGenSamplers(1, &m_sampler);
 }
 
-CTexture2D::~CTexture2D(void)
+CGfxTexture2D::~CGfxTexture2D(void)
 {
 	if (m_external == GL_TRUE) {
 		glDeleteTextures(1, &m_texture);
@@ -29,7 +28,7 @@ CTexture2D::~CTexture2D(void)
 	glDeleteSamplers(1, &m_sampler);
 }
 
-bool CTexture2D::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTexture2D::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
 		printf("\t\tCreate ... ");
@@ -37,7 +36,7 @@ bool CTexture2D::Create(const char *szFileName, GLenum minFilter, GLenum magFilt
 			int err = 0;
 
 			char szFullPath[260];
-			CRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
+			CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
 			gli::texture2d texture = (gli::texture2d)gli::load(szFullPath);
 
 			gli::gl GL(gli::gl::PROFILE_ES30);
@@ -60,7 +59,7 @@ bool CTexture2D::Create(const char *szFileName, GLenum minFilter, GLenum magFilt
 	}
 }
 
-bool CTexture2D::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTexture2D::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
 		printf("\t\tCreate ... ");
@@ -79,7 +78,7 @@ bool CTexture2D::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLen
 	}
 }
 
-bool CTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
 		printf("\t\tCreate ... ");
@@ -98,14 +97,14 @@ bool CTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, GLs
 	}
 }
 
-bool CTexture2D::CreateImage(GLuint texture)
+bool CGfxTexture2D::CreateImage(GLuint texture)
 {
 	m_texture = texture;
 	m_external = GL_TRUE;
 	return true;
 }
 
-bool CTexture2D::CreateImage(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels)
+bool CGfxTexture2D::CreateImage(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels)
 {
 	m_format = format;
 	m_internalFormat = internalFormat;
@@ -121,7 +120,7 @@ bool CTexture2D::CreateImage(GLenum format, GLenum internalFormat, GLsizei width
 	return true;
 }
 
-bool CTexture2D::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTexture2D::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MIN_FILTER, minFilter);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MAG_FILTER, magFilter);
@@ -132,7 +131,7 @@ bool CTexture2D::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addres
 	return true;
 }
 
-bool CTexture2D::TransferTexture2D(const gli::texture2d &texture)
+bool CGfxTexture2D::TransferTexture2D(const gli::texture2d &texture)
 {
 	gli::gl GL(gli::gl::PROFILE_ES30);
 	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
@@ -165,7 +164,7 @@ bool CTexture2D::TransferTexture2D(const gli::texture2d &texture)
 	return true;
 }
 
-bool CTexture2D::TransferTexture2D(GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
+bool CGfxTexture2D::TransferTexture2D(GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
 {
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 	{
@@ -176,7 +175,7 @@ bool CTexture2D::TransferTexture2D(GLint level, GLenum format, GLsizei width, GL
 	return true;
 }
 
-bool CTexture2D::TransferTexture2DCompressed(GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
+bool CGfxTexture2D::TransferTexture2DCompressed(GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
 {
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 	{
@@ -187,12 +186,12 @@ bool CTexture2D::TransferTexture2DCompressed(GLint level, GLenum format, GLsizei
 	return true;
 }
 
-GLuint CTexture2D::GetTexture(void) const
+GLuint CGfxTexture2D::GetTexture(void) const
 {
 	return m_texture;
 }
 
-GLuint CTexture2D::GetSampler(void) const
+GLuint CGfxTexture2D::GetSampler(void) const
 {
 	return m_sampler;
 }

@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "FrameBuffer.h"
+#include "GfxFrameBuffer.h"
 
 
 static void glReadBuffers(GLsizei n, const GLenum *bufs)
@@ -10,7 +10,7 @@ static void glReadBuffers(GLsizei n, const GLenum *bufs)
 	}
 }
 
-CFrameBuffer::CFrameBuffer(GLuint width, GLuint height)
+CGfxFrameBuffer::CGfxFrameBuffer(GLuint width, GLuint height)
 	: m_width(width)
 	, m_height(height)
 
@@ -20,12 +20,12 @@ CFrameBuffer::CFrameBuffer(GLuint width, GLuint height)
 
 }
 
-CFrameBuffer::~CFrameBuffer(void)
+CGfxFrameBuffer::~CGfxFrameBuffer(void)
 {
 	Destroy();
 }
 
-bool CFrameBuffer::SetRenderTexture(GLuint index, GLenum internalformat, GLenum format, GLenum type, GLenum minFilter, GLenum magFilter, bool invalidation)
+bool CGfxFrameBuffer::SetRenderTexture(GLuint index, GLenum internalformat, GLenum format, GLenum type, GLenum minFilter, GLenum magFilter, bool invalidation)
 {
 	if (m_textures.find(index) != m_textures.end()) {
 		return false;
@@ -45,7 +45,7 @@ bool CFrameBuffer::SetRenderTexture(GLuint index, GLenum internalformat, GLenum 
 	return true;
 }
 
-bool CFrameBuffer::CheckFramebufferStatus(void)
+bool CGfxFrameBuffer::CheckFramebufferStatus(void)
 {
 	GLenum status;
 
@@ -56,7 +56,7 @@ bool CFrameBuffer::CheckFramebufferStatus(void)
 	return status == GL_FRAMEBUFFER_COMPLETE;
 }
 
-bool CFrameBuffer::Create(void)
+bool CGfxFrameBuffer::Create(void)
 {
 	Destroy();
 
@@ -90,7 +90,7 @@ bool CFrameBuffer::Create(void)
 	return CheckFramebufferStatus();
 }
 
-void CFrameBuffer::Destroy(void)
+void CGfxFrameBuffer::Destroy(void)
 {
 	if (m_fbo) {
 		glDeleteFramebuffers(1, &m_fbo);
@@ -110,22 +110,22 @@ void CFrameBuffer::Destroy(void)
 	m_invalidations.clear();
 }
 
-GLuint CFrameBuffer::GetFBO(void) const
+GLuint CGfxFrameBuffer::GetFBO(void) const
 {
 	return m_fbo;
 }
 
-GLuint CFrameBuffer::GetWidth(void) const
+GLuint CGfxFrameBuffer::GetWidth(void) const
 {
 	return m_width;
 }
 
-GLuint CFrameBuffer::GetHeight(void) const
+GLuint CGfxFrameBuffer::GetHeight(void) const
 {
 	return m_height;
 }
 
-GLuint CFrameBuffer::GetTexture(GLuint index) const
+GLuint CGfxFrameBuffer::GetTexture(GLuint index) const
 {
 	const auto &itTexture = m_textures.find(index);
 	return itTexture != m_textures.end() ? itTexture->second : 0;

@@ -1,20 +1,20 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformTime.h"
+#include "GfxUniformTime.h"
 
 
-CUniformTime::CUniformTime(void)
+CGfxUniformTime::CGfxUniformTime(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformTime::~CUniformTime(void)
+CGfxUniformTime::~CGfxUniformTime(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformTime::SetTime(float t, float dt)
+void CGfxUniformTime::SetTime(float t, float dt)
 {
 	m_bDirty = true;
 	m_params.time = glm::vec4(t / 20.0f, t * 1.0f, t * 2.0f, t * 3.0f);
@@ -23,7 +23,7 @@ void CUniformTime::SetTime(float t, float dt)
 	m_params.deltaTime = glm::vec4(dt, 1.0f / dt, 1.0f, 1.0f);
 }
 
-void CUniformTime::Apply(void)
+void CGfxUniformTime::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -31,12 +31,12 @@ void CUniformTime::Apply(void)
 	}
 }
 
-GLuint CUniformTime::GetSize(void) const
+GLuint CGfxUniformTime::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformTime::GetBuffer(void) const
+GLuint CGfxUniformTime::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

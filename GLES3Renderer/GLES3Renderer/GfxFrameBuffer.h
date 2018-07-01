@@ -4,11 +4,11 @@
 #include "glew.h"
 
 
-class CFrameBuffer
+class CGfxFrameBuffer
 {
 public:
-	CFrameBuffer(GLuint width, GLuint height);
-	virtual ~CFrameBuffer(void);
+	CGfxFrameBuffer(GLuint width, GLuint height);
+	virtual ~CGfxFrameBuffer(void);
 
 
 public:

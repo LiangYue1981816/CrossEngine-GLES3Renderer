@@ -1,10 +1,9 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "TextureCubeMap.h"
-#include "Renderer.h"
+#include "GfxRenderer.h"
 
 
-CTextureCubeMap::CTextureCubeMap(void)
+CGfxTextureCubeMap::CGfxTextureCubeMap(void)
 	: m_texture(0)
 	, m_sampler(0)
 	, m_external(GL_FALSE)
@@ -20,7 +19,7 @@ CTextureCubeMap::CTextureCubeMap(void)
 	glGenSamplers(1, &m_sampler);
 }
 
-CTextureCubeMap::~CTextureCubeMap(void)
+CGfxTextureCubeMap::~CGfxTextureCubeMap(void)
 {
 	if (m_external == GL_TRUE) {
 		glDeleteTextures(1, &m_texture);
@@ -29,7 +28,7 @@ CTextureCubeMap::~CTextureCubeMap(void)
 	glDeleteSamplers(1, &m_sampler);
 }
 
-bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
 		printf("\t\tCreate ... ");
@@ -37,7 +36,7 @@ bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum ma
 			int err = 0;
 
 			char szFullPath[260];
-			CRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
+			CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
 			gli::texture_cube texture = (gli::texture_cube)gli::load(szFullPath);
 
 			gli::gl GL(gli::gl::PROFILE_ES30);
@@ -60,7 +59,7 @@ bool CTextureCubeMap::Create(const char *szFileName, GLenum minFilter, GLenum ma
 	}
 }
 
-bool CTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
 		printf("\t\tCreate ... ");
@@ -79,7 +78,7 @@ bool CTextureCubeMap::Create(GLuint texture, GLenum minFilter, GLenum magFilter,
 	}
 }
 
-bool CTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	try {
 		printf("\t\tCreate ... ");
@@ -98,14 +97,14 @@ bool CTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width
 	}
 }
 
-bool CTextureCubeMap::CreateImage(GLuint texture)
+bool CGfxTextureCubeMap::CreateImage(GLuint texture)
 {
 	m_texture = texture;
 	m_external = GL_TRUE;
 	return true;
 }
 
-bool CTextureCubeMap::CreateImage(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels)
+bool CGfxTextureCubeMap::CreateImage(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels)
 {
 	m_format = format;
 	m_internalFormat = internalFormat;
@@ -121,7 +120,7 @@ bool CTextureCubeMap::CreateImage(GLenum format, GLenum internalFormat, GLsizei 
 	return true;
 }
 
-bool CTextureCubeMap::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxTextureCubeMap::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MIN_FILTER, minFilter);
 	glSamplerParameteri(m_sampler, GL_TEXTURE_MAG_FILTER, magFilter);
@@ -132,7 +131,7 @@ bool CTextureCubeMap::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum a
 	return true;
 }
 
-bool CTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture)
+bool CGfxTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture)
 {
 	gli::gl GL(gli::gl::PROFILE_ES30);
 	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
@@ -175,7 +174,7 @@ bool CTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture)
 	return true;
 }
 
-bool CTextureCubeMap::TransferTexture2D(const gli::texture2d &texture, GLint face)
+bool CGfxTextureCubeMap::TransferTexture2D(const gli::texture2d &texture, GLint face)
 {
 	gli::gl GL(gli::gl::PROFILE_ES30);
 	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
@@ -208,7 +207,7 @@ bool CTextureCubeMap::TransferTexture2D(const gli::texture2d &texture, GLint fac
 	return true;
 }
 
-bool CTextureCubeMap::TransferTexture2D(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
+bool CGfxTextureCubeMap::TransferTexture2D(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
 	{
@@ -219,7 +218,7 @@ bool CTextureCubeMap::TransferTexture2D(GLint face, GLint level, GLenum format, 
 	return true;
 }
 
-bool CTextureCubeMap::TransferTexture2DCompressed(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
+bool CGfxTextureCubeMap::TransferTexture2DCompressed(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture);
 	{
@@ -230,12 +229,12 @@ bool CTextureCubeMap::TransferTexture2DCompressed(GLint face, GLint level, GLenu
 	return true;
 }
 
-GLuint CTextureCubeMap::GetTexture(void) const
+GLuint CGfxTextureCubeMap::GetTexture(void) const
 {
 	return m_texture;
 }
 
-GLuint CTextureCubeMap::GetSampler(void) const
+GLuint CGfxTextureCubeMap::GetSampler(void) const
 {
 	return m_sampler;
 }

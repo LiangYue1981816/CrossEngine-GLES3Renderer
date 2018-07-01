@@ -1,10 +1,10 @@
 #pragma once
 #include "glew.h"
 #include "glm/glm.hpp"
-#include "UniformBuffer.h"
+#include "GfxUniformBuffer.h"
 
 
-class CUniformDirectLight
+class CGfxUniformDirectLight
 {
 private:
 	typedef struct Params {
@@ -14,8 +14,8 @@ private:
 
 
 public:
-	CUniformDirectLight(void);
-	virtual ~CUniformDirectLight(void);
+	CGfxUniformDirectLight(void);
+	virtual ~CGfxUniformDirectLight(void);
 
 
 public:
@@ -31,5 +31,5 @@ public:
 private:
 	bool m_bDirty;
 	Params m_params;
-	CUniformBuffer m_uniformBuffer;
+	CGfxUniformBuffer m_uniformBuffer;
 };

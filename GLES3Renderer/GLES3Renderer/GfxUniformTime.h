@@ -1,10 +1,10 @@
 #pragma once
 #include "glew.h"
 #include "glm/glm.hpp"
-#include "UniformBuffer.h"
+#include "GfxUniformBuffer.h"
 
 
-class CUniformTime
+class CGfxUniformTime
 {
 private:
 	typedef struct Params {
@@ -16,8 +16,8 @@ private:
 
 
 public:
-	CUniformTime(void);
-	virtual ~CUniformTime(void);
+	CGfxUniformTime(void);
+	virtual ~CGfxUniformTime(void);
 
 
 public:
@@ -32,5 +32,5 @@ public:
 private:
 	bool m_bDirty;
 	Params m_params;
-	CUniformBuffer m_uniformBuffer;
+	CGfxUniformBuffer m_uniformBuffer;
 };

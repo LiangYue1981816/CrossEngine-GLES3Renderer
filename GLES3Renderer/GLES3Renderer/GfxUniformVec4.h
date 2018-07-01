@@ -1,14 +1,14 @@
 #pragma once
 #include "glew.h"
 #include "glm/glm.hpp"
-#include "UniformBuffer.h"
+#include "GfxUniformBuffer.h"
 
 
-class CUniformVec4
+class CGfxUniformVec4
 {
 public:
-	CUniformVec4(void);
-	virtual ~CUniformVec4(void);
+	CGfxUniformVec4(void);
+	virtual ~CGfxUniformVec4(void);
 
 
 public:
@@ -23,5 +23,5 @@ public:
 private:
 	bool m_bDirty;
 	glm::vec4 m_value;
-	CUniformBuffer m_uniformBuffer;
+	CGfxUniformBuffer m_uniformBuffer;
 };

@@ -4,11 +4,11 @@
 #include "glm/glm.hpp"
 
 
-class CInstanceBuffer
+class CGfxInstanceBuffer
 {
 public:
-	CInstanceBuffer(void);
-	virtual ~CInstanceBuffer(void);
+	CGfxInstanceBuffer(void);
+	virtual ~CGfxInstanceBuffer(void);
 
 
 public:

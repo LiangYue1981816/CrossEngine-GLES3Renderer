@@ -1,7 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "Program.h"
-#include "Renderer.h"
+#include "GfxRenderer.h"
 
 
 uint32_t HashValue(const char *szString)
@@ -62,7 +61,7 @@ static std::vector<GLuint> LoadShaderBinary(const char *szFileName)
 }
 
 
-CProgram::CProgram(void)
+CGfxProgram::CGfxProgram(void)
 	: m_program(0)
 	, m_vertexShader(0)
 	, m_fragmentShader(0)
@@ -71,12 +70,12 @@ CProgram::CProgram(void)
 
 }
 
-CProgram::~CProgram(void)
+CGfxProgram::~CGfxProgram(void)
 {
 	Destroy();
 }
 
-bool CProgram::Create(const char *szVertexFileName, const char *szFragmentFileName)
+bool CGfxProgram::Create(const char *szVertexFileName, const char *szFragmentFileName)
 {
 	try {
 		Destroy();
@@ -100,7 +99,7 @@ bool CProgram::Create(const char *szVertexFileName, const char *szFragmentFileNa
 	}
 }
 
-bool CProgram::CreateShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler)
+bool CGfxProgram::CreateShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler)
 {
 	shader = 0;
 	pShaderCompiler = NULL;
@@ -109,7 +108,7 @@ bool CProgram::CreateShader(const char *szFileName, GLenum type, GLuint &shader,
 		printf("\t\t\tCreateShader(%s) ... ", szFileName);
 		{
 			char szFullPath[260];
-			CRenderer::GetInstance()->GetShaderFullPath(szFileName, szFullPath);
+			CGfxRenderer::GetInstance()->GetShaderFullPath(szFileName, szFullPath);
 
 			std::vector<GLuint> words = LoadShaderBinary(szFullPath);
 			pShaderCompiler = new spirv_cross::CompilerGLSL(words.data(), words.size());
@@ -150,7 +149,7 @@ bool CProgram::CreateShader(const char *szFileName, GLenum type, GLuint &shader,
 	}
 }
 
-bool CProgram::CreateProgram(void)
+bool CGfxProgram::CreateProgram(void)
 {
 	try {
 		printf("\t\t\tCreateProgram() ... ");
@@ -179,7 +178,7 @@ bool CProgram::CreateProgram(void)
 	}
 }
 
-bool CProgram::CreateLocations(void)
+bool CGfxProgram::CreateLocations(void)
 {
 	for (int index = 0; index < 2; index++) {
 		const spirv_cross::ShaderResources shaderResources = m_pShaderCompilers[index]->get_shader_resources();
@@ -200,7 +199,7 @@ bool CProgram::CreateLocations(void)
 	return true;
 }
 
-void CProgram::Destroy(void)
+void CGfxProgram::Destroy(void)
 {
 	if (m_program) {
 		glDeleteProgram(m_program);
@@ -229,7 +228,7 @@ void CProgram::Destroy(void)
 	m_pShaderCompilers[1] = NULL;
 }
 
-bool CProgram::SetUniformLocation(const char *szName)
+bool CGfxProgram::SetUniformLocation(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
@@ -246,7 +245,7 @@ bool CProgram::SetUniformLocation(const char *szName)
 	return false;
 }
 
-bool CProgram::SetTextureLocation(const char *szName)
+bool CGfxProgram::SetTextureLocation(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
@@ -262,12 +261,12 @@ bool CProgram::SetTextureLocation(const char *szName)
 	return false;
 }
 
-void CProgram::UseProgram(void) const
+void CGfxProgram::UseProgram(void) const
 {
 	glUseProgram(m_program);
 }
 
-bool CProgram::BindUniformBuffer(GLuint name, GLuint buffer, GLsizeiptr size, GLintptr offset) const
+bool CGfxProgram::BindUniformBuffer(GLuint name, GLuint buffer, GLsizeiptr size, GLintptr offset) const
 {
 	const auto &itLocation = m_uniformBlockLocations.find(name);
 
@@ -279,7 +278,7 @@ bool CProgram::BindUniformBuffer(GLuint name, GLuint buffer, GLsizeiptr size, GL
 	return false;
 }
 
-bool CProgram::BindTexture2D(GLuint name, GLuint texture, GLuint sampler, GLuint unit) const
+bool CGfxProgram::BindTexture2D(GLuint name, GLuint texture, GLuint sampler, GLuint unit) const
 {
 	const auto &itLocation = m_sampledImageLocations.find(name);
 
@@ -294,7 +293,7 @@ bool CProgram::BindTexture2D(GLuint name, GLuint texture, GLuint sampler, GLuint
 	return false;
 }
 
-bool CProgram::BindTextureArray(GLuint name, GLuint texture, GLuint sampler, GLuint unit) const
+bool CGfxProgram::BindTextureArray(GLuint name, GLuint texture, GLuint sampler, GLuint unit) const
 {
 	const auto &itLocation = m_sampledImageLocations.find(name);
 
@@ -309,7 +308,7 @@ bool CProgram::BindTextureArray(GLuint name, GLuint texture, GLuint sampler, GLu
 	return false;
 }
 
-bool CProgram::BindTextureCubeMap(GLuint name, GLuint texture, GLuint sampler, GLuint unit) const
+bool CGfxProgram::BindTextureCubeMap(GLuint name, GLuint texture, GLuint sampler, GLuint unit) const
 {
 	const auto &itLocation = m_sampledImageLocations.find(name);
 
@@ -324,12 +323,12 @@ bool CProgram::BindTextureCubeMap(GLuint name, GLuint texture, GLuint sampler, G
 	return false;
 }
 
-bool CProgram::IsUniformValid(GLuint name) const
+bool CGfxProgram::IsUniformValid(GLuint name) const
 {
 	return m_uniformBlockLocations.find(name) != m_uniformBlockLocations.end();
 }
 
-bool CProgram::IsTextureValid(GLuint name) const
+bool CGfxProgram::IsTextureValid(GLuint name) const
 {
 	return m_sampledImageLocations.find(name) != m_sampledImageLocations.end();
 }

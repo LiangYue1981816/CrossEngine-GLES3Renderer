@@ -1,26 +1,26 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "UniformScreen.h"
+#include "GfxUniformScreen.h"
 
 
-CUniformScreen::CUniformScreen(void)
+CGfxUniformScreen::CGfxUniformScreen(void)
 	: m_bDirty(false)
 {
 	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
 }
 
-CUniformScreen::~CUniformScreen(void)
+CGfxUniformScreen::~CGfxUniformScreen(void)
 {
 	m_uniformBuffer.Destroy();
 }
 
-void CUniformScreen::SetScreen(float width, float height)
+void CGfxUniformScreen::SetScreen(float width, float height)
 {
 	m_bDirty = true;
 	m_params.screen = glm::vec4(width, height, 1.0f + 1.0f / width, 1.0f + 1.0f / height);
 }
 
-void CUniformScreen::Apply(void)
+void CGfxUniformScreen::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
@@ -28,12 +28,12 @@ void CUniformScreen::Apply(void)
 	}
 }
 
-GLuint CUniformScreen::GetSize(void) const
+GLuint CGfxUniformScreen::GetSize(void) const
 {
 	return m_uniformBuffer.GetSize();
 }
 
-GLuint CUniformScreen::GetBuffer(void) const
+GLuint CGfxUniformScreen::GetBuffer(void) const
 {
 	return m_uniformBuffer.GetBuffer();
 }

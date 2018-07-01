@@ -1,6 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "VertexAttribute.h"
+#include "GfxVertexAttribute.h"
 
 
 struct ATTRIBUTE {

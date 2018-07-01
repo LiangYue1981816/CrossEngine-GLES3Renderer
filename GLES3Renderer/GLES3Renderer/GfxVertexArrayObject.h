@@ -4,15 +4,15 @@
 #include "glm/glm.hpp"
 
 
-class CVertexArrayObject
+class CGfxVertexArrayObject
 {
 public:
-	CVertexArrayObject(void);
-	virtual ~CVertexArrayObject(void);
+	CGfxVertexArrayObject(void);
+	virtual ~CGfxVertexArrayObject(void);
 
 
 public:
-	bool CreateVertexArrayObject(const CIndexBuffer *pIndexBuffer, const CVertexBuffer *pVertexBuffer, const CInstanceBuffer *pInstanceBuffer);
+	bool CreateVertexArrayObject(const CGfxIndexBuffer *pIndexBuffer, const CGfxVertexBuffer *pVertexBuffer, const CGfxInstanceBuffer *pInstanceBuffer);
 	void Destroy(void);
 
 public:

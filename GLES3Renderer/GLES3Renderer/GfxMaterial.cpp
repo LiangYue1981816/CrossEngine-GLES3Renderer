@@ -1,7 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "Material.h"
-#include "Renderer.h"
+#include "GfxRenderer.h"
 
 
 static GLenum StringToFrontFace(const char *szString)
@@ -110,7 +109,7 @@ static GLenum StringToBlendDstFactor(const char *szString)
 }
 
 
-CMaterial::CMaterial(void)
+CGfxMaterial::CGfxMaterial(void)
 	: m_pProgram(NULL)
 
 	, m_bEnableCullFace(true)
@@ -133,12 +132,12 @@ CMaterial::CMaterial(void)
 
 }
 
-CMaterial::~CMaterial(void)
+CGfxMaterial::~CGfxMaterial(void)
 {
 	Destroy();
 }
 
-void CMaterial::Bind(void) const
+void CGfxMaterial::Bind(void) const
 {
 	if (m_pProgram) {
 		m_pProgram->UseProgram();
@@ -148,7 +147,7 @@ void CMaterial::Bind(void) const
 	}
 }
 
-void CMaterial::BindPipeline(void) const
+void CGfxMaterial::BindPipeline(void) const
 {
 	if (m_bEnableCullFace) {
 		glEnable(GL_CULL_FACE);
@@ -194,7 +193,7 @@ void CMaterial::BindPipeline(void) const
 	glColorMask(m_bEnableColorMaskRed, m_bEnableColorMaskGreen, m_bEnableColorMaskBlue, m_bEnableColorMaskAlpha);
 }
 
-void CMaterial::BindUniforms(CProgram *pProgram) const
+void CGfxMaterial::BindUniforms(CGfxProgram *pProgram) const
 {
 	for (const auto &itUniform : m_pUniformVec1s) {
 		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
@@ -217,7 +216,7 @@ void CMaterial::BindUniforms(CProgram *pProgram) const
 	}
 }
 
-void CMaterial::BindTextures(CProgram *pProgram, GLuint indexUnit) const
+void CGfxMaterial::BindTextures(CGfxProgram *pProgram, GLuint indexUnit) const
 {
 	for (const auto &itTexture : m_pTexture2ds) {
 		if (pProgram->BindTexture2D(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), indexUnit)) {
@@ -238,7 +237,7 @@ void CMaterial::BindTextures(CProgram *pProgram, GLuint indexUnit) const
 	}
 }
 
-bool CMaterial::Create(const char *szFileName)
+bool CGfxMaterial::Create(const char *szFileName)
 {
 	try {
 		Destroy();
@@ -260,7 +259,7 @@ bool CMaterial::Create(const char *szFileName)
 	}
 }
 
-bool CMaterial::Load(const char *szFileName)
+bool CGfxMaterial::Load(const char *szFileName)
 {
 	/*
 	<Material>
@@ -285,7 +284,7 @@ bool CMaterial::Load(const char *szFileName)
 	*/
 
 	char szFullPath[260];
-	CRenderer::GetInstance()->GetMaterialFullPath(szFileName, szFullPath);
+	CGfxRenderer::GetInstance()->GetMaterialFullPath(szFileName, szFullPath);
 
 	TiXmlDocument xmlDoc;
 	if (xmlDoc.LoadFile(szFullPath)) {
@@ -307,7 +306,7 @@ bool CMaterial::Load(const char *szFileName)
 	return false;
 }
 
-bool CMaterial::LoadBase(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadBase(TiXmlNode *pMaterialNode)
 {
 	try {
 		printf("\tLoadBase ... ");
@@ -355,7 +354,7 @@ bool CMaterial::LoadBase(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadProgram(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 {
 	try {
 		printf("\tLoadProgram ... \n");
@@ -369,7 +368,7 @@ bool CMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 			const char *szFragmentFileName = pProgramNode->ToElement()->AttributeString("fragment_file_name");
 			if (szVertexFileName == NULL || szFragmentFileName == NULL) throw err++;
 
-			m_pProgram = new CProgram;
+			m_pProgram = new CGfxProgram;
 			if (m_pProgram == NULL) throw err++;
 			if (m_pProgram->Create(szVertexFileName, szFragmentFileName) == false) throw err++;
 		}
@@ -382,7 +381,7 @@ bool CMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 {
 	try {
 		TiXmlNode *pTextureNode = pMaterialNode->FirstChild("Texture2D");
@@ -408,7 +407,7 @@ bool CMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsTextureValid(name)) {
-					if (m_pTexture2ds[name] = new CTexture2D) {
+					if (m_pTexture2ds[name] = new CGfxTexture2D) {
 						if (m_pTexture2ds[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
 							throw err++;
 						}
@@ -425,7 +424,7 @@ bool CMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 {
 	try {
 		TiXmlNode *pTextureNode = pMaterialNode->FirstChild("Texture2DArray");
@@ -451,7 +450,7 @@ bool CMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsTextureValid(name)) {
-					if (m_pTexture2dArrays[name] = new CTexture2DArray) {
+					if (m_pTexture2dArrays[name] = new CGfxTexture2DArray) {
 						if (m_pTexture2dArrays[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
 							throw err++;
 						}
@@ -468,7 +467,7 @@ bool CMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 {
 	try {
 		TiXmlNode *pTextureNode = pMaterialNode->FirstChild("TextureCubeMap");
@@ -494,7 +493,7 @@ bool CMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsTextureValid(name)) {
-					if (m_pTextureCubeMaps[name] = new CTextureCubeMap) {
+					if (m_pTextureCubeMaps[name] = new CGfxTextureCubeMap) {
 						if (m_pTextureCubeMaps[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
 							throw err++;
 						}
@@ -511,7 +510,7 @@ bool CMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 {
 	try {
 		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform1f");
@@ -533,7 +532,7 @@ bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec1s[name] = new CUniformVec1) {
+					if (m_pUniformVec1s[name] = new CGfxUniformVec1) {
 						m_pUniformVec1s[name]->SetValue(value);
 						m_pUniformVec1s[name]->Apply();
 					}
@@ -549,7 +548,7 @@ bool CMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 {
 	try {
 		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform2f");
@@ -571,7 +570,7 @@ bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec2s[name] = new CUniformVec2) {
+					if (m_pUniformVec2s[name] = new CGfxUniformVec2) {
 						m_pUniformVec2s[name]->SetValue(value[0], value[1]);
 						m_pUniformVec2s[name]->Apply();
 					}
@@ -587,7 +586,7 @@ bool CMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 {
 	try {
 		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform3f");
@@ -609,7 +608,7 @@ bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec3s[name] = new CUniformVec3) {
+					if (m_pUniformVec3s[name] = new CGfxUniformVec3) {
 						m_pUniformVec3s[name]->SetValue(value[0], value[1], value[2]);
 						m_pUniformVec3s[name]->Apply();
 					}
@@ -625,7 +624,7 @@ bool CMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 	}
 }
 
-bool CMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 {
 	try {
 		TiXmlNode *pUniformNode = pMaterialNode->FirstChild("Uniform4f");
@@ -647,7 +646,7 @@ bool CMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsUniformValid(name)) {
-					if (m_pUniformVec4s[name] = new CUniformVec4) {
+					if (m_pUniformVec4s[name] = new CGfxUniformVec4) {
 						m_pUniformVec4s[name]->SetValue(value[0], value[1], value[2], value[3]);
 						m_pUniformVec4s[name]->Apply();
 					}
@@ -663,7 +662,7 @@ bool CMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 	}
 }
 
-void CMaterial::Destroy(void)
+void CGfxMaterial::Destroy(void)
 {
 	if (m_pProgram) {
 		delete m_pProgram;
@@ -712,43 +711,43 @@ void CMaterial::Destroy(void)
 	m_pUniformMat4s.clear();
 }
 
-void CMaterial::SetEnableCullFace(bool bEnable, GLenum frontFace)
+void CGfxMaterial::SetEnableCullFace(bool bEnable, GLenum frontFace)
 {
 	m_bEnableCullFace = bEnable;
 	m_frontFace = frontFace;
 }
 
-void CMaterial::SetEnableDepthTest(bool bEnable, GLenum depthFunc)
+void CGfxMaterial::SetEnableDepthTest(bool bEnable, GLenum depthFunc)
 {
 	m_bEnableDepthTest = bEnable;
 	m_depthFunc = depthFunc;
 }
 
-void CMaterial::SetEnableDepthWrite(bool bEnable)
+void CGfxMaterial::SetEnableDepthWrite(bool bEnable)
 {
 	m_bEnableDepthWrite = bEnable;
 }
 
-void CMaterial::SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor)
+void CGfxMaterial::SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor)
 {
 	m_bEnableBlend = bEnable;
 	m_srcBlendFactor = srcFactor;
 	m_dstBlendFactor = dstFactor;
 }
 
-void CMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units)
+void CGfxMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units)
 {
 	m_bEnablePolygonOffset = bEnable;
 	m_polygonOffsetFactor = factor;
 	m_polygonOffsetUnits = units;
 }
 
-void CMaterial::SetEnableDepthMask(bool bEnable)
+void CGfxMaterial::SetEnableDepthMask(bool bEnable)
 {
 	m_bEnableDepthMask = bEnable;
 }
 
-void CMaterial::SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
+void CGfxMaterial::SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
 {
 	m_bEnableColorMaskRed = bEnableRed;
 	m_bEnableColorMaskGreen = bEnableGreen;
@@ -756,22 +755,22 @@ void CMaterial::SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEna
 	m_bEnableColorMaskAlpha = bEnableAlpha;
 }
 
-CProgram* CMaterial::GetProgram(void)
+CGfxProgram* CGfxMaterial::GetProgram(void)
 {
 	if (m_pProgram == NULL) {
-		m_pProgram = new CProgram;
+		m_pProgram = new CGfxProgram;
 	}
 
 	return m_pProgram;
 }
 
-CTexture2D* CMaterial::GetTexture2D(const char *szName)
+CGfxTexture2D* CGfxMaterial::GetTexture2D(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2ds[name] == NULL) {
-			m_pTexture2ds[name] = new CTexture2D;
+			m_pTexture2ds[name] = new CGfxTexture2D;
 		}
 
 		return m_pTexture2ds[name];
@@ -780,13 +779,13 @@ CTexture2D* CMaterial::GetTexture2D(const char *szName)
 	return NULL;
 }
 
-CTexture2DArray* CMaterial::GetTexture2DArray(const char *szName)
+CGfxTexture2DArray* CGfxMaterial::GetTexture2DArray(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2dArrays[name] == NULL) {
-			m_pTexture2dArrays[name] = new CTexture2DArray;
+			m_pTexture2dArrays[name] = new CGfxTexture2DArray;
 		}
 
 		return m_pTexture2dArrays[name];
@@ -795,13 +794,13 @@ CTexture2DArray* CMaterial::GetTexture2DArray(const char *szName)
 	return NULL;
 }
 
-CTextureCubeMap* CMaterial::GetTextureCubeMap(const char *szName)
+CGfxTextureCubeMap* CGfxMaterial::GetTextureCubeMap(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTextureCubeMaps[name] == NULL) {
-			m_pTextureCubeMaps[name] = new CTextureCubeMap;
+			m_pTextureCubeMaps[name] = new CGfxTextureCubeMap;
 		}
 
 		return m_pTextureCubeMaps[name];
@@ -810,13 +809,13 @@ CTextureCubeMap* CMaterial::GetTextureCubeMap(const char *szName)
 	return NULL;
 }
 
-CUniformVec1* CMaterial::GetUniformVec1(const char *szName)
+CGfxUniformVec1* CGfxMaterial::GetUniformVec1(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec1s[name] == NULL) {
-			m_pUniformVec1s[name] = new CUniformVec1;
+			m_pUniformVec1s[name] = new CGfxUniformVec1;
 		}
 
 		return m_pUniformVec1s[name];
@@ -825,13 +824,13 @@ CUniformVec1* CMaterial::GetUniformVec1(const char *szName)
 	return NULL;
 }
 
-CUniformVec2* CMaterial::GetUniformVec2(const char *szName)
+CGfxUniformVec2* CGfxMaterial::GetUniformVec2(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec2s[name] == NULL) {
-			m_pUniformVec2s[name] = new CUniformVec2;
+			m_pUniformVec2s[name] = new CGfxUniformVec2;
 		}
 
 		return m_pUniformVec2s[name];
@@ -840,13 +839,13 @@ CUniformVec2* CMaterial::GetUniformVec2(const char *szName)
 	return NULL;
 }
 
-CUniformVec3* CMaterial::GetUniformVec3(const char *szName)
+CGfxUniformVec3* CGfxMaterial::GetUniformVec3(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec3s[name] == NULL) {
-			m_pUniformVec3s[name] = new CUniformVec3;
+			m_pUniformVec3s[name] = new CGfxUniformVec3;
 		}
 
 		return m_pUniformVec3s[name];
@@ -855,13 +854,13 @@ CUniformVec3* CMaterial::GetUniformVec3(const char *szName)
 	return NULL;
 }
 
-CUniformVec4* CMaterial::GetUniformVec4(const char *szName)
+CGfxUniformVec4* CGfxMaterial::GetUniformVec4(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformVec4s[name] == NULL) {
-			m_pUniformVec4s[name] = new CUniformVec4;
+			m_pUniformVec4s[name] = new CGfxUniformVec4;
 		}
 
 		return m_pUniformVec4s[name];
@@ -870,13 +869,13 @@ CUniformVec4* CMaterial::GetUniformVec4(const char *szName)
 	return NULL;
 }
 
-CUniformMat4* CMaterial::GetUniformMat4(const char *szName)
+CGfxUniformMat4* CGfxMaterial::GetUniformMat4(const char *szName)
 {
 	GLuint name = HashValue(szName);
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsUniformValid(name))) {
 		if (m_pUniformMat4s[name] == NULL) {
-			m_pUniformMat4s[name] = new CUniformMat4;
+			m_pUniformMat4s[name] = new CGfxUniformMat4;
 		}
 
 		return m_pUniformMat4s[name];
@@ -885,7 +884,7 @@ CUniformMat4* CMaterial::GetUniformMat4(const char *szName)
 	return NULL;
 }
 
-GLuint CMaterial::GetTextureUnits(void) const
+GLuint CGfxMaterial::GetTextureUnits(void) const
 {
 	GLuint numTexUnits = 0;
 

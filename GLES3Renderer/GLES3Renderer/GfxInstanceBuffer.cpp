@@ -1,12 +1,12 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "InstanceBuffer.h"
-#include "VertexAttribute.h"
+#include "GfxInstanceBuffer.h"
+#include "GfxVertexAttribute.h"
 
 
 static const int INSTANCE_BUFFER_SIZE = 1 * 1024;
 
-CInstanceBuffer::CInstanceBuffer(void)
+CGfxInstanceBuffer::CGfxInstanceBuffer(void)
 	: m_instanceFormat(0)
 	, m_instanceBuffer(0)
 	, m_instanceBufferSize(0)
@@ -16,12 +16,12 @@ CInstanceBuffer::CInstanceBuffer(void)
 
 }
 
-CInstanceBuffer::~CInstanceBuffer(void)
+CGfxInstanceBuffer::~CGfxInstanceBuffer(void)
 {
 	Destroy();
 }
 
-void CInstanceBuffer::Clear(void)
+void CGfxInstanceBuffer::Clear(void)
 {
 	if (m_instanceBuffer) {
 		m_bDirty = true;
@@ -29,7 +29,7 @@ void CInstanceBuffer::Clear(void)
 	}
 }
 
-void CInstanceBuffer::SetInstance(const glm::mat4 &mtxTransform)
+void CGfxInstanceBuffer::SetInstance(const glm::mat4 &mtxTransform)
 {
 	if (m_instanceBuffer) {
 		m_bDirty = true;
@@ -38,7 +38,7 @@ void CInstanceBuffer::SetInstance(const glm::mat4 &mtxTransform)
 	}
 }
 
-void CInstanceBuffer::AddInstance(const glm::mat4 &mtxTransform)
+void CGfxInstanceBuffer::AddInstance(const glm::mat4 &mtxTransform)
 {
 	if (m_instanceBuffer) {
 		m_bDirty = true;
@@ -46,7 +46,7 @@ void CInstanceBuffer::AddInstance(const glm::mat4 &mtxTransform)
 	}
 }
 
-void CInstanceBuffer::UpdateInstance(void)
+void CGfxInstanceBuffer::UpdateInstance(void)
 {
 	if (m_bDirty && m_instanceBuffer) {
 		m_bDirty = false;
@@ -68,7 +68,7 @@ void CInstanceBuffer::UpdateInstance(void)
 	}
 }
 
-bool CInstanceBuffer::CreateInstanceBuffer(GLuint format)
+bool CGfxInstanceBuffer::CreateInstanceBuffer(GLuint format)
 {
 	m_instanceFormat = format;
 	m_instanceBufferSize = INSTANCE_BUFFER_SIZE;
@@ -77,9 +77,11 @@ bool CInstanceBuffer::CreateInstanceBuffer(GLuint format)
 	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
 	glBufferData(GL_ARRAY_BUFFER, m_instanceBufferSize, NULL, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	return true;
 }
 
-void CInstanceBuffer::Destroy(void)
+void CGfxInstanceBuffer::Destroy(void)
 {
 	if (m_instanceBuffer) {
 		glDeleteBuffers(1, &m_instanceBuffer);
@@ -90,7 +92,7 @@ void CInstanceBuffer::Destroy(void)
 	m_instanceBufferSize = 0;
 }
 
-void CInstanceBuffer::SetupFormat(void) const
+void CGfxInstanceBuffer::SetupFormat(void) const
 {
 	GLuint instanceStride = GetInstanceStride(m_instanceFormat);
 
@@ -109,17 +111,17 @@ void CInstanceBuffer::SetupFormat(void) const
 	}
 }
 
-GLuint CInstanceBuffer::GetInstanceCount(void) const
+GLuint CGfxInstanceBuffer::GetInstanceCount(void) const
 {
 	return m_instanceDatas.size();
 }
 
-GLuint CInstanceBuffer::GetInstanceFormat(void) const
+GLuint CGfxInstanceBuffer::GetInstanceFormat(void) const
 {
 	return m_instanceFormat;
 }
 
-GLuint CInstanceBuffer::GetInstanceBuffer(void) const
+GLuint CGfxInstanceBuffer::GetInstanceBuffer(void) const
 {
 	return m_instanceBuffer;
 }

@@ -1,10 +1,10 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "VertexBuffer.h"
-#include "VertexAttribute.h"
+#include "GfxVertexBuffer.h"
+#include "GfxVertexAttribute.h"
 
 
-CVertexBuffer::CVertexBuffer(void)
+CGfxVertexBuffer::CGfxVertexBuffer(void)
 	: m_vertexCount(0)
 	, m_vertexFormat(0)
 	, m_vertexBuffer(0)
@@ -12,12 +12,12 @@ CVertexBuffer::CVertexBuffer(void)
 
 }
 
-CVertexBuffer::~CVertexBuffer(void)
+CGfxVertexBuffer::~CGfxVertexBuffer(void)
 {
 	Destroy();
 }
 
-bool CVertexBuffer::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format)
+bool CGfxVertexBuffer::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format)
 {
 	m_vertexFormat = format;
 	m_vertexCount = size / GetVertexStride(format);
@@ -26,9 +26,11 @@ bool CVertexBuffer::CreateVertexBuffer(size_t size, const void *pBuffer, bool bD
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, size, pBuffer, bDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	return true;
 }
 
-void CVertexBuffer::Destroy(void)
+void CGfxVertexBuffer::Destroy(void)
 {
 	if (m_vertexBuffer) {
 		glDeleteBuffers(1, &m_vertexBuffer);
@@ -39,7 +41,7 @@ void CVertexBuffer::Destroy(void)
 	m_vertexBuffer = 0;
 }
 
-void CVertexBuffer::SetupFormat(void) const
+void CGfxVertexBuffer::SetupFormat(void) const
 {
 	GLuint vertexStride = GetVertexStride(m_vertexFormat);
 
@@ -58,17 +60,17 @@ void CVertexBuffer::SetupFormat(void) const
 	}
 }
 
-GLuint CVertexBuffer::GetVertexCount(void) const
+GLuint CGfxVertexBuffer::GetVertexCount(void) const
 {
 	return m_vertexCount;
 }
 
-GLuint CVertexBuffer::GetVertexFormat(void) const
+GLuint CGfxVertexBuffer::GetVertexFormat(void) const
 {
 	return m_vertexFormat;
 }
 
-GLuint CVertexBuffer::GetVertexBuffer(void) const
+GLuint CGfxVertexBuffer::GetVertexBuffer(void) const
 {
 	return m_vertexBuffer;
 }

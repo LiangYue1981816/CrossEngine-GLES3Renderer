@@ -2,18 +2,18 @@
 #include <vector>
 #include "glew.h"
 #include "glm/glm.hpp"
-#include "InstanceBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBuffer.h"
-#include "VertexArrayObject.h"
-#include "VertexAttribute.h"
+#include "GfxInstanceBuffer.h"
+#include "GfxIndexBuffer.h"
+#include "GfxVertexBuffer.h"
+#include "GfxVertexArrayObject.h"
+#include "GfxVertexAttribute.h"
 
 
-class CMesh
+class CGfxMesh
 {
 public:
-	CMesh(void);
-	virtual ~CMesh(void);
+	CGfxMesh(void);
+	virtual ~CGfxMesh(void);
 
 
 public:
@@ -36,8 +36,8 @@ public:
 
 
 private:
-	CIndexBuffer *m_pIndexBuffer;
-	CVertexBuffer *m_pVertexBuffer;
-	CInstanceBuffer *m_pInstanceBuffer;
-	CVertexArrayObject *m_pVertexArrayObject;
+	CGfxIndexBuffer *m_pIndexBuffer;
+	CGfxVertexBuffer *m_pVertexBuffer;
+	CGfxInstanceBuffer *m_pInstanceBuffer;
+	CGfxVertexArrayObject *m_pVertexArrayObject;
 };
