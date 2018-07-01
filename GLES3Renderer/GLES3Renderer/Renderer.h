@@ -1,12 +1,9 @@
 #pragma once
 #include <map>
 #include "glew.h"
+#include "Mesh.h"
 #include "Material.h"
 #include "FrameBuffer.h"
-#include "InstanceBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBuffer.h"
-#include "VertexAttribute.h"
 #include "UniformTime.h"
 #include "UniformScreen.h"
 #include "UniformZBuffer.h"
@@ -94,8 +91,8 @@ public:
 
 public:
 	void Clear(float red, float green, float blue, float alpha, float depth);
-	void DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer);
-	void DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformTransform *pUniformTransform);
+	void DrawInstance(GLuint material, CMesh *pMesh);
+	void DrawElements(GLuint material, CMesh *pMesh, const CUniformTransform *pUniformTransform);
 	void DrawScreen(GLuint material);
 
 private:
@@ -108,8 +105,7 @@ private:
 	char m_szMaterialPath[260];
 
 private:
-	CIndexBuffer m_screenIndexBuffer;
-	CVertexBuffer m_screenVertexBuffer;
+	CMesh m_meshScreen;
 
 private:
 	CUniformTime m_uniformTime;

@@ -28,6 +28,10 @@ void CRenderer::Destroy(void)
 CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
 	: m_pGlobalMaterial(NULL)
 {
+	strcpy(m_szShaderPath, szShaderPath);
+	strcpy(m_szTexturePath, szTexturePath);
+	strcpy(m_szMaterialPath, szMaterialPath);
+
 	struct Vertex {
 		glm::vec3 position;
 		glm::vec2 texcoord;
@@ -44,12 +48,8 @@ CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const 
 		0, 1, 2, 2, 3, 0
 	};
 
-	m_screenIndexBuffer.CreateIndexBuffer(sizeof(indices), indices, false, GL_UNSIGNED_INT);
-	m_screenVertexBuffer.CreateVertexBuffer(sizeof(vertices), vertices, false, VERTEX_ATTRIBUTE_POSITION | VERTEX_ATTRIBUTE_TEXCOORD0, 0);
-
-	strcpy(m_szShaderPath, szShaderPath);
-	strcpy(m_szTexturePath, szTexturePath);
-	strcpy(m_szMaterialPath, szMaterialPath);
+	m_meshScreen.CreateIndexBuffer(sizeof(indices), indices, false, GL_UNSIGNED_INT);
+	m_meshScreen.CreateVertexBuffer(sizeof(vertices), vertices, false, VERTEX_ATTRIBUTE_POSITION | VERTEX_ATTRIBUTE_TEXCOORD0, 0);
 
 	m_material = -1;
 	m_pGlobalMaterial = new CMaterial;
@@ -57,12 +57,8 @@ CRenderer::CRenderer(const char *szShaderPath, const char *szTexturePath, const 
 
 CRenderer::~CRenderer(void)
 {
-	m_screenIndexBuffer.Destroy();
-	m_screenVertexBuffer.Destroy();
-
-	if (m_pGlobalMaterial) {
-		delete m_pGlobalMaterial;
-	}
+	m_meshScreen.Destroy();
+	delete m_pGlobalMaterial;
 }
 
 const char* CRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -244,7 +240,7 @@ void CRenderer::Clear(float red, float green, float blue, float alpha, float dep
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void CRenderer::DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer)
+void CRenderer::DrawInstance(GLuint material, CMesh *pMesh)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -255,13 +251,11 @@ void CRenderer::DrawInstance(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 		BindMaterial(m_pMaterials[material]);
 	}
 
-	pVertexBuffer->Bind();
-	pIndexBuffer->Bind();
-
-	glDrawElementsInstanced(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL, pVertexBuffer->GetInstanceCount());
+	pMesh->Bind();
+	glDrawElementsInstanced(GL_TRIANGLES, pMesh->GetIndexCount(), pMesh->GetIndexType(), NULL, pMesh->GetInstanceCount());
 }
 
-void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CIndexBuffer *pIndexBuffer, const CUniformTransform *pUniformTransform)
+void CRenderer::DrawElements(GLuint material, CMesh *pMesh, const CUniformTransform *pUniformTransform)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -274,10 +268,8 @@ void CRenderer::DrawElements(GLuint material, CVertexBuffer *pVertexBuffer, CInd
 
 	m_pMaterials[material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TRANSFORM_NAME), pUniformTransform->GetBuffer(), pUniformTransform->GetSize());
 
-	pVertexBuffer->Bind();
-	pIndexBuffer->Bind();
-
-	glDrawElements(GL_TRIANGLES, pIndexBuffer->GetIndexCount(), pIndexBuffer->GetIndexType(), NULL);
+	pMesh->Bind();
+	glDrawElements(GL_TRIANGLES, pMesh->GetIndexCount(), pMesh->GetIndexType(), NULL);
 }
 
 void CRenderer::DrawScreen(GLuint material)
@@ -294,10 +286,8 @@ void CRenderer::DrawScreen(GLuint material)
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
 
-	m_screenVertexBuffer.Bind();
-	m_screenIndexBuffer.Bind();
-
-	glDrawElements(GL_TRIANGLES, m_screenIndexBuffer.GetIndexCount(), m_screenIndexBuffer.GetIndexType(), NULL);
+	m_meshScreen.Bind();
+	glDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
 }
 
 void CRenderer::BindMaterial(CMaterial *pMaterial)
