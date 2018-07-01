@@ -28,6 +28,11 @@ public:
 	void SetInstance(const glm::mat4 &mtxTransform);
 	void AddInstance(const glm::mat4 &mtxTransform);
 
+public:
+	GLenum GetIndexType(void) const;
+	GLuint GetIndexCount(void) const;
+	GLuint GetInstanceCount(void) const;
+
 
 private:
 	CIndexBuffer *m_pIndexBuffer;

@@ -74,3 +74,18 @@ void CMesh::AddInstance(const glm::mat4 &mtxTransform)
 {
 	m_pInstanceBuffer->AddInstance(mtxTransform);
 }
+
+GLenum CMesh::GetIndexType(void) const
+{
+	return m_pIndexBuffer->GetIndexBuffer();
+}
+
+GLuint CMesh::GetIndexCount(void) const
+{
+	return m_pIndexBuffer->GetIndexCount();
+}
+
+GLuint CMesh::GetInstanceCount(void) const
+{
+	return m_pInstanceBuffer->GetInstanceCount();
+}
