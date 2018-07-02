@@ -115,6 +115,11 @@ GLuint GetInstanceStride(GLuint format)
 	return GetStride(format, instanceAttributes, INSTANCE_ATTRIBUTE_COUNT);
 }
 
+GLuint GetInstanceAttributeSize(GLuint attribute)
+{
+	return GetAttributeSize(attribute, instanceAttributes, INSTANCE_ATTRIBUTE_COUNT);
+}
+
 GLuint GetInstanceAttributeOffset(GLuint format, GLuint attribute)
 {
 	return GetAttributeOffset(format, attribute, instanceAttributes, INSTANCE_ATTRIBUTE_COUNT);
