@@ -27,6 +27,12 @@ void CGfxUniformShadow::SetLookat(float eyex, float eyey, float eyez, float cent
 	m_params.mtxView = glm::lookAt(glm::vec3(eyex, eyey, eyez), glm::vec3(centerx, centery, centerz), glm::vec3(upx, upy, upz));
 }
 
+void CGfxUniformShadow::SetClipPlane(float zNear, float zFar)
+{
+	m_bDirty = true;
+	m_params.clip = glm::vec2(zFar - zNear, 1.0f / (zFar - zNear));
+}
+
 void CGfxUniformShadow::SetProjectionMatrix(const float *mtxProjection)
 {
 	m_bDirty = true;

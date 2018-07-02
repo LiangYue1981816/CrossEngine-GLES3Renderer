@@ -21,7 +21,7 @@ CGfxTextureCubeMap::CGfxTextureCubeMap(void)
 
 CGfxTextureCubeMap::~CGfxTextureCubeMap(void)
 {
-	if (m_external == GL_TRUE) {
+	if (m_external == GL_FALSE) {
 		glDeleteTextures(1, &m_texture);
 	}
 

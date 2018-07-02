@@ -68,6 +68,7 @@ public:
 public:
 	void SetShadowOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetShadowLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
+	void SetShadowClipPlane(float zNear, float zFar);
 	void SetShadowProjectionMatrix(const float *mtxProjection);
 	void SetShadowViewMatrix(const float *mtxView);
 

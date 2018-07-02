@@ -21,7 +21,7 @@ CGfxTexture2D::CGfxTexture2D(void)
 
 CGfxTexture2D::~CGfxTexture2D(void)
 {
-	if (m_external == GL_TRUE) {
+	if (m_external == GL_FALSE) {
 		glDeleteTextures(1, &m_texture);
 	}
 

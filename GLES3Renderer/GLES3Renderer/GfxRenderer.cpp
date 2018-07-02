@@ -145,6 +145,11 @@ void CGfxRenderer::SetShadowLookat(float eyex, float eyey, float eyez, float cen
 	m_uniformShadow.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
+void CGfxRenderer::SetShadowClipPlane(float zNear, float zFar)
+{
+	m_uniformShadow.SetClipPlane(zNear, zFar);
+}
+
 void CGfxRenderer::SetShadowProjectionMatrix(const float *mtxProjection)
 {
 	m_uniformShadow.SetProjectionMatrix(mtxProjection);
@@ -207,31 +212,26 @@ void CGfxRenderer::SetFogDistanceDensity(float startDistance, float endDistance,
 
 bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 {
-	CGfxMaterial *pMaterial = NULL;
-
 	try {
 		int err = 0;
 
-		if (m_pMaterials.find(materialid) != m_pMaterials.end()) {
+		if (m_pMaterials[materialid] == NULL) {
+			m_pMaterials[materialid] = new CGfxMaterial;
+		}
+
+		if (m_pMaterials[materialid] == NULL) {
 			throw err++;
 		}
 
-		if ((pMaterial = new CGfxMaterial) == NULL) {
+		if (m_pMaterials[materialid]->Create(szFileName) == false) {
 			throw err++;
 		}
-
-		if (pMaterial->Create(szFileName) == false) {
-			throw err++;
-		}
-
-		m_pMaterials[materialid] = pMaterial;
 
 		return true;
 	}
 	catch (int) {
-		if (pMaterial) {
-			delete pMaterial;
-		}
+		delete m_pMaterials[materialid];
+		m_pMaterials.erase(materialid);
 
 		return false;
 	}
