@@ -5,7 +5,7 @@
 #include "GfxUniformBuffer.h"
 
 
-class CGfxUniformShadowLight
+class CGfxUniformShadow
 {
 private:
 	typedef struct Params {
@@ -16,13 +16,15 @@ private:
 
 
 public:
-	CGfxUniformShadowLight(void);
-	virtual ~CGfxUniformShadowLight(void);
+	CGfxUniformShadow(void);
+	virtual ~CGfxUniformShadow(void);
 
 
 public:
 	void SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
+	void SetProjectionMatrix(const float *mtxProjection);
+	void SetViewMatrix(const float *mtxView);
 	void Apply(void);
 
 public:

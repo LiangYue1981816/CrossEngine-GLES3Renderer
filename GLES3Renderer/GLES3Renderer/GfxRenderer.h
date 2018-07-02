@@ -9,12 +9,12 @@
 #include "GfxUniformZBuffer.h"
 #include "GfxUniformProjection.h"
 #include "GfxUniformCamera.h"
-#include "GfxUniformFog.h"
+#include "GfxUniformShadow.h"
 #include "GfxUniformTransform.h"
 #include "GfxUniformAmbientLight.h"
 #include "GfxUniformPointLight.h"
 #include "GfxUniformDirectLight.h"
-#include "GfxUniformShadowLight.h"
+#include "GfxUniformFog.h"
 
 
 #define ENGINE_TIME_NAME                "Time"
@@ -22,12 +22,12 @@
 #define ENGINE_ZBUFFER_NAME             "ZBuffer"
 #define ENGINE_PROJECTION_NAME          "Projection"
 #define ENGINE_CAMERA_NAME              "Camera"
+#define ENGINE_SHADOW_NAME              "Shadow"
 #define ENGINE_TRANSFORM_NAME           "Transform"
-#define ENGINE_FOG_NAME                 "Fog"
 #define ENGINE_AMBIENT_LIGHT_NAME       "AmbientLight"
 #define ENGINE_POINT_LIGHT_NAME         "PointLight"
 #define ENGINE_DIRECT_LIGHT_NAME        "DirectLight"
-#define ENGINE_SHADOW_LIGHT_NAME        "ShadowLight"
+#define ENGINE_FOG_NAME                 "Fog"
 
 
 class CGfxRenderer
@@ -66,9 +66,10 @@ public:
 	void SetCameraViewMatrix(const float *mtxView);
 
 public:
-	void SetFogColor(float r, float g, float b);
-	void SetFogHeightDensity(float startHeight, float endHeight, float density);
-	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
+	void SetShadowOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
+	void SetShadowLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
+	void SetShadowProjectionMatrix(const float *mtxProjection);
+	void SetShadowViewMatrix(const float *mtxView);
 
 public:
 	void SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9]);
@@ -82,8 +83,9 @@ public:
 	void SetDirectLightDirection(float dirx, float diry, float dirz);
 
 public:
-	void SetShadowLightOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
-	void SetShadowLightLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
+	void SetFogColor(float r, float g, float b);
+	void SetFogHeightDensity(float startHeight, float endHeight, float density);
+	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
 
 public:
 	bool LoadMaterial(const char *szFileName, GLuint materialid);
@@ -113,11 +115,11 @@ private:
 	CGfxUniformZBuffer m_uniformZBuffer;
 	CGfxUniformProjection m_uniformProjection;
 	CGfxUniformCamera m_uniformCamera;
-	CGfxUniformFog m_uniformFog;
+	CGfxUniformShadow m_uniformShadow;
 	CGfxUniformAmbientLight m_uniformAmbientLight;
 	CGfxUniformPointLight m_uniformPointLight;
 	CGfxUniformDirectLight m_uniformDirectLight;
-	CGfxUniformShadowLight m_uniformShadowLight;
+	CGfxUniformFog m_uniformFog;
 
 private:
 	GLuint m_material;
