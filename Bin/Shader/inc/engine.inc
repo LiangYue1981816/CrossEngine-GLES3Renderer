@@ -58,6 +58,13 @@
 		mat4 viewInverseTransposeMatrix;                                           \
 	} engineCamera
 
+#define USE_ENGINE_SHADOW                                                          \
+	uniform Shadow                                                                 \
+	{                                                                              \
+		mat4 projectionMatrix;                                                     \
+		mat4 viewMatrix;                                                           \
+	} engineShadow
+
 #define USE_ENGINE_AMBIENT_LIGHT                                                   \
 	uniform AmbientLight                                                           \
 	{                                                                              \

@@ -1,7 +1,16 @@
 #ifndef _SHADOW_INC_
 #define _SHADOW_INC_
 
+#include "engine.inc"
+#include "common.inc"
 
+USE_ENGINE_SHADOW;
+
+#define shadowProjectionMatrix engineShadow.projectionMatrix
+#define shadowViewMatrix engineShadow.viewMatrix
+
+
+// Utils Functions
 vec3 EncodeFloatRGB(float value)
 {
 	vec3 encode;
