@@ -196,22 +196,27 @@ void CGfxMaterial::BindPipeline(void) const
 void CGfxMaterial::BindUniforms(CGfxProgram *pProgram) const
 {
 	for (const auto &itUniform : m_pUniformVec1s) {
+		itUniform.second->Apply();
 		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 
 	for (const auto &itUniform : m_pUniformVec2s) {
+		itUniform.second->Apply();
 		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 
 	for (const auto &itUniform : m_pUniformVec3s) {
+		itUniform.second->Apply();
 		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 
 	for (const auto &itUniform : m_pUniformVec4s) {
+		itUniform.second->Apply();
 		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 
 	for (const auto &itUniform : m_pUniformMat4s) {
+		itUniform.second->Apply();
 		pProgram->BindUniformBuffer(itUniform.first, itUniform.second->GetBuffer(), itUniform.second->GetSize());
 	}
 }
@@ -534,7 +539,6 @@ bool CGfxMaterial::LoadUniformVec1(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsUniformValid(name)) {
 					if (m_pUniformVec1s[name] = new CGfxUniformVec1) {
 						m_pUniformVec1s[name]->SetValue(value);
-						m_pUniformVec1s[name]->Apply();
 					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform1f", pUniformNode));
@@ -572,7 +576,6 @@ bool CGfxMaterial::LoadUniformVec2(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsUniformValid(name)) {
 					if (m_pUniformVec2s[name] = new CGfxUniformVec2) {
 						m_pUniformVec2s[name]->SetValue(value[0], value[1]);
-						m_pUniformVec2s[name]->Apply();
 					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform2f", pUniformNode));
@@ -610,7 +613,6 @@ bool CGfxMaterial::LoadUniformVec3(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsUniformValid(name)) {
 					if (m_pUniformVec3s[name] = new CGfxUniformVec3) {
 						m_pUniformVec3s[name]->SetValue(value[0], value[1], value[2]);
-						m_pUniformVec3s[name]->Apply();
 					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform3f", pUniformNode));
@@ -648,7 +650,6 @@ bool CGfxMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsUniformValid(name)) {
 					if (m_pUniformVec4s[name] = new CGfxUniformVec4) {
 						m_pUniformVec4s[name]->SetValue(value[0], value[1], value[2], value[3]);
-						m_pUniformVec4s[name]->Apply();
 					}
 				}
 			} while (pUniformNode = pMaterialNode->IterateChildren("Uniform4f", pUniformNode));
