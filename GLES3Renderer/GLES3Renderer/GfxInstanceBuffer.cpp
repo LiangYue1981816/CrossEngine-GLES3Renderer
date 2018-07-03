@@ -21,6 +21,14 @@ CGfxInstanceBuffer::~CGfxInstanceBuffer(void)
 	Destroy();
 }
 
+void CGfxInstanceBuffer::Bind(void)
+{
+	UpdateInstance();
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
+	SetupFormat();
+}
+
 void CGfxInstanceBuffer::Clear(void)
 {
 	if (m_instanceBuffer) {

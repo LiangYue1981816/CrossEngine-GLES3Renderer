@@ -17,6 +17,12 @@ CGfxVertexBuffer::~CGfxVertexBuffer(void)
 	Destroy();
 }
 
+void CGfxVertexBuffer::Bind(void)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+	SetupFormat();
+}
+
 bool CGfxVertexBuffer::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format)
 {
 	m_vertexFormat = format;

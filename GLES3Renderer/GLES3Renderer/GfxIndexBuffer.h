@@ -11,6 +11,9 @@ public:
 
 
 public:
+	void Bind(void);
+
+public:
 	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
 	void Destroy(void);
 

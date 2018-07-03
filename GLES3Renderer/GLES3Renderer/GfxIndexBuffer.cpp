@@ -16,6 +16,11 @@ CGfxIndexBuffer::~CGfxIndexBuffer(void)
 	Destroy();
 }
 
+void CGfxIndexBuffer::Bind(void)
+{
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
+}
+
 bool CGfxIndexBuffer::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
 {
 	m_indexType = type;

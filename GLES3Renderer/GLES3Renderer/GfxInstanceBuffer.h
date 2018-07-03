@@ -12,6 +12,9 @@ public:
 
 
 public:
+	void Bind(void);
+
+public:
 	void Clear(void);
 	void SetInstance(const glm::mat4 &mtxTransform);
 	void AddInstance(const glm::mat4 &mtxTransform);

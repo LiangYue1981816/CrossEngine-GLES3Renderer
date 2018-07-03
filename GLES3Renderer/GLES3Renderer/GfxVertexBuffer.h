@@ -12,6 +12,9 @@ public:
 
 
 public:
+	void Bind(void);
+
+public:
 	bool CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format);
 	void Destroy(void);
 
