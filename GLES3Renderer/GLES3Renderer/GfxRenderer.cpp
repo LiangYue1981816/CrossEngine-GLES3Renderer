@@ -252,34 +252,44 @@ void CGfxRenderer::Clear(float red, float green, float blue, float alpha, float 
 
 void CGfxRenderer::DrawInstance(GLuint material, CGfxMesh *pMesh)
 {
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
-	}
-
-	if (m_material != material) {
-		m_material  = material;
-		BindMaterial(m_pMaterials[material]);
-	}
-
-	pMesh->Bind();
-	glDrawElementsInstanced(GL_TRIANGLES, pMesh->GetIndexCount(), pMesh->GetIndexType(), NULL, pMesh->GetInstanceCount());
+	DrawInstance(material, pMesh, pMesh->GetIndexCount(), 0);
 }
 
-void CGfxRenderer::DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform)
+void CGfxRenderer::DrawInstance(GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
 	}
 
 	if (m_material != material) {
-		m_material  = material;
+		m_material = material;
+		BindMaterial(m_pMaterials[material]);
+	}
+
+	pMesh->Bind();
+	glDrawElementsInstanced(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (const void *)indexOffset, pMesh->GetInstanceCount());
+}
+
+void CGfxRenderer::DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform)
+{
+	DrawElements(material, pMesh, pUniformTransform, pMesh->GetIndexCount(), 0);
+}
+
+void CGfxRenderer::DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset)
+{
+	if (m_pMaterials.find(material) == m_pMaterials.end()) {
+		return;
+	}
+
+	if (m_material != material) {
+		m_material = material;
 		BindMaterial(m_pMaterials[material]);
 	}
 
 	m_pMaterials[material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TRANSFORM_NAME), pUniformTransform->GetBuffer(), pUniformTransform->GetSize());
 
 	pMesh->Bind();
-	glDrawElements(GL_TRIANGLES, pMesh->GetIndexCount(), pMesh->GetIndexType(), NULL);
+	glDrawElements(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (const void *)indexOffset);
 }
 
 void CGfxRenderer::DrawScreen(GLuint material)

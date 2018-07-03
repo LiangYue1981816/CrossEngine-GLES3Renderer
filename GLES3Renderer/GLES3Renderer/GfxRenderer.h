@@ -95,7 +95,9 @@ public:
 public:
 	void Clear(float red, float green, float blue, float alpha, float depth);
 	void DrawInstance(GLuint material, CGfxMesh *pMesh);
+	void DrawInstance(GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset);
 	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform);
+	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset);
 	void DrawScreen(GLuint material);
 
 private:
