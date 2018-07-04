@@ -43,14 +43,7 @@ bool CMesh::Load(const char *szFileName)
 		fread(&header, sizeof(header), 1, pFile);
 
 		unsigned int format = 0;
-		unsigned int rawFormat = 0;
-		fread(&rawFormat, sizeof(rawFormat), 1, pFile);
-		if (rawFormat & RAW_VERTEX_ATTRIBUTE_POSITION) format |= VERTEX_ATTRIBUTE_POSITION;
-		if (rawFormat & RAW_VERTEX_ATTRIBUTE_NORMAL) format |= VERTEX_ATTRIBUTE_NORMAL;
-		if (rawFormat & RAW_VERTEX_ATTRIBUTE_BINORMAL) format |= VERTEX_ATTRIBUTE_BINORMAL;
-		if (rawFormat & RAW_VERTEX_ATTRIBUTE_COLOR) format |= VERTEX_ATTRIBUTE_COLOR;
-		if (rawFormat & RAW_VERTEX_ATTRIBUTE_UV0) format |= VERTEX_ATTRIBUTE_TEXCOORD0;
-		if (rawFormat & RAW_VERTEX_ATTRIBUTE_UV1) format |= VERTEX_ATTRIBUTE_TEXCOORD1;
+		fread(&format, sizeof(format), 1, pFile);
 
 		void *pIndexBuffer = malloc(header.indexBufferSize);
 		void *pVertexBuffer = malloc(header.vertexBufferSize);
