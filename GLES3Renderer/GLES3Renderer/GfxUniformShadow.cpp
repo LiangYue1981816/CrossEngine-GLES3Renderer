@@ -17,20 +17,15 @@ CGfxUniformShadow::~CGfxUniformShadow(void)
 void CGfxUniformShadow::SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	m_bDirty = true;
+	m_params.params.x = zFar - zNear;
+	m_params.params.y = 1.0f / (zFar - zNear);
 	m_params.mtxProjection = glm::ortho(left, right, bottom, top, zNear, zFar);
-	m_params.clip = glm::vec2(zFar - zNear, 1.0f / (zFar - zNear));
 }
 
 void CGfxUniformShadow::SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
 	m_bDirty = true;
 	m_params.mtxView = glm::lookAt(glm::vec3(eyex, eyey, eyez), glm::vec3(centerx, centery, centerz), glm::vec3(upx, upy, upz));
-}
-
-void CGfxUniformShadow::SetClipPlane(float zNear, float zFar)
-{
-	m_bDirty = true;
-	m_params.clip = glm::vec2(zFar - zNear, 1.0f / (zFar - zNear));
 }
 
 void CGfxUniformShadow::SetProjectionMatrix(const float *mtxProjection)
@@ -73,6 +68,25 @@ void CGfxUniformShadow::SetViewMatrix(const float *mtxView)
 	m_params.mtxView[3][1] = mtxView[13];
 	m_params.mtxView[3][2] = mtxView[14];
 	m_params.mtxView[3][3] = mtxView[15];
+}
+
+void CGfxUniformShadow::SetClipPlane(float zNear, float zFar)
+{
+	m_bDirty = true;
+	m_params.params.x = zFar - zNear;
+	m_params.params.y = 1.0f / (zFar - zNear);
+}
+
+void CGfxUniformShadow::SetDistance(float distance)
+{
+	m_bDirty = true;
+	m_params.params.z = distance;
+}
+
+void CGfxUniformShadow::SetResolution(float resolution)
+{
+	m_bDirty = true;
+	m_params.params.w = resolution;
 }
 
 void CGfxUniformShadow::Apply(void)

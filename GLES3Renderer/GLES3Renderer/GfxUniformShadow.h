@@ -11,7 +11,7 @@ private:
 	typedef struct Params {
 		glm::mat4 mtxProjection;
 		glm::mat4 mtxView;
-		glm::vec2 clip;
+		glm::vec4 params;
 	} Params;
 
 
@@ -23,9 +23,11 @@ public:
 public:
 	void SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
-	void SetClipPlane(float zNear, float zFar);
 	void SetProjectionMatrix(const float *mtxProjection);
 	void SetViewMatrix(const float *mtxView);
+	void SetClipPlane(float zNear, float zFar);
+	void SetDistance(float distance);
+	void SetResolution(float resolution);
 	void Apply(void);
 
 public:

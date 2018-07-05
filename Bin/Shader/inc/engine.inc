@@ -63,6 +63,7 @@
 	{                                                                              \
 		mat4 projectionMatrix;                                                     \
 		mat4 viewMatrix;                                                           \
+		vec4 params;                                                               \
 	} engineShadow
 
 #define USE_ENGINE_AMBIENT_LIGHT                                                   \

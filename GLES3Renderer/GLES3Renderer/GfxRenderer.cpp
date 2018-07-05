@@ -145,11 +145,6 @@ void CGfxRenderer::SetShadowLookat(float eyex, float eyey, float eyez, float cen
 	m_uniformShadow.SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
-void CGfxRenderer::SetShadowClipPlane(float zNear, float zFar)
-{
-	m_uniformShadow.SetClipPlane(zNear, zFar);
-}
-
 void CGfxRenderer::SetShadowProjectionMatrix(const float *mtxProjection)
 {
 	m_uniformShadow.SetProjectionMatrix(mtxProjection);
@@ -158,6 +153,21 @@ void CGfxRenderer::SetShadowProjectionMatrix(const float *mtxProjection)
 void CGfxRenderer::SetShadowViewMatrix(const float *mtxView)
 {
 	m_uniformShadow.SetViewMatrix(mtxView);
+}
+
+void CGfxRenderer::SetShadowClipPlane(float zNear, float zFar)
+{
+	m_uniformShadow.SetClipPlane(zNear, zFar);
+}
+
+void CGfxRenderer::SetShadowDistance(float distance)
+{
+	m_uniformShadow.SetDistance(distance);
+}
+
+void CGfxRenderer::SetShadowResolution(float resolution)
+{
+	m_uniformShadow.SetResolution(resolution);
 }
 
 void CGfxRenderer::SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9])
