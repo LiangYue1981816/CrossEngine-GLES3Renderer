@@ -25,6 +25,11 @@ CGfxFrameBuffer::~CGfxFrameBuffer(void)
 	Destroy();
 }
 
+void CGfxFrameBuffer::Bind(void)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+}
+
 bool CGfxFrameBuffer::SetRenderTexture(GLuint index, GLenum internalformat, GLenum format, GLenum type, GLenum minFilter, GLenum magFilter, bool invalidation)
 {
 	if (m_textures.find(index) != m_textures.end()) {
@@ -67,24 +72,18 @@ bool CGfxFrameBuffer::Create(void)
 
 	glGenFramebuffers(1, &m_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_rbo);
+	{
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_rbo);
 
-	std::vector<GLenum> drawBuffers;
-	std::vector<GLenum> discardBuffers;
-
-	for (const auto &itTexture : m_textures) {
-		drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + itTexture.first);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + itTexture.first, GL_TEXTURE_2D, itTexture.second, 0);
-	}
-	for (const auto &itInvalidation : m_invalidations) {
-		if (itInvalidation.second) {
-			discardBuffers.push_back(GL_COLOR_ATTACHMENT0 + itInvalidation.first);
+		std::vector<GLenum> drawBuffers;
+		for (const auto &itTexture : m_textures) {
+			drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + itTexture.first);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + itTexture.first, GL_TEXTURE_2D, itTexture.second, 0);
 		}
-	}
 
-	glReadBuffers(drawBuffers.size(), drawBuffers.data());
-	glDrawBuffers(drawBuffers.size(), drawBuffers.data());
-	glInvalidateFramebuffer(GL_FRAMEBUFFER, discardBuffers.size(), discardBuffers.data());
+		glReadBuffers(drawBuffers.size(), drawBuffers.data());
+		glDrawBuffers(drawBuffers.size(), drawBuffers.data());
+	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return CheckFramebufferStatus();
@@ -110,9 +109,17 @@ void CGfxFrameBuffer::Destroy(void)
 	m_invalidations.clear();
 }
 
-GLuint CGfxFrameBuffer::GetFBO(void) const
+void CGfxFrameBuffer::InvalidateFramebuffer(void)
 {
-	return m_fbo;
+	std::vector<GLenum> discardBuffers;
+
+	for (const auto &itInvalidation : m_invalidations) {
+		if (itInvalidation.second) {
+			discardBuffers.push_back(GL_COLOR_ATTACHMENT0 + itInvalidation.first);
+		}
+	}
+
+	glInvalidateFramebuffer(GL_FRAMEBUFFER, discardBuffers.size(), discardBuffers.data());
 }
 
 GLuint CGfxFrameBuffer::GetWidth(void) const

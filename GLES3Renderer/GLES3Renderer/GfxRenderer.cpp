@@ -27,6 +27,7 @@ void CGfxRenderer::Destroy(void)
 
 CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
 	: m_pGlobalMaterial(NULL)
+	, m_pFrameBuffer(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -91,9 +92,17 @@ void CGfxRenderer::SetViewport(int x, int y, int width, int height)
 	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
 }
 
-void CGfxRenderer::SetFrameBuffer(GLuint fbo)
+void CGfxRenderer::SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	if (m_pFrameBuffer) {
+		m_pFrameBuffer->InvalidateFramebuffer();
+	}
+
+	m_pFrameBuffer = pFrameBuffer;
+
+	if (m_pFrameBuffer) {
+		m_pFrameBuffer->Bind();
+	}
 }
 
 void CGfxRenderer::SetInputTexture(const char *szName, GLuint texture)

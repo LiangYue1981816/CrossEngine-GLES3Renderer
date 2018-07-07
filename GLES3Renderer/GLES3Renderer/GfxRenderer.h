@@ -52,7 +52,7 @@ public:
 	void SetScissor(int x, int y, int width, int height);
 	void SetViewport(int x, int y, int width, int height);
 
-	void SetFrameBuffer(GLuint fbo);
+	void SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
 	void SetInputTexture(const char *szName, GLuint texture);
 
 public:
@@ -132,6 +132,9 @@ private:
 
 private:
 	CGfxMaterial *m_pGlobalMaterial;
+
+private:
+	CGfxFrameBuffer *m_pFrameBuffer;
 
 private:
 	static CGfxRenderer *pInstance;

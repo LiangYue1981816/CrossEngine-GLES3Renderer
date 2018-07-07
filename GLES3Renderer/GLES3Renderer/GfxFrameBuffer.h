@@ -12,14 +12,18 @@ public:
 
 
 public:
+	void Bind(void);
+
+public:
 	bool SetRenderTexture(GLuint index, GLenum internalformat, GLenum format, GLenum type, GLenum minFilter, GLenum magFilter, bool invalidation);
 	bool CheckFramebufferStatus(void);
 
 	bool Create(void);
 	void Destroy(void);
 
+	void InvalidateFramebuffer(void);
+
 public:
-	GLuint GetFBO(void) const;
 	GLuint GetWidth(void) const;
 	GLuint GetHeight(void) const;
 	GLuint GetTexture(GLuint index) const;
