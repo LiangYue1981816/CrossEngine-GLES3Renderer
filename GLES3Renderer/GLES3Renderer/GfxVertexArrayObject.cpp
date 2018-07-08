@@ -1,8 +1,8 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "GfxInstanceBuffer.h"
 #include "GfxIndexBuffer.h"
 #include "GfxVertexBuffer.h"
+#include "GfxInstanceBuffer.h"
 #include "GfxVertexArrayObject.h"
 
 

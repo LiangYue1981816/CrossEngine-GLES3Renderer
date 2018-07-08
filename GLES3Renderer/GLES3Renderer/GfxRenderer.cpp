@@ -322,9 +322,6 @@ void CGfxRenderer::DrawScreen(GLuint material)
 		BindMaterial(m_pMaterials[material]);
 	}
 
-	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
-
 	m_meshScreen.Bind();
 	glDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
 }

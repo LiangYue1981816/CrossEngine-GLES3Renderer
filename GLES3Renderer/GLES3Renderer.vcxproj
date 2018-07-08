@@ -94,6 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GLES3Renderer\GfxCommandBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxFrameBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxIndexBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxInstanceBuffer.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GLES3Renderer\GfxCommandBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxFrameBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxIndexBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxInstanceBuffer.cpp" />

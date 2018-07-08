@@ -3,16 +3,17 @@
 #include <vector>
 #include "tinyxml/tinyxml.h"
 #include "tinyxml/tinystr.h"
-#include "GfxProgram.h"
-#include "GfxTexture2D.h"
-#include "GfxTexture2DArray.h"
-#include "GfxTextureCubeMap.h"
-#include "GfxUniformVec1.h"
-#include "GfxUniformVec2.h"
-#include "GfxUniformVec3.h"
-#include "GfxUniformVec4.h"
-#include "GfxUniformMat4.h"
 
+
+class CGfxProgram;
+class CGfxTexture2D;
+class CGfxTexture2DArray;
+class CGfxTextureCubeMap;
+class CGfxUniformVec1;
+class CGfxUniformVec2;
+class CGfxUniformVec3;
+class CGfxUniformVec4;
+class CGfxUniformMat4;
 
 class CGfxMaterial
 {

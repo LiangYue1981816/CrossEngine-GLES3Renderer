@@ -1,12 +1,13 @@
 #pragma once
 #include "glew.h"
 #include "glm/glm.hpp"
-#include "GfxInstanceBuffer.h"
-#include "GfxIndexBuffer.h"
-#include "GfxVertexBuffer.h"
-#include "GfxVertexArrayObject.h"
 #include "GfxVertexAttribute.h"
 
+
+class CGfxIndexBuffer;
+class CGfxVertexBuffer;
+class CGfxInstanceBuffer;
+class CGfxVertexArrayObject;
 
 class CGfxMesh
 {

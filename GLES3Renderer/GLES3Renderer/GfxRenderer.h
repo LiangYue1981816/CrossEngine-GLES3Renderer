@@ -1,9 +1,14 @@
 #pragma once
 #include <map>
+#include <vector>
 #include "glew.h"
 #include "GfxMesh.h"
+#include "GfxProgram.h"
 #include "GfxMaterial.h"
 #include "GfxFrameBuffer.h"
+#include "GfxTexture2D.h"
+#include "GfxTexture2DArray.h"
+#include "GfxTextureCubeMap.h"
 #include "GfxUniformTime.h"
 #include "GfxUniformScreen.h"
 #include "GfxUniformZBuffer.h"
@@ -15,6 +20,11 @@
 #include "GfxUniformPointLight.h"
 #include "GfxUniformDirectLight.h"
 #include "GfxUniformFog.h"
+#include "GfxUniformVec1.h"
+#include "GfxUniformVec2.h"
+#include "GfxUniformVec3.h"
+#include "GfxUniformVec4.h"
+#include "GfxUniformMat4.h"
 
 
 #define ENGINE_TIME_NAME                "Time"

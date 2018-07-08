@@ -1,6 +1,10 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "GfxMesh.h"
+#include "GfxIndexBuffer.h"
+#include "GfxVertexBuffer.h"
+#include "GfxInstanceBuffer.h"
+#include "GfxVertexArrayObject.h"
 
 
 CGfxMesh::CGfxMesh(void)
