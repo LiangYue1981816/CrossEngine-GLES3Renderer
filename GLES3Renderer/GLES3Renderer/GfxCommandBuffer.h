@@ -3,9 +3,9 @@
 #include "glew.h"
 
 
+class CGfxMesh;
 class CGfxMaterial;
 class CGfxFrameBuffer;
-class CGfxVertexArrayObject;
 
 class CGfxCommandBase
 {
@@ -36,10 +36,11 @@ public:
 
 public:
 	void CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
-	void CommandBindVertexArray(CGfxVertexArrayObject *pVertexArrayObject);
+	void CommandBindMesh(CGfxMesh *pMesh);
 	void CommandBindMaterial(CGfxMaterial *pMaterial);
 	void CommandDrawInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
 	void CommandDrawElements(GLenum mode, GLsizei count, GLenum type, const void *indices);
+	void CommandInvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer);
 
 
 private:

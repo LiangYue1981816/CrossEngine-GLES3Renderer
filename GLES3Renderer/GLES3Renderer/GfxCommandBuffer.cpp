@@ -1,9 +1,15 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "GfxCommandBuffer.h"
+#include "GfxCommandBindVertexArray.h"
+#include "GfxCommandBindFrameBuffer.h"
+#include "GfxCommandDrawInstance.h"
+#include "GfxCommandDrawElements.h"
+#include "GfxCommandInvalidateFramebuffer.h"
+#include "GfxMesh.h"
 #include "GfxMaterial.h"
 #include "GfxFrameBuffer.h"
-#include "GfxVertexArrayObject.h"
+#include "GfxCommandBindMaterial.h"
 
 
 CGfxCommandBuffer::CGfxCommandBuffer(void)
@@ -37,7 +43,7 @@ void CGfxCommandBuffer::CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
 
 }
 
-void CGfxCommandBuffer::CommandBindVertexArray(CGfxVertexArrayObject *pVertexArrayObject)
+void CGfxCommandBuffer::CommandBindMesh(CGfxMesh *pMesh)
 {
 
 }
@@ -53,6 +59,11 @@ void CGfxCommandBuffer::CommandDrawInstance(GLenum mode, GLsizei count, GLenum t
 }
 
 void CGfxCommandBuffer::CommandDrawElements(GLenum mode, GLsizei count, GLenum type, const void *indices)
+{
+
+}
+
+void CGfxCommandBuffer::CommandInvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer)
 {
 
 }

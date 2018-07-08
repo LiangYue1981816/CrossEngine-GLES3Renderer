@@ -103,6 +103,24 @@
     <ClInclude Include="GLES3Renderer\GfxCommandBuffer.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandBindFrameBuffer.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandBindVertexArray.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandDrawElements.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandDrawInstance.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandInvalidateFramebuffer.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -250,6 +268,9 @@
     </Filter>
     <Filter Include="spirv-cross">
       <UniqueIdentifier>{30db489a-98e5-491a-90ef-f1ab06d35fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GLES3Renderer\Source Files\Commands">
+      <UniqueIdentifier>{86a12a46-8a95-4d82-9b0e-9092d3cbae6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
