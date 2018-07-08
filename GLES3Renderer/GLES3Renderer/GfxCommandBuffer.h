@@ -38,8 +38,8 @@ public:
 	void CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
 	void CommandBindMesh(CGfxMesh *pMesh);
 	void CommandBindMaterial(CGfxMaterial *pMaterial);
-	void CommandDrawInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount);
-	void CommandDrawElements(GLenum mode, GLsizei count, GLenum type, const void *indices);
+	void CommandDrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
+	void CommandDrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
 	void CommandInvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer);
 
 

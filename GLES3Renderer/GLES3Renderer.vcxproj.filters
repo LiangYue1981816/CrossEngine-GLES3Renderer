@@ -109,9 +109,6 @@
     <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandBindVertexArray.h">
-      <Filter>GLES3Renderer\Source Files\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandDrawElements.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
@@ -119,6 +116,9 @@
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandInvalidateFramebuffer.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>

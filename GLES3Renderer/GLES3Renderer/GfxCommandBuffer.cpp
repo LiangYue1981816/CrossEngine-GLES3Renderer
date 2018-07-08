@@ -1,15 +1,15 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "GfxCommandBuffer.h"
-#include "GfxCommandBindVertexArray.h"
-#include "GfxCommandBindFrameBuffer.h"
-#include "GfxCommandDrawInstance.h"
-#include "GfxCommandDrawElements.h"
-#include "GfxCommandInvalidateFramebuffer.h"
 #include "GfxMesh.h"
 #include "GfxMaterial.h"
 #include "GfxFrameBuffer.h"
+#include "GfxCommandBuffer.h"
+#include "GfxCommandBindMesh.h"
 #include "GfxCommandBindMaterial.h"
+#include "GfxCommandBindFrameBuffer.h"
+#include "GfxCommandDrawInstance.h"
+#include "GfxCommandDrawElements.h"
+#include "GfxCommandInvalidateFrameBuffer.h"
 
 
 CGfxCommandBuffer::CGfxCommandBuffer(void)
@@ -40,30 +40,30 @@ void CGfxCommandBuffer::Submit(void)
 
 void CGfxCommandBuffer::CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
 {
-
+	m_commands.push_back(new CGfxCommandBindFrameBuffer(pFrameBuffer));
 }
 
 void CGfxCommandBuffer::CommandBindMesh(CGfxMesh *pMesh)
 {
-
+	m_commands.push_back(new CGfxCommandBindMesh(pMesh));
 }
 
 void CGfxCommandBuffer::CommandBindMaterial(CGfxMaterial *pMaterial)
 {
-
+	m_commands.push_back(new CGfxCommandBindMaterial(pMaterial));
 }
 
-void CGfxCommandBuffer::CommandDrawInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount)
+void CGfxCommandBuffer::CommandDrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount)
 {
-
+	m_commands.push_back(new CGfxCommandDrawInstance(mode, count, type, indices, primcount));
 }
 
-void CGfxCommandBuffer::CommandDrawElements(GLenum mode, GLsizei count, GLenum type, const void *indices)
+void CGfxCommandBuffer::CommandDrawElements(GLenum mode, GLsizei count, GLenum type, void *indices)
 {
-
+	m_commands.push_back(new CGfxCommandDrawElements(mode, count, type, indices));
 }
 
 void CGfxCommandBuffer::CommandInvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer)
 {
-
+	m_commands.push_back(new CGfxCommandInvalidateFrameBuffer(pFrameBuffer));
 }

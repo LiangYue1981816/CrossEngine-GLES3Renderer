@@ -4,15 +4,15 @@
 #include "GfxCommandBuffer.h"
 
 
-class CGfxGfxCommandInvalidateFramebuffer : public CGfxCommandBase
+class CGfxCommandInvalidateFrameBuffer : public CGfxCommandBase
 {
 public:
-	CGfxGfxCommandInvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer)
+	CGfxCommandInvalidateFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
 		: m_pFrameBuffer(pFrameBuffer)
 	{
 
 	}
-	virtual ~CGfxGfxCommandInvalidateFramebuffer(void)
+	virtual ~CGfxCommandInvalidateFrameBuffer(void)
 	{
 
 	}

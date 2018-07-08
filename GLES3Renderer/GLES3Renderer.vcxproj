@@ -96,7 +96,7 @@
   <ItemGroup>
     <ClInclude Include="GLES3Renderer\GfxCommandBindFrameBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h" />
-    <ClInclude Include="GLES3Renderer\GfxCommandBindVertexArray.h" />
+    <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandDrawElements.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandDrawInstance.h" />
