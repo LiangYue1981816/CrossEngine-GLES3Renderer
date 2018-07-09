@@ -20,7 +20,9 @@ public:
 public:
 	virtual void Execute(void) const
 	{
-
+		if (m_pMesh) {
+			m_pMesh->Bind();
+		}
 	}
 
 

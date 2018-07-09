@@ -20,7 +20,9 @@ public:
 public:
 	virtual void Execute(void) const
 	{
-
+		if (m_pFrameBuffer) {
+			m_pFrameBuffer->InvalidateFramebuffer();
+		}
 	}
 
 

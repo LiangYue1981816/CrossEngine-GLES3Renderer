@@ -24,7 +24,7 @@ public:
 public:
 	virtual void Execute(void) const
 	{
-
+		glDrawElementsInstanced(m_mode, m_count, m_type, m_indices, m_primcount);
 	}
 
 

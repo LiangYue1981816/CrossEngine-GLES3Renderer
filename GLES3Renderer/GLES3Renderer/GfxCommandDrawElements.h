@@ -23,7 +23,7 @@ public:
 public:
 	virtual void Execute(void) const
 	{
-
+		glDrawElements(m_mode, m_count, m_type, m_indices);
 	}
 
 
