@@ -31,7 +31,7 @@ void CGfxCommandBuffer::Clearup(void)
 	m_commands.clear();
 }
 
-void CGfxCommandBuffer::Submit(void)
+void CGfxCommandBuffer::Submit(void) const
 {
 	for (const auto &itCommand : m_commands) {
 		itCommand->Execute();

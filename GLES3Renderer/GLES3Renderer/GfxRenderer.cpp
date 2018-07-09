@@ -340,6 +340,11 @@ void CGfxRenderer::DrawScreen(GLuint material)
 	glDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
 }
 
+void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
+{
+	pCommandBuffer->Submit();
+}
+
 void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
 {
 	pMaterial->Bind();

@@ -32,7 +32,7 @@ public:
 
 public:
 	void Clearup(void);
-	void Submit(void);
+	void Submit(void) const;
 
 public:
 	void CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer);

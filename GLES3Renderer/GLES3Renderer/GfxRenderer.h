@@ -25,6 +25,7 @@
 #include "GfxUniformVec3.h"
 #include "GfxUniformVec4.h"
 #include "GfxUniformMat4.h"
+#include "GfxCommandBuffer.h"
 
 
 #define ENGINE_TIME_NAME                "Time"
@@ -114,6 +115,7 @@ public:
 	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform);
 	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset);
 	void DrawScreen(GLuint material);
+	void Submit(const CGfxCommandBuffer *pCommandBuffer);
 
 public:
 	void BindMaterial(CGfxMaterial *pMaterial);
