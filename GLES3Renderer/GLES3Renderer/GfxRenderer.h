@@ -109,12 +109,12 @@ public:
 	void Update(void);
 
 public:
-	void Clear(float red, float green, float blue, float alpha, float depth);
-	void DrawInstance(GLuint material, CGfxMesh *pMesh);
-	void DrawInstance(GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset);
-	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform);
-	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset);
-	void DrawScreen(GLuint material);
+	void Clear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth);
+	void DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh);
+	void DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset);
+	void DrawElements(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform);
+	void DrawElements(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset);
+	void DrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material);
 	void Submit(const CGfxCommandBuffer *pCommandBuffer);
 
 public:

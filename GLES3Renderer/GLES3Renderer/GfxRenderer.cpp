@@ -276,19 +276,19 @@ void CGfxRenderer::Update(void)
 	m_uniformFog.Apply();
 }
 
-void CGfxRenderer::Clear(float red, float green, float blue, float alpha, float depth)
+void CGfxRenderer::Clear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth)
 {
 	glClearColor(red, green, blue, alpha);
 	glClearDepthf(depth);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void CGfxRenderer::DrawInstance(GLuint material, CGfxMesh *pMesh)
+void CGfxRenderer::DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh)
 {
-	DrawInstance(material, pMesh, pMesh->GetIndexCount(), 0);
+	DrawInstance(pCommandBuffer, material, pMesh, pMesh->GetIndexCount(), 0);
 }
 
-void CGfxRenderer::DrawInstance(GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset)
+void CGfxRenderer::DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -303,12 +303,12 @@ void CGfxRenderer::DrawInstance(GLuint material, CGfxMesh *pMesh, int indexCount
 	glDrawElementsInstanced(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (const void *)indexOffset, pMesh->GetInstanceCount());
 }
 
-void CGfxRenderer::DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform)
+void CGfxRenderer::DrawElements(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform)
 {
-	DrawElements(material, pMesh, pUniformTransform, pMesh->GetIndexCount(), 0);
+	DrawElements(pCommandBuffer, material, pMesh, pUniformTransform, pMesh->GetIndexCount(), 0);
 }
 
-void CGfxRenderer::DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset)
+void CGfxRenderer::DrawElements(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
@@ -325,7 +325,7 @@ void CGfxRenderer::DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUnif
 	glDrawElements(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (const void *)indexOffset);
 }
 
-void CGfxRenderer::DrawScreen(GLuint material)
+void CGfxRenderer::DrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material)
 {
 	if (m_pMaterials.find(material) == m_pMaterials.end()) {
 		return;
