@@ -41,7 +41,7 @@ void CGfxCommandBuffer::Submit(void) const
 
 void CGfxCommandBuffer::CommandClear(float red, float green, float blue, float alpha, float depth)
 {
-
+	m_commands.push_back(new CGfxCommandClear(red, green, blue, alpha, depth));
 }
 
 void CGfxCommandBuffer::CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer)

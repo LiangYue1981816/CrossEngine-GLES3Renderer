@@ -278,9 +278,7 @@ void CGfxRenderer::Update(void)
 
 void CGfxRenderer::Clear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth)
 {
-	glClearColor(red, green, blue, alpha);
-	glClearDepthf(depth);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	pCommandBuffer->CommandClear(red, green, blue, alpha, depth);
 }
 
 void CGfxRenderer::DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh)
@@ -296,33 +294,11 @@ void CGfxRenderer::DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint materi
 
 	if (m_material != material) {
 		m_material = material;
-		BindMaterial(m_pMaterials[material]);
+		pCommandBuffer->CommandBindMaterial(m_pMaterials[material]);
 	}
 
-	pMesh->Bind();
-	glDrawElementsInstanced(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (const void *)indexOffset, pMesh->GetInstanceCount());
-}
-
-void CGfxRenderer::DrawElements(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform)
-{
-	DrawElements(pCommandBuffer, material, pMesh, pUniformTransform, pMesh->GetIndexCount(), 0);
-}
-
-void CGfxRenderer::DrawElements(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset)
-{
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
-	}
-
-	if (m_material != material) {
-		m_material = material;
-		BindMaterial(m_pMaterials[material]);
-	}
-
-	m_pMaterials[material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TRANSFORM_NAME), pUniformTransform->GetBuffer(), pUniformTransform->GetSize());
-
-	pMesh->Bind();
-	glDrawElements(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (const void *)indexOffset);
+	pCommandBuffer->CommandBindMesh(pMesh);
+	pCommandBuffer->CommandDrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount());
 }
 
 void CGfxRenderer::DrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material)
@@ -333,11 +309,11 @@ void CGfxRenderer::DrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material
 
 	if (m_material != material) {
 		m_material  = material;
-		BindMaterial(m_pMaterials[material]);
+		pCommandBuffer->CommandBindMaterial(m_pMaterials[material]);
 	}
 
-	m_meshScreen.Bind();
-	glDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
+	pCommandBuffer->CommandBindMesh(&m_meshScreen);
+	pCommandBuffer->CommandDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
 }
 
 void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
