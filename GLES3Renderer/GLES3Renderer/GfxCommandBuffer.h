@@ -35,6 +35,7 @@ public:
 	void Submit(void) const;
 
 public:
+	void CommandClear(float red, float green, float blue, float alpha, float depth);
 	void CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
 	void CommandBindMesh(CGfxMesh *pMesh);
 	void CommandBindMaterial(CGfxMaterial *pMaterial);

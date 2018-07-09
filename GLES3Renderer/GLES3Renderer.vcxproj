@@ -98,6 +98,7 @@
     <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBuffer.h" />
+    <ClInclude Include="GLES3Renderer\GfxCommandClear.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandDrawElements.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandDrawInstance.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandInvalidateFramebuffer.h" />

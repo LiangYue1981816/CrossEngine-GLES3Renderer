@@ -4,6 +4,7 @@
 #include "GfxMaterial.h"
 #include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
+#include "GfxCommandClear.h"
 #include "GfxCommandBindMesh.h"
 #include "GfxCommandBindMaterial.h"
 #include "GfxCommandBindFrameBuffer.h"
@@ -36,6 +37,11 @@ void CGfxCommandBuffer::Submit(void) const
 	for (const auto &itCommand : m_commands) {
 		itCommand->Execute();
 	}
+}
+
+void CGfxCommandBuffer::CommandClear(float red, float green, float blue, float alpha, float depth)
+{
+
 }
 
 void CGfxCommandBuffer::CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer)

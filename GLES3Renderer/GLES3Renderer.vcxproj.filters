@@ -121,6 +121,9 @@
     <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandClear.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
