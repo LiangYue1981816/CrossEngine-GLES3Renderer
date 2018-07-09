@@ -262,6 +262,20 @@ CGfxMaterial* CGfxRenderer::GetMaterial(GLuint id) const
 	return itMaterial != m_pMaterials.end() ? itMaterial->second : m_pGlobalMaterial;
 }
 
+void CGfxRenderer::Update(void)
+{
+	m_uniformTime.Apply();
+	m_uniformScreen.Apply();
+	m_uniformZBuffer.Apply();
+	m_uniformProjection.Apply();
+	m_uniformCamera.Apply();
+	m_uniformShadow.Apply();
+	m_uniformAmbientLight.Apply();
+	m_uniformPointLight.Apply();
+	m_uniformDirectLight.Apply();
+	m_uniformFog.Apply();
+}
+
 void CGfxRenderer::Clear(float red, float green, float blue, float alpha, float depth)
 {
 	glClearColor(red, green, blue, alpha);
@@ -328,17 +342,6 @@ void CGfxRenderer::DrawScreen(GLuint material)
 
 void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
 {
-	m_uniformTime.Apply();
-	m_uniformScreen.Apply();
-	m_uniformZBuffer.Apply();
-	m_uniformProjection.Apply();
-	m_uniformCamera.Apply();
-	m_uniformShadow.Apply();
-	m_uniformAmbientLight.Apply();
-	m_uniformPointLight.Apply();
-	m_uniformDirectLight.Apply();
-	m_uniformFog.Apply();
-
 	pMaterial->Bind();
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
 	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SCREEN_NAME), m_uniformScreen.GetBuffer(), m_uniformScreen.GetSize());

@@ -105,6 +105,9 @@ public:
 	CGfxMaterial* GetMaterial(GLuint id) const;
 
 public:
+	void Update(void);
+
+public:
 	void Clear(float red, float green, float blue, float alpha, float depth);
 	void DrawInstance(GLuint material, CGfxMesh *pMesh);
 	void DrawInstance(GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset);
@@ -112,7 +115,7 @@ public:
 	void DrawElements(GLuint material, CGfxMesh *pMesh, const CGfxUniformTransform *pUniformTransform, int indexCount, int indexOffset);
 	void DrawScreen(GLuint material);
 
-private:
+public:
 	void BindMaterial(CGfxMaterial *pMaterial);
 
 
