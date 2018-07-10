@@ -26,9 +26,12 @@ public:
 class CGfxCommandBuffer
 {
 public:
-	CGfxCommandBuffer(void);
+	CGfxCommandBuffer(bool bMainCommandBuffer);
 	virtual ~CGfxCommandBuffer(void);
 
+
+public:
+	bool IsMainCommandBuffer(void) const;
 
 public:
 	void Clearup(void);
@@ -54,5 +57,6 @@ public:
 
 
 private:
+	bool m_bMainCommandBuffer;
 	std::vector<CGfxCommandBase*> m_commands;
 };

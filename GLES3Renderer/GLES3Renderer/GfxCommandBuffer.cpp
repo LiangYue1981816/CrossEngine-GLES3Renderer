@@ -18,14 +18,20 @@
 #include "GfxCommandExecute.h"
 
 
-CGfxCommandBuffer::CGfxCommandBuffer(void)
+CGfxCommandBuffer::CGfxCommandBuffer(bool bMainCommandBuffer)
+	: m_bMainCommandBuffer(bMainCommandBuffer)
 {
 
 }
 
 CGfxCommandBuffer::~CGfxCommandBuffer(void)
 {
+	Clearup();
+}
 
+bool CGfxCommandBuffer::IsMainCommandBuffer(void) const
+{
+	return m_bMainCommandBuffer;
 }
 
 void CGfxCommandBuffer::Clearup(void)
@@ -39,19 +45,25 @@ void CGfxCommandBuffer::Clearup(void)
 
 void CGfxCommandBuffer::Execute(void) const
 {
-	for (const auto &itCommand : m_commands) {
-		itCommand->Execute();
+	if (m_bMainCommandBuffer) {
+		for (const auto &itCommand : m_commands) {
+			itCommand->Execute();
+		}
 	}
 }
 
 void CGfxCommandBuffer::BeginPass(CGfxFrameBuffer *pFrameBuffer)
 {
-	m_commands.push_back(new CGfxCommandBeginPass(pFrameBuffer));
+	if (m_bMainCommandBuffer) {
+		m_commands.push_back(new CGfxCommandBeginPass(pFrameBuffer));
+	}
 }
 
 void CGfxCommandBuffer::EndPass(CGfxFrameBuffer *pFrameBuffer)
 {
-	m_commands.push_back(new CGfxCommandEndPass(pFrameBuffer));
+	if (m_bMainCommandBuffer) {
+		m_commands.push_back(new CGfxCommandEndPass(pFrameBuffer));
+	}
 }
 
 void CGfxCommandBuffer::SetScissor(int x, int y, int width, int height)
@@ -101,5 +113,7 @@ void CGfxCommandBuffer::DrawElements(GLenum mode, GLsizei count, GLenum type, vo
 
 void CGfxCommandBuffer::Execute(CGfxCommandBuffer *pCommandBuffer)
 {
-	m_commands.push_back(new CGfxCommandExecute(pCommandBuffer));
+	if (m_bMainCommandBuffer) {
+		m_commands.push_back(new CGfxCommandExecute(pCommandBuffer));
+	}
 }
