@@ -35,11 +35,6 @@ bool CGfxCommandBuffer::IsMainCommandBuffer(void) const
 	return m_bMainCommandBuffer;
 }
 
-bool CGfxCommandBuffer::IsInPassScope(void) const
-{
-	return m_bInPassScope;
-}
-
 void CGfxCommandBuffer::Clearup(void)
 {
 	for (const auto &itCommand : m_commands) {

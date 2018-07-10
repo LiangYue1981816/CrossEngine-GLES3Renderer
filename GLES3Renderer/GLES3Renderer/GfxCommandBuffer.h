@@ -32,7 +32,6 @@ public:
 
 public:
 	bool IsMainCommandBuffer(void) const;
-	bool IsInPassScope(void) const;
 
 public:
 	void Clearup(void);
