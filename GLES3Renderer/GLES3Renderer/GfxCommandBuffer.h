@@ -39,7 +39,7 @@ public:
 
 public:
 	bool BeginPass(CGfxFrameBuffer *pFrameBuffer);
-	bool EndPass(CGfxFrameBuffer *pFrameBuffer);
+	bool EndPass(void);
 
 	bool SetScissor(int x, int y, int width, int height);
 	bool SetViewport(int x, int y, int width, int height);
@@ -58,6 +58,8 @@ public:
 
 private:
 	bool m_bMainCommandBuffer;
-	bool m_bInPassScope;
+
+private:
+	CGfxFrameBuffer *m_pFrameBuffer;
 	std::vector<CGfxCommandBase*> m_commands;
 };

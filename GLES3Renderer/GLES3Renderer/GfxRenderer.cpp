@@ -26,8 +26,7 @@ void CGfxRenderer::Destroy(void)
 }
 
 CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
-	: m_pFrameBuffer(NULL)
-	, m_pGlobalMaterial(NULL)
+	: m_pGlobalMaterial(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -234,82 +233,78 @@ void CGfxRenderer::SetFogDistanceDensity(float startDistance, float endDistance,
 
 bool CGfxRenderer::CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer)
 {
-	if (pCommandBuffer->IsMainCommandBuffer()) {
-		m_pFrameBuffer = pFrameBuffer;
-		pCommandBuffer->BeginPass(m_pFrameBuffer);
-		return true;
-	}
-
-	return false;
+	return pCommandBuffer->BeginPass(pFrameBuffer);
 }
 
 bool CGfxRenderer::CmdEndPass(CGfxCommandBuffer *pCommandBuffer)
 {
-	if (pCommandBuffer->IsMainCommandBuffer()) {
-		pCommandBuffer->EndPass(m_pFrameBuffer);
-		m_pFrameBuffer = NULL;
-		return true;
+	return pCommandBuffer->EndPass();
+}
+
+bool CGfxRenderer::CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
+{
+	return pCommandBuffer->SetScissor(x, y, width, height);
+}
+
+bool CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
+{
+	return pCommandBuffer->SetViewport(x, y, width, height);
+}
+
+bool CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material)
+{
+	return pCommandBuffer->BindMaterial(material);
+}
+
+bool CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture)
+{
+	return pCommandBuffer->BindInputTexture(szName, texture);
+}
+
+bool CGfxRenderer::CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth)
+{
+	return pCommandBuffer->ClearDepth(depth);
+}
+
+bool CGfxRenderer::CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha)
+{
+	return pCommandBuffer->ClearColor(red, green, blue, alpha);
+}
+
+bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh)
+{
+	return CmdDrawInstance(pCommandBuffer, pMesh, pMesh->GetIndexCount(), 0);
+}
+
+bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset)
+{
+	if (pCommandBuffer->BindMesh(pMesh) == false) {
+		return false;
 	}
 
-	return false;
+	if (pCommandBuffer->DrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount()) == false) {
+		return false;
+	}
+
+	return true;
 }
 
-void CGfxRenderer::CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
+bool CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer)
 {
-	pCommandBuffer->SetScissor(x, y, width, height);
-}
+	if (pCommandBuffer->BindMesh(&m_meshScreen) == false) {
+		return false;
+	}
 
-void CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
-{
-	pCommandBuffer->SetViewport(x, y, width, height);
-	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
-}
+	if (pCommandBuffer->DrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL) == false) {
+		return false;
+	}
 
-void CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material)
-{
-	pCommandBuffer->BindMaterial(material);
-}
-
-void CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture)
-{
-	pCommandBuffer->BindInputTexture(szName, texture);
-}
-
-void CGfxRenderer::CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth)
-{
-	pCommandBuffer->ClearDepth(depth);
-}
-
-void CGfxRenderer::CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha)
-{
-	pCommandBuffer->ClearColor(red, green, blue, alpha);
-}
-
-void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh)
-{
-	CmdDrawInstance(pCommandBuffer, pMesh, pMesh->GetIndexCount(), 0);
-}
-
-void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset)
-{
-	pCommandBuffer->BindMesh(pMesh);
-	pCommandBuffer->DrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount());
-}
-
-void CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer)
-{
-	pCommandBuffer->BindMesh(&m_meshScreen);
-	pCommandBuffer->DrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
+	return true;
 }
 
 bool CGfxRenderer::CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer)
 {
-	if (pCommandBuffer->IsMainCommandBuffer()) {
-		pCommandBuffer->Execute(pSecondaryCommandBuffer);
-		return true;
-	}
-
-	return false;
+	return pCommandBuffer->Execute(pSecondaryCommandBuffer);
 }
 
 void CGfxRenderer::Update(void)

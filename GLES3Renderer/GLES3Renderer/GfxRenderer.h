@@ -106,17 +106,17 @@ public:
 	bool CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer);
 	bool CmdEndPass(CGfxCommandBuffer *pCommandBuffer);
 
-	void CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
-	void CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
+	bool CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
+	bool CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 
-	void CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material);
-	void CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture);
+	bool CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material);
+	bool CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture);
 
-	void CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);
-	void CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha);
-	void CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh);
-	void CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset);
-	void CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer);
+	bool CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);
+	bool CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha);
+	bool CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh);
+	bool CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset);
+	bool CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer);
 
 	bool CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer);
 
@@ -155,9 +155,6 @@ private:
 
 private:
 	CGfxMaterial *m_pGlobalMaterial;
-
-private:
-	CGfxFrameBuffer *m_pFrameBuffer;
 
 private:
 	static CGfxRenderer *pInstance;
