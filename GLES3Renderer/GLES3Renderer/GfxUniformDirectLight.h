@@ -19,7 +19,7 @@ public:
 
 
 public:
-	void SetColor(float r, float g, float b);
+	void SetColor(float red, float green, float blue);
 	void SetDirection(float x, float y, float z);
 	void Apply(void);
 

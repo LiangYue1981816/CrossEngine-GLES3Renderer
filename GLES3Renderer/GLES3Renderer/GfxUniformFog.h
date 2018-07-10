@@ -21,7 +21,7 @@ public:
 
 
 public:
-	void SetColor(float r, float g, float b);
+	void SetColor(float red, float green, float blue);
 	void SetHeightDensity(float startHeight, float endHeight, float density);
 	void SetDistanceDensity(float startDistance, float endDistance, float density);
 	void Apply(void);

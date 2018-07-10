@@ -14,10 +14,10 @@ CGfxUniformDirectLight::~CGfxUniformDirectLight(void)
 	m_uniformBuffer.Destroy();
 }
 
-void CGfxUniformDirectLight::SetColor(float r, float g, float b)
+void CGfxUniformDirectLight::SetColor(float red, float green, float blue)
 {
 	m_bDirty = true;
-	m_params.color = glm::vec4(r, g, b, 0.0);
+	m_params.color = glm::vec4(red, green, blue, 0.0);
 }
 
 void CGfxUniformDirectLight::SetDirection(float x, float y, float z)

@@ -80,34 +80,37 @@ const char* CGfxRenderer::GetMaterialFullPath(const char *szFileName, char *szFu
 	return szFullPath;
 }
 
-void CGfxRenderer::SetScissor(int x, int y, int width, int height)
+bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 {
-	glEnable(GL_SCISSOR_TEST);
-	glScissor(x, y, width, height);
-}
+	try {
+		int err = 0;
 
-void CGfxRenderer::SetViewport(int x, int y, int width, int height)
-{
-	glViewport(x, y, width, height);
-	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
-}
+		if (m_pMaterials[materialid] == NULL) {
+			m_pMaterials[materialid] = new CGfxMaterial;
+		}
 
-void CGfxRenderer::SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
-{
-	if (m_pFrameBuffer) {
-		m_pFrameBuffer->InvalidateFramebuffer();
+		if (m_pMaterials[materialid] == NULL) {
+			throw err++;
+		}
+
+		if (m_pMaterials[materialid]->Create(szFileName) == false) {
+			throw err++;
+		}
+
+		return true;
 	}
+	catch (int) {
+		delete m_pMaterials[materialid];
+		m_pMaterials.erase(materialid);
 
-	m_pFrameBuffer = pFrameBuffer;
-
-	if (m_pFrameBuffer) {
-		m_pFrameBuffer->Bind();
+		return false;
 	}
 }
 
-void CGfxRenderer::SetInputTexture(const char *szName, GLuint texture)
+CGfxMaterial* CGfxRenderer::GetMaterial(GLuint id) const
 {
-	m_pGlobalMaterial->GetTexture2D(szName)->Create(texture, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
+	const auto &itMaterial = m_pMaterials.find(id);
+	return itMaterial != m_pMaterials.end() ? itMaterial->second : m_pGlobalMaterial;
 }
 
 void CGfxRenderer::SetTime(float t, float dt)
@@ -214,9 +217,9 @@ void CGfxRenderer::SetDirectLightDirection(float dirx, float diry, float dirz)
 	m_uniformDirectLight.SetDirection(-dirx, -diry, -dirz);
 }
 
-void CGfxRenderer::SetFogColor(float r, float g, float b)
+void CGfxRenderer::SetFogColor(float red, float green, float blue)
 {
-	m_uniformFog.SetColor(r, g, b);
+	m_uniformFog.SetColor(red, green, blue);
 }
 
 void CGfxRenderer::SetFogHeightDensity(float startHeight, float endHeight, float density)
@@ -229,37 +232,67 @@ void CGfxRenderer::SetFogDistanceDensity(float startDistance, float endDistance,
 	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
 }
 
-bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
+void CGfxRenderer::CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
 {
-	try {
-		int err = 0;
-
-		if (m_pMaterials[materialid] == NULL) {
-			m_pMaterials[materialid] = new CGfxMaterial;
-		}
-
-		if (m_pMaterials[materialid] == NULL) {
-			throw err++;
-		}
-
-		if (m_pMaterials[materialid]->Create(szFileName) == false) {
-			throw err++;
-		}
-
-		return true;
-	}
-	catch (int) {
-		delete m_pMaterials[materialid];
-		m_pMaterials.erase(materialid);
-
-		return false;
-	}
+	pCommandBuffer->SetScissor(x, y, width, height);
 }
 
-CGfxMaterial* CGfxRenderer::GetMaterial(GLuint id) const
+void CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
 {
-	const auto &itMaterial = m_pMaterials.find(id);
-	return itMaterial != m_pMaterials.end() ? itMaterial->second : m_pGlobalMaterial;
+	pCommandBuffer->SetViewport(x, y, width, height);
+	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
+}
+
+void CGfxRenderer::CmdSetFrameBuffer(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer)
+{
+	pCommandBuffer->InvalidateFramebuffer(m_pFrameBuffer);
+	m_pFrameBuffer = pFrameBuffer;
+	pCommandBuffer->BindFrameBuffer(m_pFrameBuffer);
+}
+
+void CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture)
+{
+	pCommandBuffer->BindInputTexture(szName, texture);
+}
+
+void CGfxRenderer::CmdClear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth)
+{
+	pCommandBuffer->Clear(red, green, blue, alpha, depth);
+}
+
+void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh)
+{
+	CmdDrawInstance(pCommandBuffer, material, pMesh, pMesh->GetIndexCount(), 0);
+}
+
+void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset)
+{
+	if (m_pMaterials.find(material) == m_pMaterials.end()) {
+		return;
+	}
+
+	if (m_material != material) {
+		m_material = material;
+		pCommandBuffer->BindMaterial(m_pMaterials[material]);
+	}
+
+	pCommandBuffer->BindMesh(pMesh);
+	pCommandBuffer->DrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount());
+}
+
+void CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material)
+{
+	if (m_pMaterials.find(material) == m_pMaterials.end()) {
+		return;
+	}
+
+	if (m_material != material) {
+		m_material  = material;
+		pCommandBuffer->BindMaterial(m_pMaterials[material]);
+	}
+
+	pCommandBuffer->BindMesh(&m_meshScreen);
+	pCommandBuffer->DrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
 }
 
 void CGfxRenderer::Update(void)
@@ -276,49 +309,9 @@ void CGfxRenderer::Update(void)
 	m_uniformFog.Apply();
 }
 
-void CGfxRenderer::Clear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth)
-{
-	pCommandBuffer->CommandClear(red, green, blue, alpha, depth);
-}
-
-void CGfxRenderer::DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh)
-{
-	DrawInstance(pCommandBuffer, material, pMesh, pMesh->GetIndexCount(), 0);
-}
-
-void CGfxRenderer::DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset)
-{
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
-	}
-
-	if (m_material != material) {
-		m_material = material;
-		pCommandBuffer->CommandBindMaterial(m_pMaterials[material]);
-	}
-
-	pCommandBuffer->CommandBindMesh(pMesh);
-	pCommandBuffer->CommandDrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount());
-}
-
-void CGfxRenderer::DrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material)
-{
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
-	}
-
-	if (m_material != material) {
-		m_material  = material;
-		pCommandBuffer->CommandBindMaterial(m_pMaterials[material]);
-	}
-
-	pCommandBuffer->CommandBindMesh(&m_meshScreen);
-	pCommandBuffer->CommandDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
-}
-
 void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
 {
-	pCommandBuffer->Submit();
+	pCommandBuffer->Execute();
 }
 
 void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
@@ -337,4 +330,9 @@ void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
 
 	m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());
 	m_pGlobalMaterial->BindTextures(pMaterial->GetProgram(), pMaterial->GetTextureUnits());
+}
+
+void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture)
+{
+	m_pGlobalMaterial->GetTexture2D(szName)->Create(texture, GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 }

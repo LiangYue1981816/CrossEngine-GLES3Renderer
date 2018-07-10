@@ -43,6 +43,10 @@
 
 class CGfxRenderer
 {
+	friend class CGfxCommandBindMaterial;
+	friend class CGfxCommandBindInputTexture;
+
+
 public:
 	static CGfxRenderer* GetInstance(void);
 	static void Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath);
@@ -60,11 +64,8 @@ public:
 	const char* GetMaterialFullPath(const char *szFileName, char *szFullPath) const;
 
 public:
-	void SetScissor(int x, int y, int width, int height);
-	void SetViewport(int x, int y, int width, int height);
-
-	void SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
-	void SetInputTexture(const char *szName, GLuint texture);
+	bool LoadMaterial(const char *szFileName, GLuint materialid);
+	CGfxMaterial* GetMaterial(GLuint id) const;
 
 public:
 	void SetTime(float t, float dt);
@@ -97,26 +98,29 @@ public:
 	void SetDirectLightDirection(float dirx, float diry, float dirz);
 
 public:
-	void SetFogColor(float r, float g, float b);
+	void SetFogColor(float red, float green, float blue);
 	void SetFogHeightDensity(float startHeight, float endHeight, float density);
 	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
 
 public:
-	bool LoadMaterial(const char *szFileName, GLuint materialid);
-	CGfxMaterial* GetMaterial(GLuint id) const;
+	void CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
+	void CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
+
+	void CmdSetFrameBuffer(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer);
+	void CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture);
+
+	void CmdClear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth);
+	void CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh);
+	void CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset);
+	void CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material);
 
 public:
 	void Update(void);
-
-public:
-	void Clear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth);
-	void DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh);
-	void DrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset);
-	void DrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material);
 	void Submit(const CGfxCommandBuffer *pCommandBuffer);
 
-public:
+private:
 	void BindMaterial(CGfxMaterial *pMaterial);
+	void BindInputTexture(const char *szName, GLuint texture);
 
 
 private:

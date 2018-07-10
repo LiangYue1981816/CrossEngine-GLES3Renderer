@@ -124,6 +124,18 @@
     <ClInclude Include="GLES3Renderer\GfxCommandClear.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandExecute.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandSetScissor.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandSetViewport.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandBindInputTexture.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

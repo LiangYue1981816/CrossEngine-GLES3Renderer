@@ -32,16 +32,23 @@ public:
 
 public:
 	void Clearup(void);
-	void Submit(void) const;
+	void Execute(void) const;
 
 public:
-	void CommandClear(float red, float green, float blue, float alpha, float depth);
-	void CommandBindFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
-	void CommandBindMesh(CGfxMesh *pMesh);
-	void CommandBindMaterial(CGfxMaterial *pMaterial);
-	void CommandDrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
-	void CommandDrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
-	void CommandInvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer);
+	void SetScissor(int x, int y, int width, int height);
+	void SetViewport(int x, int y, int width, int height);
+
+	void BindFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
+	void BindInputTexture(const char *szName, GLuint texture);
+	void BindMesh(CGfxMesh *pMesh);
+	void BindMaterial(CGfxMaterial *pMaterial);
+
+	void Clear(float red, float green, float blue, float alpha, float depth);
+	void DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
+	void DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
+	void InvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer);
+
+	void Execute(CGfxCommandBuffer *pCommandBuffer);
 
 
 private:

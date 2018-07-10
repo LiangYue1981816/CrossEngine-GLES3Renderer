@@ -14,10 +14,10 @@ CGfxUniformFog::~CGfxUniformFog(void)
 	m_uniformBuffer.Destroy();
 }
 
-void CGfxUniformFog::SetColor(float r, float g, float b)
+void CGfxUniformFog::SetColor(float red, float green, float blue)
 {
 	m_bDirty = true;
-	m_params.color = glm::vec4(r, g, b, 0.0f);
+	m_params.color = glm::vec4(red, green, blue, 0.0f);
 }
 
 void CGfxUniformFog::SetHeightDensity(float startHeight, float endHeight, float density)
