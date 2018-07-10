@@ -166,13 +166,6 @@ void CGfxMaterial::BindPipeline(void) const
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	if (m_bEnableDepthWrite) {
-		glDepthMask(GL_TRUE);
-	}
-	else {
-		glDepthMask(GL_FALSE);
-	}
-
 	if (m_bEnableBlend) {
 		glEnable(GL_BLEND);
 		glBlendFunc(m_srcBlendFactor, m_dstBlendFactor);
@@ -189,8 +182,8 @@ void CGfxMaterial::BindPipeline(void) const
 		glDisable(GL_POLYGON_OFFSET_FILL);
 	}
 
-	glDepthMask(m_bEnableDepthMask);
-	glColorMask(m_bEnableColorMaskRed, m_bEnableColorMaskGreen, m_bEnableColorMaskBlue, m_bEnableColorMaskAlpha);
+	glDepthMask(m_bEnableDepthMask ? GL_TRUE : GL_FALSE);
+	glColorMask(m_bEnableColorMaskRed ? GL_TRUE : GL_FALSE, m_bEnableColorMaskGreen ? GL_TRUE : GL_FALSE, m_bEnableColorMaskBlue ? GL_TRUE : GL_FALSE, m_bEnableColorMaskAlpha ? GL_TRUE : GL_FALSE);
 }
 
 void CGfxMaterial::BindUniforms(CGfxProgram *pProgram) const
