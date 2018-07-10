@@ -35,25 +35,25 @@ public:
 
 public:
 	void Clearup(void);
-	void Execute(void) const;
+	bool Execute(void) const;
 
 public:
-	void BeginPass(CGfxFrameBuffer *pFrameBuffer);
-	void EndPass(CGfxFrameBuffer *pFrameBuffer);
+	bool BeginPass(CGfxFrameBuffer *pFrameBuffer);
+	bool EndPass(CGfxFrameBuffer *pFrameBuffer);
 
-	void SetScissor(int x, int y, int width, int height);
-	void SetViewport(int x, int y, int width, int height);
+	bool SetScissor(int x, int y, int width, int height);
+	bool SetViewport(int x, int y, int width, int height);
 
-	void BindMesh(CGfxMesh *pMesh);
-	void BindMaterial(GLuint material);
-	void BindInputTexture(const char *szName, GLuint texture);
+	bool BindMesh(CGfxMesh *pMesh);
+	bool BindMaterial(GLuint material);
+	bool BindInputTexture(const char *szName, GLuint texture);
 
-	void ClearDepth(float depth);
-	void ClearColor(float red, float green, float blue, float alpha);
-	void DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
-	void DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
+	bool ClearDepth(float depth);
+	bool ClearColor(float red, float green, float blue, float alpha);
+	bool DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
+	bool DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
 
-	void Execute(CGfxCommandBuffer *pCommandBuffer);
+	bool Execute(CGfxCommandBuffer *pCommandBuffer);
 
 
 private:
