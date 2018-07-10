@@ -232,16 +232,26 @@ void CGfxRenderer::SetFogDistanceDensity(float startDistance, float endDistance,
 	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
 }
 
-void CGfxRenderer::CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer)
+bool CGfxRenderer::CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer)
 {
-	m_pFrameBuffer = pFrameBuffer;
-	pCommandBuffer->BeginPass(m_pFrameBuffer);
+	if (pCommandBuffer->IsMainCommandBuffer()) {
+		m_pFrameBuffer = pFrameBuffer;
+		pCommandBuffer->BeginPass(m_pFrameBuffer);
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxRenderer::CmdEndPass(CGfxCommandBuffer *pCommandBuffer)
+bool CGfxRenderer::CmdEndPass(CGfxCommandBuffer *pCommandBuffer)
 {
-	pCommandBuffer->EndPass(m_pFrameBuffer);
-	m_pFrameBuffer = NULL;
+	if (pCommandBuffer->IsMainCommandBuffer()) {
+		pCommandBuffer->EndPass(m_pFrameBuffer);
+		m_pFrameBuffer = NULL;
+		return true;
+	}
+
+	return false;
 }
 
 void CGfxRenderer::CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
@@ -257,10 +267,6 @@ void CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int 
 
 void CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material)
 {
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
-	}
-
 	pCommandBuffer->BindMaterial(material);
 }
 
@@ -296,9 +302,14 @@ void CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer)
 	pCommandBuffer->DrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
 }
 
-void CGfxRenderer::CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer)
+bool CGfxRenderer::CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer)
 {
-	pCommandBuffer->Execute(pSecondaryCommandBuffer);
+	if (pCommandBuffer->IsMainCommandBuffer()) {
+		pCommandBuffer->Execute(pSecondaryCommandBuffer);
+		return true;
+	}
+
+	return false;
 }
 
 void CGfxRenderer::Update(void)

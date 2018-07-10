@@ -103,8 +103,8 @@ public:
 	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
 
 public:
-	void CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer);
-	void CmdEndPass(CGfxCommandBuffer *pCommandBuffer);
+	bool CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer);
+	bool CmdEndPass(CGfxCommandBuffer *pCommandBuffer);
 
 	void CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 	void CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
@@ -118,7 +118,7 @@ public:
 	void CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset);
 	void CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer);
 
-	void CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer);
+	bool CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer);
 
 public:
 	void Update(void);
