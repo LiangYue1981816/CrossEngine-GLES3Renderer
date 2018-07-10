@@ -58,6 +58,7 @@ public:
 
 private:
 	bool m_bMainCommandBuffer;
+	bool m_bInPassScope;
 
 private:
 	CGfxFrameBuffer *m_pFrameBuffer;
