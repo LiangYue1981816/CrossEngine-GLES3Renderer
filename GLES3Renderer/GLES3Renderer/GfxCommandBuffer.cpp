@@ -44,79 +44,136 @@ void CGfxCommandBuffer::Clearup(void)
 	m_commands.clear();
 }
 
-void CGfxCommandBuffer::Execute(void) const
+bool CGfxCommandBuffer::Execute(void) const
 {
-	if (m_bMainCommandBuffer) {
+	if (m_bMainCommandBuffer == true && m_bInPassScope == false) {
 		for (const auto &itCommand : m_commands) {
 			itCommand->Execute();
 		}
+		return true;
 	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::BeginPass(CGfxFrameBuffer *pFrameBuffer)
+bool CGfxCommandBuffer::BeginPass(CGfxFrameBuffer *pFrameBuffer)
 {
-	if (m_bMainCommandBuffer) {
+	if (m_bMainCommandBuffer == true && m_bInPassScope == false) {
 		m_bInPassScope = true;
 		m_commands.push_back(new CGfxCommandBeginPass(pFrameBuffer));
+		return true;
 	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::EndPass(CGfxFrameBuffer *pFrameBuffer)
+bool CGfxCommandBuffer::EndPass(CGfxFrameBuffer *pFrameBuffer)
 {
-	if (m_bMainCommandBuffer) {
+	if (m_bMainCommandBuffer == true && m_bInPassScope == true) {
 		m_bInPassScope = false;
 		m_commands.push_back(new CGfxCommandEndPass(pFrameBuffer));
+		return true;
 	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::SetScissor(int x, int y, int width, int height)
+bool CGfxCommandBuffer::SetScissor(int x, int y, int width, int height)
 {
-	m_commands.push_back(new CGfxCommandSetScissor(x, y, width, height));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandSetScissor(x, y, width, height));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::SetViewport(int x, int y, int width, int height)
+bool CGfxCommandBuffer::SetViewport(int x, int y, int width, int height)
 {
-	m_commands.push_back(new CGfxCommandSetViewport(x, y, width, height));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandSetViewport(x, y, width, height));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::BindMesh(CGfxMesh *pMesh)
+bool CGfxCommandBuffer::BindMesh(CGfxMesh *pMesh)
 {
-	m_commands.push_back(new CGfxCommandBindMesh(pMesh));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandBindMesh(pMesh));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::BindMaterial(GLuint material)
+bool CGfxCommandBuffer::BindMaterial(GLuint material)
 {
-	m_commands.push_back(new CGfxCommandBindMaterial(material));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandBindMaterial(material));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::BindInputTexture(const char *szName, GLuint texture)
+bool CGfxCommandBuffer::BindInputTexture(const char *szName, GLuint texture)
 {
-	m_commands.push_back(new CGfxCommandBindInputTexture(szName, texture));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandBindInputTexture(szName, texture));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::ClearDepth(float depth)
+bool CGfxCommandBuffer::ClearDepth(float depth)
 {
-	m_commands.push_back(new CGfxCommandClearDepth(depth));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandClearDepth(depth));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::ClearColor(float red, float green, float blue, float alpha)
+bool CGfxCommandBuffer::ClearColor(float red, float green, float blue, float alpha)
 {
-	m_commands.push_back(new CGfxCommandClearColor(red, green, blue, alpha));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandClearColor(red, green, blue, alpha));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount)
+bool CGfxCommandBuffer::DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount)
 {
-	m_commands.push_back(new CGfxCommandDrawInstance(mode, count, type, indices, primcount));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandDrawInstance(mode, count, type, indices, primcount));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices)
+bool CGfxCommandBuffer::DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices)
 {
-	m_commands.push_back(new CGfxCommandDrawElements(mode, count, type, indices));
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandDrawElements(mode, count, type, indices));
+		return true;
+	}
+
+	return false;
 }
 
-void CGfxCommandBuffer::Execute(CGfxCommandBuffer *pCommandBuffer)
+bool CGfxCommandBuffer::Execute(CGfxCommandBuffer *pCommandBuffer)
 {
-	if (m_bMainCommandBuffer) {
+	if (m_bMainCommandBuffer == true && m_bInPassScope == true && pCommandBuffer->IsMainCommandBuffer() == false) {
 		m_commands.push_back(new CGfxCommandExecute(pCommandBuffer));
+		return true;
 	}
+
+	return false;
 }
