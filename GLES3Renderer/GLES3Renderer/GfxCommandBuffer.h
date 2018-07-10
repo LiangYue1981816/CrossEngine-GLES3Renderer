@@ -42,7 +42,7 @@ public:
 	void SetViewport(int x, int y, int width, int height);
 
 	void BindMesh(CGfxMesh *pMesh);
-	void BindMaterial(CGfxMaterial *pMaterial);
+	void BindMaterial(GLuint material);
 	void BindInputTexture(const char *szName, GLuint texture);
 
 	void ClearDepth(float depth);

@@ -69,9 +69,9 @@ void CGfxCommandBuffer::BindMesh(CGfxMesh *pMesh)
 	m_commands.push_back(new CGfxCommandBindMesh(pMesh));
 }
 
-void CGfxCommandBuffer::BindMaterial(CGfxMaterial *pMaterial)
+void CGfxCommandBuffer::BindMaterial(GLuint material)
 {
-	m_commands.push_back(new CGfxCommandBindMaterial(pMaterial));
+	m_commands.push_back(new CGfxCommandBindMaterial(material));
 }
 
 void CGfxCommandBuffer::BindInputTexture(const char *szName, GLuint texture)

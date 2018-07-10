@@ -255,6 +255,15 @@ void CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int 
 	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
 }
 
+void CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material)
+{
+	if (m_pMaterials.find(material) == m_pMaterials.end()) {
+		return;
+	}
+
+	pCommandBuffer->BindMaterial(material);
+}
+
 void CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture)
 {
 	pCommandBuffer->BindInputTexture(szName, texture);
@@ -270,39 +279,26 @@ void CGfxRenderer::CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, f
 	pCommandBuffer->ClearColor(red, green, blue, alpha);
 }
 
-void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh)
+void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh)
 {
-	CmdDrawInstance(pCommandBuffer, material, pMesh, pMesh->GetIndexCount(), 0);
+	CmdDrawInstance(pCommandBuffer, pMesh, pMesh->GetIndexCount(), 0);
 }
 
-void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset)
+void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset)
 {
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
-	}
-
-	if (m_material != material) {
-		m_material = material;
-		pCommandBuffer->BindMaterial(m_pMaterials[material]);
-	}
-
 	pCommandBuffer->BindMesh(pMesh);
 	pCommandBuffer->DrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount());
 }
 
-void CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material)
+void CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer)
 {
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
-	}
-
-	if (m_material != material) {
-		m_material  = material;
-		pCommandBuffer->BindMaterial(m_pMaterials[material]);
-	}
-
 	pCommandBuffer->BindMesh(&m_meshScreen);
 	pCommandBuffer->DrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL);
+}
+
+void CGfxRenderer::CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer)
+{
+	pCommandBuffer->Execute(pSecondaryCommandBuffer);
 }
 
 void CGfxRenderer::Update(void)
@@ -324,22 +320,32 @@ void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
 	pCommandBuffer->Execute();
 }
 
-void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
+void CGfxRenderer::BindMaterial(GLuint material)
 {
-	pMaterial->Bind();
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SCREEN_NAME), m_uniformScreen.GetBuffer(), m_uniformScreen.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_NAME), m_uniformShadow.GetBuffer(), m_uniformShadow.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
-	pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
+	if (m_pMaterials.find(material) == m_pMaterials.end()) {
+		return;
+	}
 
-	m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());
-	m_pGlobalMaterial->BindTextures(pMaterial->GetProgram(), pMaterial->GetTextureUnits());
+	if (m_material == material) {
+		return;
+	}
+
+	m_material = material;
+
+	m_pMaterials[m_material]->Bind();
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SCREEN_NAME), m_uniformScreen.GetBuffer(), m_uniformScreen.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_NAME), m_uniformShadow.GetBuffer(), m_uniformShadow.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
+	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
+
+	m_pGlobalMaterial->BindUniforms(m_pMaterials[m_material]->GetProgram());
+	m_pGlobalMaterial->BindTextures(m_pMaterials[m_material]->GetProgram(), m_pMaterials[m_material]->GetTextureUnits());
 }
 
 void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture)
