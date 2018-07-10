@@ -20,6 +20,7 @@
 
 CGfxCommandBuffer::CGfxCommandBuffer(bool bMainCommandBuffer)
 	: m_bMainCommandBuffer(bMainCommandBuffer)
+	, m_bInPassScope(false)
 {
 
 }
@@ -32,6 +33,11 @@ CGfxCommandBuffer::~CGfxCommandBuffer(void)
 bool CGfxCommandBuffer::IsMainCommandBuffer(void) const
 {
 	return m_bMainCommandBuffer;
+}
+
+bool CGfxCommandBuffer::IsInPassScope(void) const
+{
+	return m_bInPassScope;
 }
 
 void CGfxCommandBuffer::Clearup(void)
@@ -55,6 +61,7 @@ void CGfxCommandBuffer::Execute(void) const
 void CGfxCommandBuffer::BeginPass(CGfxFrameBuffer *pFrameBuffer)
 {
 	if (m_bMainCommandBuffer) {
+		m_bInPassScope = true;
 		m_commands.push_back(new CGfxCommandBeginPass(pFrameBuffer));
 	}
 }
@@ -62,6 +69,7 @@ void CGfxCommandBuffer::BeginPass(CGfxFrameBuffer *pFrameBuffer)
 void CGfxCommandBuffer::EndPass(CGfxFrameBuffer *pFrameBuffer)
 {
 	if (m_bMainCommandBuffer) {
+		m_bInPassScope = false;
 		m_commands.push_back(new CGfxCommandEndPass(pFrameBuffer));
 	}
 }

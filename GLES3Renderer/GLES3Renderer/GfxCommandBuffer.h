@@ -32,6 +32,7 @@ public:
 
 public:
 	bool IsMainCommandBuffer(void) const;
+	bool IsInPassScope(void) const;
 
 public:
 	void Clearup(void);
@@ -58,5 +59,6 @@ public:
 
 private:
 	bool m_bMainCommandBuffer;
+	bool m_bInPassScope;
 	std::vector<CGfxCommandBase*> m_commands;
 };
