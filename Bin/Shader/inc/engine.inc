@@ -23,12 +23,6 @@
 		vec4 deltaTime;                                                            \
 	} engineTime
 
-#define USE_ENGINE_SCREEN                                                          \
-	uniform Screen                                                                 \
-	{                                                                              \
-		vec4 screen;                                                               \
-	} engineScreen
-
 #define USE_ENGINE_ZBUFFER                                                         \
 	uniform ZBuffer                                                                \
 	{                                                                              \
@@ -109,7 +103,6 @@
 
 
 USE_ENGINE_TIME;
-USE_ENGINE_SCREEN;
 USE_ENGINE_ZBUFFER;
 USE_ENGINE_PROJECTION;
 

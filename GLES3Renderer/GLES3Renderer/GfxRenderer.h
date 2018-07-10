@@ -10,7 +10,6 @@
 #include "GfxTextureCubeMap.h"
 #include "GfxFrameBuffer.h"
 #include "GfxUniformTime.h"
-#include "GfxUniformScreen.h"
 #include "GfxUniformZBuffer.h"
 #include "GfxUniformProjection.h"
 #include "GfxUniformCamera.h"
@@ -29,7 +28,6 @@
 
 
 #define ENGINE_TIME_NAME                "Time"
-#define ENGINE_SCREEN_NAME              "Screen"
 #define ENGINE_ZBUFFER_NAME             "ZBuffer"
 #define ENGINE_PROJECTION_NAME          "Projection"
 #define ENGINE_CAMERA_NAME              "Camera"
@@ -139,7 +137,6 @@ private:
 
 private:
 	CGfxUniformTime m_uniformTime;
-	CGfxUniformScreen m_uniformScreen;
 	CGfxUniformZBuffer m_uniformZBuffer;
 	CGfxUniformProjection m_uniformProjection;
 	CGfxUniformCamera m_uniformCamera;

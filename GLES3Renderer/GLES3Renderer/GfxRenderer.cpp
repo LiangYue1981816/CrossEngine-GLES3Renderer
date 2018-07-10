@@ -310,7 +310,6 @@ bool CGfxRenderer::CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuff
 void CGfxRenderer::Update(void)
 {
 	m_uniformTime.Apply();
-	m_uniformScreen.Apply();
 	m_uniformZBuffer.Apply();
 	m_uniformProjection.Apply();
 	m_uniformCamera.Apply();
@@ -340,7 +339,6 @@ void CGfxRenderer::BindMaterial(GLuint material)
 
 	m_pMaterials[m_material]->Bind();
 	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SCREEN_NAME), m_uniformScreen.GetBuffer(), m_uniformScreen.GetSize());
 	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
 	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
 	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
