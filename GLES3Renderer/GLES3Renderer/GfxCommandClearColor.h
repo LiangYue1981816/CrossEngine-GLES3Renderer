@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "glew.h"
 #include "GfxCommandBuffer.h"
 
