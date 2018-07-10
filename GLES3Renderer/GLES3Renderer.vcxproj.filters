@@ -121,9 +121,6 @@
     <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandClear.h">
-      <Filter>GLES3Renderer\Source Files\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandExecute.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
@@ -134,6 +131,12 @@
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandBindInputTexture.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandClearColor.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandClearDepth.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>

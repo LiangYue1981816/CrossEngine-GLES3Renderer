@@ -10,7 +10,8 @@
 #include "GfxCommandBindInputTexture.h"
 #include "GfxCommandSetScissor.h"
 #include "GfxCommandSetViewport.h"
-#include "GfxCommandClear.h"
+#include "GfxCommandClearDepth.h"
+#include "GfxCommandClearColor.h"
 #include "GfxCommandDrawInstance.h"
 #include "GfxCommandDrawElements.h"
 #include "GfxCommandInvalidateFrameBuffer.h"
@@ -73,9 +74,14 @@ void CGfxCommandBuffer::BindMaterial(CGfxMaterial *pMaterial)
 	m_commands.push_back(new CGfxCommandBindMaterial(pMaterial));
 }
 
-void CGfxCommandBuffer::Clear(float red, float green, float blue, float alpha, float depth)
+void CGfxCommandBuffer::ClearDepth(float depth)
 {
-	m_commands.push_back(new CGfxCommandClear(red, green, blue, alpha, depth));
+	m_commands.push_back(new CGfxCommandClearDepth(depth));
+}
+
+void CGfxCommandBuffer::ClearColor(float red, float green, float blue, float alpha)
+{
+	m_commands.push_back(new CGfxCommandClearColor(red, green, blue, alpha));
 }
 
 void CGfxCommandBuffer::DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount)

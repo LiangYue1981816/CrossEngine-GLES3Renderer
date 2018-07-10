@@ -26,8 +26,8 @@ void CGfxRenderer::Destroy(void)
 }
 
 CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
-	: m_pGlobalMaterial(NULL)
-	, m_pFrameBuffer(NULL)
+	: m_pFrameBuffer(NULL)
+	, m_pGlobalMaterial(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -255,9 +255,14 @@ void CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const c
 	pCommandBuffer->BindInputTexture(szName, texture);
 }
 
-void CGfxRenderer::CmdClear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth)
+void CGfxRenderer::CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth)
 {
-	pCommandBuffer->Clear(red, green, blue, alpha, depth);
+	pCommandBuffer->ClearDepth(depth);
+}
+
+void CGfxRenderer::CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha)
+{
+	pCommandBuffer->ClearColor(red, green, blue, alpha);
 }
 
 void CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh)

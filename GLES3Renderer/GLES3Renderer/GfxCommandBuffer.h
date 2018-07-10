@@ -43,7 +43,8 @@ public:
 	void BindMesh(CGfxMesh *pMesh);
 	void BindMaterial(CGfxMaterial *pMaterial);
 
-	void Clear(float red, float green, float blue, float alpha, float depth);
+	void ClearDepth(float depth);
+	void ClearColor(float red, float green, float blue, float alpha);
 	void DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
 	void DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
 	void InvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer);

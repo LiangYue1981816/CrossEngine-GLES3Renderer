@@ -5,10 +5,10 @@
 #include "GfxMesh.h"
 #include "GfxProgram.h"
 #include "GfxMaterial.h"
-#include "GfxFrameBuffer.h"
 #include "GfxTexture2D.h"
 #include "GfxTexture2DArray.h"
 #include "GfxTextureCubeMap.h"
+#include "GfxFrameBuffer.h"
 #include "GfxUniformTime.h"
 #include "GfxUniformScreen.h"
 #include "GfxUniformZBuffer.h"
@@ -109,7 +109,8 @@ public:
 	void CmdSetFrameBuffer(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer);
 	void CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture);
 
-	void CmdClear(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha, float depth);
+	void CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);
+	void CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha);
 	void CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh);
 	void CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, GLuint material, CGfxMesh *pMesh, int indexCount, int indexOffset);
 	void CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer, GLuint material);
