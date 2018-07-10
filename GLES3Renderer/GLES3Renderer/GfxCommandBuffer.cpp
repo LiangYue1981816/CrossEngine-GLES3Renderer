@@ -49,7 +49,7 @@ void CGfxCommandBuffer::Clearup(void)
 
 bool CGfxCommandBuffer::Execute(void) const
 {
-	if (m_bMainCommandBuffer == true && m_bInPassScope == false) {
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == false)) {
 		for (const auto &itCommand : m_commands) {
 			itCommand->Execute();
 		}
