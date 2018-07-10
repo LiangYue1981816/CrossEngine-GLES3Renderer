@@ -4,9 +4,10 @@
 #include "GfxMaterial.h"
 #include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
+#include "GfxCommandBeginPass.h"
+#include "GfxCommandEndPass.h"
 #include "GfxCommandBindMesh.h"
 #include "GfxCommandBindMaterial.h"
-#include "GfxCommandBindFrameBuffer.h"
 #include "GfxCommandBindInputTexture.h"
 #include "GfxCommandSetScissor.h"
 #include "GfxCommandSetViewport.h"
@@ -14,7 +15,6 @@
 #include "GfxCommandClearColor.h"
 #include "GfxCommandDrawInstance.h"
 #include "GfxCommandDrawElements.h"
-#include "GfxCommandInvalidateFrameBuffer.h"
 #include "GfxCommandExecute.h"
 
 
@@ -44,6 +44,16 @@ void CGfxCommandBuffer::Execute(void) const
 	}
 }
 
+void CGfxCommandBuffer::BeginPass(CGfxFrameBuffer *pFrameBuffer)
+{
+	m_commands.push_back(new CGfxCommandBeginPass(pFrameBuffer));
+}
+
+void CGfxCommandBuffer::EndPass(CGfxFrameBuffer *pFrameBuffer)
+{
+	m_commands.push_back(new CGfxCommandEndPass(pFrameBuffer));
+}
+
 void CGfxCommandBuffer::SetScissor(int x, int y, int width, int height)
 {
 	m_commands.push_back(new CGfxCommandSetScissor(x, y, width, height));
@@ -54,16 +64,6 @@ void CGfxCommandBuffer::SetViewport(int x, int y, int width, int height)
 	m_commands.push_back(new CGfxCommandSetViewport(x, y, width, height));
 }
 
-void CGfxCommandBuffer::BindFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
-{
-	m_commands.push_back(new CGfxCommandBindFrameBuffer(pFrameBuffer));
-}
-
-void CGfxCommandBuffer::BindInputTexture(const char *szName, GLuint texture)
-{
-	m_commands.push_back(new CGfxCommandBindInputTexture(szName, texture));
-}
-
 void CGfxCommandBuffer::BindMesh(CGfxMesh *pMesh)
 {
 	m_commands.push_back(new CGfxCommandBindMesh(pMesh));
@@ -72,6 +72,11 @@ void CGfxCommandBuffer::BindMesh(CGfxMesh *pMesh)
 void CGfxCommandBuffer::BindMaterial(CGfxMaterial *pMaterial)
 {
 	m_commands.push_back(new CGfxCommandBindMaterial(pMaterial));
+}
+
+void CGfxCommandBuffer::BindInputTexture(const char *szName, GLuint texture)
+{
+	m_commands.push_back(new CGfxCommandBindInputTexture(szName, texture));
 }
 
 void CGfxCommandBuffer::ClearDepth(float depth)
@@ -92,11 +97,6 @@ void CGfxCommandBuffer::DrawInstance(GLenum mode, GLsizei count, GLenum type, vo
 void CGfxCommandBuffer::DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices)
 {
 	m_commands.push_back(new CGfxCommandDrawElements(mode, count, type, indices));
-}
-
-void CGfxCommandBuffer::InvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer)
-{
-	m_commands.push_back(new CGfxCommandInvalidateFrameBuffer(pFrameBuffer));
 }
 
 void CGfxCommandBuffer::Execute(CGfxCommandBuffer *pCommandBuffer)

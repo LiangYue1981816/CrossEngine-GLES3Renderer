@@ -232,6 +232,18 @@ void CGfxRenderer::SetFogDistanceDensity(float startDistance, float endDistance,
 	m_uniformFog.SetDistanceDensity(startDistance, endDistance, density);
 }
 
+void CGfxRenderer::CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer)
+{
+	m_pFrameBuffer = pFrameBuffer;
+	pCommandBuffer->BeginPass(m_pFrameBuffer);
+}
+
+void CGfxRenderer::CmdEndPass(CGfxCommandBuffer *pCommandBuffer)
+{
+	pCommandBuffer->EndPass(m_pFrameBuffer);
+	m_pFrameBuffer = NULL;
+}
+
 void CGfxRenderer::CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
 {
 	pCommandBuffer->SetScissor(x, y, width, height);
@@ -241,13 +253,6 @@ void CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int 
 {
 	pCommandBuffer->SetViewport(x, y, width, height);
 	m_uniformScreen.SetScreen(1.0f * width, 1.0f * height);
-}
-
-void CGfxRenderer::CmdSetFrameBuffer(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer)
-{
-	pCommandBuffer->InvalidateFramebuffer(m_pFrameBuffer);
-	m_pFrameBuffer = pFrameBuffer;
-	pCommandBuffer->BindFrameBuffer(m_pFrameBuffer);
 }
 
 void CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture)

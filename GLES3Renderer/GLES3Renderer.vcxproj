@@ -94,7 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GLES3Renderer\GfxCommandBindFrameBuffer.h" />
+    <ClInclude Include="GLES3Renderer\GfxCommandBeginPass.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindInputTexture.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h" />
@@ -103,8 +103,8 @@
     <ClInclude Include="GLES3Renderer\GfxCommandClearDepth.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandDrawElements.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandDrawInstance.h" />
+    <ClInclude Include="GLES3Renderer\GfxCommandEndPass.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandExecute.h" />
-    <ClInclude Include="GLES3Renderer\GfxCommandInvalidateFramebuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandSetScissor.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandSetViewport.h" />
     <ClInclude Include="GLES3Renderer\GfxFrameBuffer.h" />

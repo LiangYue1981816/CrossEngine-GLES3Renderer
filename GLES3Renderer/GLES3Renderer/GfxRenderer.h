@@ -103,10 +103,12 @@ public:
 	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
 
 public:
+	void CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer);
+	void CmdEndPass(CGfxCommandBuffer *pCommandBuffer);
+
 	void CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 	void CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 
-	void CmdSetFrameBuffer(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer);
 	void CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture);
 
 	void CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);

@@ -103,10 +103,22 @@
     <ClInclude Include="GLES3Renderer\GfxCommandBuffer.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandBindFrameBuffer.h">
+    <ClInclude Include="GLES3Renderer\GfxCommandBeginPass.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandBindInputTexture.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandClearColor.h">
+      <Filter>GLES3Renderer\Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCommandClearDepth.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandDrawElements.h">
@@ -115,10 +127,7 @@
     <ClInclude Include="GLES3Renderer\GfxCommandDrawInstance.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandInvalidateFramebuffer.h">
-      <Filter>GLES3Renderer\Source Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h">
+    <ClInclude Include="GLES3Renderer\GfxCommandEndPass.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandExecute.h">
@@ -128,15 +137,6 @@
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="GLES3Renderer\GfxCommandSetViewport.h">
-      <Filter>GLES3Renderer\Source Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandBindInputTexture.h">
-      <Filter>GLES3Renderer\Source Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandClearColor.h">
-      <Filter>GLES3Renderer\Source Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandClearDepth.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,15 +3,15 @@
 #include "GfxCommandBuffer.h"
 
 
-class CGfxCommandInvalidateFrameBuffer : public CGfxCommandBase
+class CGfxCommandEndPass : public CGfxCommandBase
 {
 public:
-	CGfxCommandInvalidateFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
+	CGfxCommandEndPass(CGfxFrameBuffer *pFrameBuffer)
 		: m_pFrameBuffer(pFrameBuffer)
 	{
 
 	}
-	virtual ~CGfxCommandInvalidateFrameBuffer(void)
+	virtual ~CGfxCommandEndPass(void)
 	{
 
 	}
