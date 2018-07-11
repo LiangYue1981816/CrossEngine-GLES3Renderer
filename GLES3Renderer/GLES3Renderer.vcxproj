@@ -119,6 +119,7 @@
     <ClInclude Include="GLES3Renderer\GfxTexture2D.h" />
     <ClInclude Include="GLES3Renderer\GfxTexture2DArray.h" />
     <ClInclude Include="GLES3Renderer\GfxTextureCubeMap.h" />
+    <ClInclude Include="GLES3Renderer\GfxTextureManager.h" />
     <ClInclude Include="GLES3Renderer\GfxUniformAmbientLight.h" />
     <ClInclude Include="GLES3Renderer\GfxUniformBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxUniformCamera.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="GLES3Renderer\GfxTexture2D.cpp" />
     <ClCompile Include="GLES3Renderer\GfxTexture2DArray.cpp" />
     <ClCompile Include="GLES3Renderer\GfxTextureCubeMap.cpp" />
+    <ClCompile Include="GLES3Renderer\GfxTextureManager.cpp" />
     <ClCompile Include="GLES3Renderer\GfxUniformAmbientLight.cpp" />
     <ClCompile Include="GLES3Renderer\GfxUniformBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxUniformCamera.cpp" />

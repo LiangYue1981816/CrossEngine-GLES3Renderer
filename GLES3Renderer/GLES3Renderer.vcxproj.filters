@@ -136,6 +136,9 @@
     <ClInclude Include="GLES3Renderer\GfxCommandSetViewport.h">
       <Filter>GLES3Renderer\Source Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxTextureManager.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -266,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="thread\thread.c">
       <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\GfxTextureManager.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

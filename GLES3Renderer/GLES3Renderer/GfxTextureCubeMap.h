@@ -20,7 +20,7 @@ private:
 	bool CreateImage(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels);
 	bool CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
-public:
+private:
 	bool TransferTextureCubeMap(const gli::texture_cube &texture);
 	bool TransferTexture2D(const gli::texture2d &texture, GLint face);
 	bool TransferTexture2D(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data);
