@@ -5,23 +5,26 @@
 
 CGfxTextureBase::CGfxTextureBase(void)
 	: m_texture(0)
-	, m_sampler(0)
-	, m_external(GL_FALSE)
 
-	, m_format(GL_RGBA)
-	, m_internalFormat(GL_RGBA)
+	, m_format(GL_INVALID_ENUM)
+	, m_internalFormat(GL_INVALID_ENUM)
 
 	, m_width(0)
 	, m_height(0)
 
 	, m_refCount(0)
 {
-
+	glGenTextures(1, &m_texture);
 }
 
 CGfxTextureBase::~CGfxTextureBase(void)
 {
+	glDeleteTextures(1, &m_texture);
+}
 
+GLuint CGfxTextureBase::GetTexture(void) const
+{
+	return m_texture;
 }
 
 GLenum CGfxTextureBase::GetFormat(void) const
@@ -42,14 +45,4 @@ GLuint CGfxTextureBase::GetWidth(void) const
 GLuint CGfxTextureBase::GetHeight(void) const
 {
 	return m_height;
-}
-
-GLuint CGfxTextureBase::GetTexture(void) const
-{
-	return m_texture;
-}
-
-GLuint CGfxTextureBase::GetSampler(void) const
-{
-	return m_sampler;
 }
