@@ -261,6 +261,12 @@
     <ClCompile Include="GLES3Renderer\GfxCommandBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="thread\event.c">
+      <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\thread.c">
+      <Filter>thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GLES3Renderer">
@@ -283,6 +289,9 @@
     </Filter>
     <Filter Include="GLES3Renderer\Source Files\Commands">
       <UniqueIdentifier>{86a12a46-8a95-4d82-9b0e-9092d3cbae6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thread">
+      <UniqueIdentifier>{302dbc0a-3f76-497a-8b8f-bacc989d6851}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
