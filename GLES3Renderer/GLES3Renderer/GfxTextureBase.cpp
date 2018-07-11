@@ -5,6 +5,7 @@
 
 CGfxTextureBase::CGfxTextureBase(void)
 	: m_texture(0)
+	, m_refCount(0)
 
 	, m_format(GL_INVALID_ENUM)
 	, m_internalFormat(GL_INVALID_ENUM)
@@ -12,7 +13,8 @@ CGfxTextureBase::CGfxTextureBase(void)
 	, m_width(0)
 	, m_height(0)
 
-	, m_refCount(0)
+	, m_mipLevels(0)
+	, m_arrayLayers(0)
 {
 	glGenTextures(1, &m_texture);
 }

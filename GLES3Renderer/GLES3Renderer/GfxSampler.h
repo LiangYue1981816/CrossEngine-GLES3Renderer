@@ -5,12 +5,11 @@
 class CGfxSampler
 {
 public:
-	CGfxSampler(void);
+	CGfxSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	virtual ~CGfxSampler(void);
 
 
 public:
-	GLvoid SetSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	GLuint GetSampler(void) const;
 
 

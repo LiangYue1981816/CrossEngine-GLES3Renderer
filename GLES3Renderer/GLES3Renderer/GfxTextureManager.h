@@ -3,6 +3,12 @@
 #include "glew.h"
 
 
+class CGfxSampler;
+class CGfxTextureBase;
+class CGfxTexture2D;
+class CGfxTexture2DArray;
+class CGfxTextureCubeMap;
+
 class CGfxTextureManager
 {
 public:
@@ -11,7 +17,16 @@ public:
 
 
 public:
+	CGfxSampler* CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
+
+public:
+	CGfxTexture2D* CreateTexture2D(const char *szName);
+	CGfxTexture2DArray* CreateTexture2DArray(const char *szName);
+	CGfxTextureCubeMap* CreateTextureCubeMap(const char *szName);
+	void DestroyTexture(CGfxTextureBase *pTexture);
 
 
 private:
+	std::map<GLuint64, CGfxSampler*> m_pSamplers;
+	std::map<GLuint, CGfxTextureBase*> m_pTextures;
 };

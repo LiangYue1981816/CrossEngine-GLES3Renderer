@@ -33,6 +33,9 @@ protected:
 	GLuint m_width;
 	GLuint m_height;
 
+	GLuint m_mipLevels;
+	GLuint m_arrayLayers;
+
 private:
 	GLuint m_refCount;
 };

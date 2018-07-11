@@ -1,46 +1,26 @@
 #pragma once
 #include "glew.h"
 #include "gli/gli.hpp"
+#include "GfxTextureBase.h"
 
 
-class CGfxTextureCubeMap
+class CGfxTextureCubeMap : public CGfxTextureBase
 {
-public:
+	friend class CGfxTextureManager;
+
+
+private:
 	CGfxTextureCubeMap(void);
 	virtual ~CGfxTextureCubeMap(void);
 
 
 public:
-	bool Create(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum addressMode);
-	bool Create(GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
-	bool Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels, GLenum minFilter, GLenum magFilter, GLenum addressMode);
-
-private:
-	bool CreateImage(GLuint texture);
-	bool CreateImage(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLint mipLevels);
-	bool CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
-
-private:
-	bool TransferTextureCubeMap(const gli::texture_cube &texture);
-	bool TransferTexture2D(const gli::texture2d &texture, GLint face);
-	bool TransferTexture2D(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data);
-	bool TransferTexture2DCompressed(GLint face, GLint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data);
+	bool Create(const char *szFileName);
+	bool Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels);
 
 public:
-	GLuint GetTexture(void) const;
-	GLuint GetSampler(void) const;
-
-
-private:
-	GLenum m_format;
-	GLenum m_internalFormat;
-
-	GLuint m_width;
-	GLuint m_height;
-	GLuint m_mipLevels;
-
-private:
-	GLuint m_texture;
-	GLuint m_sampler;
-	GLboolean m_external;
+	bool TransferTextureCubeMap(const gli::texture_cube &texture);
+	bool TransferTexture2D(GLuint face, const gli::texture2d &texture);
+	bool TransferTexture2D(GLuint face, GLuint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data);
+	bool TransferTexture2DCompressed(GLuint face, GLuint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data);
 };
