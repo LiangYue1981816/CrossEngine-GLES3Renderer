@@ -115,12 +115,12 @@ CGfxMaterial::CGfxMaterial(void)
 	, m_bEnableCullFace(true)
 	, m_bEnableDepthTest(true)
 	, m_bEnableDepthWrite(true)
+	, m_bEnableColorWriteRed(true)
+	, m_bEnableColorWriteGreen(true)
+	, m_bEnableColorWriteBlue(true)
+	, m_bEnableColorWriteAlpha(true)
 	, m_bEnableBlend(false)
 	, m_bEnablePolygonOffset(false)
-	, m_bEnableColorMaskRed(true)
-	, m_bEnableColorMaskGreen(true)
-	, m_bEnableColorMaskBlue(true)
-	, m_bEnableColorMaskAlpha(true)
 	, m_frontFace(GL_CCW)
 	, m_depthFunc(GL_LESS)
 	, m_srcBlendFactor(GL_SRC_ALPHA)
@@ -189,10 +189,10 @@ void CGfxMaterial::BindPipeline(void) const
 	}
 
 	glColorMask(
-		m_bEnableColorMaskRed ? GL_TRUE : GL_FALSE, 
-		m_bEnableColorMaskGreen ? GL_TRUE : GL_FALSE, 
-		m_bEnableColorMaskBlue ? GL_TRUE : GL_FALSE, 
-		m_bEnableColorMaskAlpha ? GL_TRUE : GL_FALSE);
+		m_bEnableColorWriteRed ? GL_TRUE : GL_FALSE,
+		m_bEnableColorWriteGreen ? GL_TRUE : GL_FALSE,
+		m_bEnableColorWriteBlue ? GL_TRUE : GL_FALSE,
+		m_bEnableColorWriteAlpha ? GL_TRUE : GL_FALSE);
 }
 
 void CGfxMaterial::BindUniforms(CGfxProgram *pProgram) const
@@ -272,9 +272,9 @@ bool CGfxMaterial::Load(const char *szFileName)
 	<Material>
 		<Cull enable="" front_face="" />
 		<Depth enable_test="" enable_write="" depth_func="" />
+		<Color enable_write_red="" enable_write_green="" enable_write_blue="" enable_write_alpha="" />
 		<Blend enable="" src_factor="" dst_factor="" />
 		<Offset enable="" factor="" units="" />
-		<ColorMask enable_red="" enable_green="" enable_blue="" enable_alpha="" />
 
 		<Program vertex_file_name="" fragment_file_name="" />
 
@@ -328,6 +328,13 @@ bool CGfxMaterial::LoadBase(TiXmlNode *pMaterialNode)
 				m_depthFunc = StringToDepthFunc(pDepthNode->ToElement()->AttributeString("depth_func"));
 			}
 
+			if (TiXmlNode *pColorNode = pMaterialNode->FirstChild("Color")) {
+				m_bEnableColorWriteRed = pColorNode->ToElement()->AttributeBool("enable_write_red");
+				m_bEnableColorWriteGreen = pColorNode->ToElement()->AttributeBool("enable_write_green");
+				m_bEnableColorWriteBlue = pColorNode->ToElement()->AttributeBool("enable_write_blue");
+				m_bEnableColorWriteAlpha = pColorNode->ToElement()->AttributeBool("enable_write_alpha");
+			}
+
 			if (TiXmlNode *pBlendNode = pMaterialNode->FirstChild("Blend")) {
 				m_bEnableBlend = pBlendNode->ToElement()->AttributeBool("enable");
 				m_srcBlendFactor = StringToBlendSrcFactor(pBlendNode->ToElement()->AttributeString("src_factor"));
@@ -338,13 +345,6 @@ bool CGfxMaterial::LoadBase(TiXmlNode *pMaterialNode)
 				m_bEnablePolygonOffset = pOffsetNode->ToElement()->AttributeBool("enable");
 				m_polygonOffsetFactor = pOffsetNode->ToElement()->AttributeFloat1("factor");
 				m_polygonOffsetUnits = pOffsetNode->ToElement()->AttributeFloat1("units");
-			}
-
-			if (TiXmlNode *pColorMaskNode = pMaterialNode->FirstChild("ColorMask")) {
-				m_bEnableColorMaskRed = pColorMaskNode->ToElement()->AttributeBool("enable_red");
-				m_bEnableColorMaskGreen = pColorMaskNode->ToElement()->AttributeBool("enable_green");
-				m_bEnableColorMaskBlue = pColorMaskNode->ToElement()->AttributeBool("enable_blue");
-				m_bEnableColorMaskAlpha = pColorMaskNode->ToElement()->AttributeBool("enable_alpha");
 			}
 		}
 		printf("OK\n");
@@ -726,6 +726,14 @@ void CGfxMaterial::SetEnableDepthWrite(bool bEnable)
 	m_bEnableDepthWrite = bEnable;
 }
 
+void CGfxMaterial::SetEnableColorWrite(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
+{
+	m_bEnableColorWriteRed = bEnableRed;
+	m_bEnableColorWriteGreen = bEnableGreen;
+	m_bEnableColorWriteBlue = bEnableBlue;
+	m_bEnableColorWriteAlpha = bEnableAlpha;
+}
+
 void CGfxMaterial::SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor)
 {
 	m_bEnableBlend = bEnable;
@@ -738,14 +746,6 @@ void CGfxMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat 
 	m_bEnablePolygonOffset = bEnable;
 	m_polygonOffsetFactor = factor;
 	m_polygonOffsetUnits = units;
-}
-
-void CGfxMaterial::SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
-{
-	m_bEnableColorMaskRed = bEnableRed;
-	m_bEnableColorMaskGreen = bEnableGreen;
-	m_bEnableColorMaskBlue = bEnableBlue;
-	m_bEnableColorMaskAlpha = bEnableAlpha;
 }
 
 CGfxProgram* CGfxMaterial::GetProgram(void)

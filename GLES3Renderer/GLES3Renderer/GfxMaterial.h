@@ -53,9 +53,9 @@ public:
 	void SetEnableCullFace(bool bEnable, GLenum frontFace);
 	void SetEnableDepthTest(bool bEnable, GLenum depthFunc);
 	void SetEnableDepthWrite(bool bEnable);
+	void SetEnableColorWrite(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha);
 	void SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor);
 	void SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units);
-	void SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha);
 
 public:
 	CGfxProgram* GetProgram(void);
@@ -77,12 +77,12 @@ private:
 	bool m_bEnableCullFace;
 	bool m_bEnableDepthTest;
 	bool m_bEnableDepthWrite;
+	bool m_bEnableColorWriteRed;
+	bool m_bEnableColorWriteGreen;
+	bool m_bEnableColorWriteBlue;
+	bool m_bEnableColorWriteAlpha;
 	bool m_bEnableBlend;
 	bool m_bEnablePolygonOffset;
-	bool m_bEnableColorMaskRed;
-	bool m_bEnableColorMaskGreen;
-	bool m_bEnableColorMaskBlue;
-	bool m_bEnableColorMaskAlpha;
 	GLenum m_frontFace;
 	GLenum m_depthFunc;
 	GLenum m_srcBlendFactor;
