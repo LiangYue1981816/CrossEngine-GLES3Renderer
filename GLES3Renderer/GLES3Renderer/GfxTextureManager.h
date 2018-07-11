@@ -25,17 +25,20 @@ public:
 	GLuint GetSampler(void) const;
 
 
-private:
+protected:
 	GLenum m_format;
 	GLenum m_internalFormat;
 
 	GLuint m_width;
 	GLuint m_height;
 
-private:
+protected:
 	GLuint m_texture;
 	GLuint m_sampler;
 	GLboolean m_external;
+
+private:
+	GLuint m_refCount;
 };
 
 class CGfxTextureManager
