@@ -117,7 +117,6 @@ CGfxMaterial::CGfxMaterial(void)
 	, m_bEnableDepthWrite(true)
 	, m_bEnableBlend(false)
 	, m_bEnablePolygonOffset(false)
-	, m_bEnableDepthMask(true)
 	, m_bEnableColorMaskRed(true)
 	, m_bEnableColorMaskGreen(true)
 	, m_bEnableColorMaskBlue(true)
@@ -166,6 +165,13 @@ void CGfxMaterial::BindPipeline(void) const
 		glDisable(GL_DEPTH_TEST);
 	}
 
+	if (m_bEnableDepthWrite) {
+		glDepthMask(GL_TRUE);
+	}
+	else {
+		glDepthMask(GL_FALSE);
+	}
+
 	if (m_bEnableBlend) {
 		glEnable(GL_BLEND);
 		glBlendFunc(m_srcBlendFactor, m_dstBlendFactor);
@@ -182,8 +188,11 @@ void CGfxMaterial::BindPipeline(void) const
 		glDisable(GL_POLYGON_OFFSET_FILL);
 	}
 
-	glDepthMask(m_bEnableDepthMask ? GL_TRUE : GL_FALSE);
-	glColorMask(m_bEnableColorMaskRed ? GL_TRUE : GL_FALSE, m_bEnableColorMaskGreen ? GL_TRUE : GL_FALSE, m_bEnableColorMaskBlue ? GL_TRUE : GL_FALSE, m_bEnableColorMaskAlpha ? GL_TRUE : GL_FALSE);
+	glColorMask(
+		m_bEnableColorMaskRed ? GL_TRUE : GL_FALSE, 
+		m_bEnableColorMaskGreen ? GL_TRUE : GL_FALSE, 
+		m_bEnableColorMaskBlue ? GL_TRUE : GL_FALSE, 
+		m_bEnableColorMaskAlpha ? GL_TRUE : GL_FALSE);
 }
 
 void CGfxMaterial::BindUniforms(CGfxProgram *pProgram) const
@@ -265,7 +274,6 @@ bool CGfxMaterial::Load(const char *szFileName)
 		<Depth enable_test="" enable_write="" depth_func="" />
 		<Blend enable="" src_factor="" dst_factor="" />
 		<Offset enable="" factor="" units="" />
-		<DepthMask enable="" />
 		<ColorMask enable_red="" enable_green="" enable_blue="" enable_alpha="" />
 
 		<Program vertex_file_name="" fragment_file_name="" />
@@ -330,10 +338,6 @@ bool CGfxMaterial::LoadBase(TiXmlNode *pMaterialNode)
 				m_bEnablePolygonOffset = pOffsetNode->ToElement()->AttributeBool("enable");
 				m_polygonOffsetFactor = pOffsetNode->ToElement()->AttributeFloat1("factor");
 				m_polygonOffsetUnits = pOffsetNode->ToElement()->AttributeFloat1("units");
-			}
-
-			if (TiXmlNode *pDepthMaskNode = pMaterialNode->FirstChild("DepthMask")) {
-				m_bEnableDepthMask = pDepthMaskNode->ToElement()->AttributeBool("enable");
 			}
 
 			if (TiXmlNode *pColorMaskNode = pMaterialNode->FirstChild("ColorMask")) {
@@ -734,11 +738,6 @@ void CGfxMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat 
 	m_bEnablePolygonOffset = bEnable;
 	m_polygonOffsetFactor = factor;
 	m_polygonOffsetUnits = units;
-}
-
-void CGfxMaterial::SetEnableDepthMask(bool bEnable)
-{
-	m_bEnableDepthMask = bEnable;
 }
 
 void CGfxMaterial::SetEnableColorMask(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
