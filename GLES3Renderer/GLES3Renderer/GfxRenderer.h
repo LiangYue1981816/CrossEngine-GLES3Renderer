@@ -161,8 +161,6 @@ private:
 
 private:
 	CGfxMaterial *m_pGlobalMaterial;
-
-private:
 	CGfxProgramManager *m_pProgramManager;
 	CGfxTextureManager *m_pTextureManager;
 

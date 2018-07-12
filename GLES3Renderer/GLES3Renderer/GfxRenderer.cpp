@@ -65,6 +65,11 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 CGfxRenderer::~CGfxRenderer(void)
 {
 	m_meshScreen.Destroy();
+
+	for (const auto &itMaterial : m_pMaterials) {
+		delete itMaterial.second;
+	}
+
 	delete m_pGlobalMaterial;
 	delete m_pProgramManager;
 	delete m_pTextureManager;
@@ -373,7 +378,7 @@ void CGfxRenderer::BindMaterial(GLuint material)
 
 void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture)
 {
-	if (CGfxTexture2D *pTexture = m_pGlobalMaterial->GetTexture2D(szName)) {
-//		pTexture->Create(texture);
+	if (CGfxTextureBase *pTexture = m_pGlobalMaterial->GetTexture2D(szName)) {
+		pTexture->Create(texture);
 	}
 }
