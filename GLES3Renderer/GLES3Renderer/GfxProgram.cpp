@@ -1,20 +1,8 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUtils.h"
 #include "GfxRenderer.h"
 
-
-uint32_t HashValue(const char *szString)
-{
-	const char *c = szString;
-	uint32_t dwHashValue = 0x00000000;
-
-	while (*c) {
-		dwHashValue = (dwHashValue << 5) - dwHashValue + (*c == '/' ? '\\' : *c);
-		c++;
-	}
-
-	return dwHashValue ? dwHashValue : 0xffffffff;
-}
 
 static size_t fsize(FILE *stream)
 {

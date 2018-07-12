@@ -138,6 +138,7 @@
     <ClInclude Include="GLES3Renderer\GfxUniformVec3.h" />
     <ClInclude Include="GLES3Renderer\GfxUniformVec4.h" />
     <ClInclude Include="GLES3Renderer\GfxUniformZBuffer.h" />
+    <ClInclude Include="GLES3Renderer\GfxUtils.h" />
     <ClInclude Include="GLES3Renderer\GfxVertexArrayObject.h" />
     <ClInclude Include="GLES3Renderer\GfxVertexAttribute.h" />
     <ClInclude Include="GLES3Renderer\GfxVertexBuffer.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="GLES3Renderer\GfxUniformVec3.cpp" />
     <ClCompile Include="GLES3Renderer\GfxUniformVec4.cpp" />
     <ClCompile Include="GLES3Renderer\GfxUniformZBuffer.cpp" />
+    <ClCompile Include="GLES3Renderer\GfxUtils.cpp" />
     <ClCompile Include="GLES3Renderer\GfxVertexArrayObject.cpp" />
     <ClCompile Include="GLES3Renderer\GfxVertexAttribute.cpp" />
     <ClCompile Include="GLES3Renderer\GfxVertexBuffer.cpp" />

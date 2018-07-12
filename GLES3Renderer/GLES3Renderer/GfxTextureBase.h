@@ -5,6 +5,9 @@
 
 class CGfxTextureBase
 {
+	friend class CGfxTextureManager;
+
+
 public:
 	CGfxTextureBase(GLuint name);
 	virtual ~CGfxTextureBase(void);
@@ -39,5 +42,5 @@ protected:
 	GLuint m_arrayLayers;
 
 private:
-	GLuint m_refCount;
+	GLuint refCount;
 };

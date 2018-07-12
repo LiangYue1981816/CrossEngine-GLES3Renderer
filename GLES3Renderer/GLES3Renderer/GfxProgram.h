@@ -52,5 +52,3 @@ private:
 	GLuint m_fragmentShader;
 	spirv_cross::CompilerGLSL *m_pShaderCompilers[2];
 };
-
-extern uint32_t HashValue(const char *szString);
