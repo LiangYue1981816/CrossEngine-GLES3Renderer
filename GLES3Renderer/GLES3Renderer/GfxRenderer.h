@@ -9,6 +9,7 @@
 #include "GfxTextureManager.h"
 #include "GfxMaterial.h"
 #include "GfxProgram.h"
+#include "GfxSampler.h"
 #include "GfxTexture2D.h"
 #include "GfxTexture2DArray.h"
 #include "GfxTextureCubeMap.h"
