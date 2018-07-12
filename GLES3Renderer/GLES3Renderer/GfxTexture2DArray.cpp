@@ -3,7 +3,8 @@
 #include "GfxRenderer.h"
 
 
-CGfxTexture2DArray::CGfxTexture2DArray(void)
+CGfxTexture2DArray::CGfxTexture2DArray(GLuint name)
+	: CGfxTextureBase(name)
 {
 
 }

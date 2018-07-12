@@ -10,7 +10,7 @@ class CGfxTexture2D : public CGfxTextureBase
 
 
 private:
-	CGfxTexture2D(void);
+	CGfxTexture2D(GLuint name);
 	virtual ~CGfxTexture2D(void);
 
 

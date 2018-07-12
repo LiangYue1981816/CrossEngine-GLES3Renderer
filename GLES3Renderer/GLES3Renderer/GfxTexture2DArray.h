@@ -10,7 +10,7 @@ class CGfxTexture2DArray : public CGfxTextureBase
 
 
 private:
-	CGfxTexture2DArray(void);
+	CGfxTexture2DArray(GLuint name);
 	virtual ~CGfxTexture2DArray(void);
 
 

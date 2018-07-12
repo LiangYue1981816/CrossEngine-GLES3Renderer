@@ -10,7 +10,7 @@ class CGfxTextureCubeMap : public CGfxTextureBase
 
 
 private:
-	CGfxTextureCubeMap(void);
+	CGfxTextureCubeMap(GLuint name);
 	virtual ~CGfxTextureCubeMap(void);
 
 

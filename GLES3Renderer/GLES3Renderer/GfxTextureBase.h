@@ -6,7 +6,7 @@
 class CGfxTextureBase
 {
 public:
-	CGfxTextureBase(void);
+	CGfxTextureBase(GLuint name);
 	virtual ~CGfxTextureBase(void);
 
 
@@ -14,6 +14,7 @@ public:
 	virtual bool Create(const char *szFileName) = 0;
 
 public:
+	GLuint GetName(void) const;
 	GLuint GetTexture(void) const;
 
 	GLenum GetFormat(void) const;
@@ -24,6 +25,7 @@ public:
 
 
 protected:
+	GLuint m_name;
 	GLuint m_texture;
 
 protected:

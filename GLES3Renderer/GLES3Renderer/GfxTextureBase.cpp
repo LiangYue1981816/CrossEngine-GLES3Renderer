@@ -3,8 +3,9 @@
 #include "GfxTextureBase.h"
 
 
-CGfxTextureBase::CGfxTextureBase(void)
-	: m_texture(0)
+CGfxTextureBase::CGfxTextureBase(GLuint name)
+	: m_name(name)
+	, m_texture(0)
 	, m_refCount(0)
 
 	, m_format(GL_INVALID_ENUM)
@@ -22,6 +23,11 @@ CGfxTextureBase::CGfxTextureBase(void)
 CGfxTextureBase::~CGfxTextureBase(void)
 {
 	glDeleteTextures(1, &m_texture);
+}
+
+GLuint CGfxTextureBase::GetName(void) const
+{
+	return m_name;
 }
 
 GLuint CGfxTextureBase::GetTexture(void) const
