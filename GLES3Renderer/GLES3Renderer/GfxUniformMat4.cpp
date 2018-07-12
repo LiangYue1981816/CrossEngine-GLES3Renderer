@@ -1,17 +1,20 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUniformBuffer.h"
 #include "GfxUniformMat4.h"
 
 
 CGfxUniformMat4::CGfxUniformMat4(void)
 	: m_bDirty(false)
+	, m_pUniformBuffer(NULL)
 {
-	m_uniformBuffer.Create(NULL, sizeof(m_value), true);
+	m_pUniformBuffer = new CGfxUniformBuffer;
+	m_pUniformBuffer->Create(NULL, sizeof(m_value), true);
 }
 
 CGfxUniformMat4::~CGfxUniformMat4(void)
 {
-	m_uniformBuffer.Destroy();
+	delete m_pUniformBuffer;
 }
 
 void CGfxUniformMat4::SetValue(const float *matrix)
@@ -39,16 +42,16 @@ void CGfxUniformMat4::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
-		m_uniformBuffer.SetData(&m_value, sizeof(m_value));
+		m_pUniformBuffer->SetData(&m_value, sizeof(m_value));
 	}
 }
 
 GLuint CGfxUniformMat4::GetSize(void) const
 {
-	return m_uniformBuffer.GetSize();
+	return m_pUniformBuffer->GetSize();
 }
 
 GLuint CGfxUniformMat4::GetBuffer(void) const
 {
-	return m_uniformBuffer.GetBuffer();
+	return m_pUniformBuffer->GetBuffer();
 }

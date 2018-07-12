@@ -1,17 +1,20 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUniformBuffer.h"
 #include "GfxUniformDirectLight.h"
 
 
 CGfxUniformDirectLight::CGfxUniformDirectLight(void)
 	: m_bDirty(false)
+	, m_pUniformBuffer(NULL)
 {
-	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
+	m_pUniformBuffer = new CGfxUniformBuffer;
+	m_pUniformBuffer->Create(NULL, sizeof(m_params), true);
 }
 
 CGfxUniformDirectLight::~CGfxUniformDirectLight(void)
 {
-	m_uniformBuffer.Destroy();
+	delete m_pUniformBuffer;
 }
 
 void CGfxUniformDirectLight::SetColor(float red, float green, float blue)
@@ -30,16 +33,16 @@ void CGfxUniformDirectLight::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
-		m_uniformBuffer.SetData(&m_params, sizeof(m_params));
+		m_pUniformBuffer->SetData(&m_params, sizeof(m_params));
 	}
 }
 
 GLuint CGfxUniformDirectLight::GetSize(void) const
 {
-	return m_uniformBuffer.GetSize();
+	return m_pUniformBuffer->GetSize();
 }
 
 GLuint CGfxUniformDirectLight::GetBuffer(void) const
 {
-	return m_uniformBuffer.GetBuffer();
+	return m_pUniformBuffer->GetBuffer();
 }

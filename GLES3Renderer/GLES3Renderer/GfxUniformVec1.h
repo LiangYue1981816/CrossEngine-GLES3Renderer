@@ -1,9 +1,9 @@
 #pragma once
 #include "glew.h"
 #include "glm/glm.hpp"
-#include "GfxUniformBuffer.h"
 
 
+class CGfxUniformBuffer;
 class CGfxUniformVec1
 {
 public:
@@ -23,5 +23,5 @@ public:
 private:
 	bool m_bDirty;
 	float m_value;
-	CGfxUniformBuffer m_uniformBuffer;
+	CGfxUniformBuffer *m_pUniformBuffer;
 };

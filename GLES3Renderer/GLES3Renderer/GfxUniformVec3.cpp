@@ -1,17 +1,20 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUniformBuffer.h"
 #include "GfxUniformVec3.h"
 
 
 CGfxUniformVec3::CGfxUniformVec3(void)
 	: m_bDirty(false)
+	, m_pUniformBuffer(NULL)
 {
-	m_uniformBuffer.Create(NULL, sizeof(m_value), true);
+	m_pUniformBuffer = new CGfxUniformBuffer;
+	m_pUniformBuffer->Create(NULL, sizeof(m_value), true);
 }
 
 CGfxUniformVec3::~CGfxUniformVec3(void)
 {
-	m_uniformBuffer.Destroy();
+	m_pUniformBuffer->Destroy();
 }
 
 void CGfxUniformVec3::SetValue(float x, float y, float z)
@@ -24,16 +27,16 @@ void CGfxUniformVec3::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
-		m_uniformBuffer.SetData(&m_value, sizeof(m_value));
+		m_pUniformBuffer->SetData(&m_value, sizeof(m_value));
 	}
 }
 
 GLuint CGfxUniformVec3::GetSize(void) const
 {
-	return m_uniformBuffer.GetSize();
+	return m_pUniformBuffer->GetSize();
 }
 
 GLuint CGfxUniformVec3::GetBuffer(void) const
 {
-	return m_uniformBuffer.GetBuffer();
+	return m_pUniformBuffer->GetBuffer();
 }

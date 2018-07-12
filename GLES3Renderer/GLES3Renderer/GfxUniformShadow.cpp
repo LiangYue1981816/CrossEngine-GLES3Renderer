@@ -1,18 +1,21 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "GfxUniformBuffer.h"
 #include "GfxUniformShadow.h"
 
 
 CGfxUniformShadow::CGfxUniformShadow(void)
 	: m_bDirty(false)
+	, m_pUniformBuffer(NULL)
 {
-	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
+	m_pUniformBuffer = new CGfxUniformBuffer;
+	m_pUniformBuffer->Create(NULL, sizeof(m_params), true);
 }
 
 CGfxUniformShadow::~CGfxUniformShadow(void)
 {
-	m_uniformBuffer.Destroy();
+	delete m_pUniformBuffer;
 }
 
 void CGfxUniformShadow::SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
@@ -94,16 +97,16 @@ void CGfxUniformShadow::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
-		m_uniformBuffer.SetData(&m_params, sizeof(m_params));
+		m_pUniformBuffer->SetData(&m_params, sizeof(m_params));
 	}
 }
 
 GLuint CGfxUniformShadow::GetSize(void) const
 {
-	return m_uniformBuffer.GetSize();
+	return m_pUniformBuffer->GetSize();
 }
 
 GLuint CGfxUniformShadow::GetBuffer(void) const
 {
-	return m_uniformBuffer.GetBuffer();
+	return m_pUniformBuffer->GetBuffer();
 }

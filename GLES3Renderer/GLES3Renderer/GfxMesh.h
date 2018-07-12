@@ -7,7 +7,6 @@ class CGfxIndexBuffer;
 class CGfxVertexBuffer;
 class CGfxInstanceBuffer;
 class CGfxVertexArrayObject;
-
 class CGfxMesh
 {
 public:

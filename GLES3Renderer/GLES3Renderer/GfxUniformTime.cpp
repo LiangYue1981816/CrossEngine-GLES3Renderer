@@ -1,17 +1,20 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUniformBuffer.h"
 #include "GfxUniformTime.h"
 
 
 CGfxUniformTime::CGfxUniformTime(void)
 	: m_bDirty(false)
+	, m_pUniformBuffer(NULL)
 {
-	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
+	m_pUniformBuffer = new CGfxUniformBuffer;
+	m_pUniformBuffer->Create(NULL, sizeof(m_params), true);
 }
 
 CGfxUniformTime::~CGfxUniformTime(void)
 {
-	m_uniformBuffer.Destroy();
+	delete m_pUniformBuffer;
 }
 
 void CGfxUniformTime::SetTime(float t, float dt)
@@ -27,16 +30,16 @@ void CGfxUniformTime::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
-		m_uniformBuffer.SetData(&m_params, sizeof(m_params));
+		m_pUniformBuffer->SetData(&m_params, sizeof(m_params));
 	}
 }
 
 GLuint CGfxUniformTime::GetSize(void) const
 {
-	return m_uniformBuffer.GetSize();
+	return m_pUniformBuffer->GetSize();
 }
 
 GLuint CGfxUniformTime::GetBuffer(void) const
 {
-	return m_uniformBuffer.GetBuffer();
+	return m_pUniformBuffer->GetBuffer();
 }

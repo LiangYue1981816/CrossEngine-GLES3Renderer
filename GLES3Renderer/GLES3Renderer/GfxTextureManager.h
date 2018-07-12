@@ -8,7 +8,6 @@ class CGfxTextureBase;
 class CGfxTexture2D;
 class CGfxTexture2DArray;
 class CGfxTextureCubeMap;
-
 class CGfxTextureManager
 {
 	friend class CGfxRenderer;

@@ -1,17 +1,20 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUniformBuffer.h"
 #include "GfxUniformPointLight.h"
 
 
 CGfxUniformPointLight::CGfxUniformPointLight(void)
 	: m_bDirty(false)
+	, m_pUniformBuffer(NULL)
 {
-	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
+	m_pUniformBuffer = new CGfxUniformBuffer;
+	m_pUniformBuffer->Create(NULL, sizeof(m_params), true);
 }
 
 CGfxUniformPointLight::~CGfxUniformPointLight(void)
 {
-	m_uniformBuffer.Destroy();
+	delete m_pUniformBuffer;
 }
 
 void CGfxUniformPointLight::SetColor(float red, float green, float blue)
@@ -36,16 +39,16 @@ void CGfxUniformPointLight::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
-		m_uniformBuffer.SetData(&m_params, sizeof(m_params));
+		m_pUniformBuffer->SetData(&m_params, sizeof(m_params));
 	}
 }
 
 GLuint CGfxUniformPointLight::GetSize(void) const
 {
-	return m_uniformBuffer.GetSize();
+	return m_pUniformBuffer->GetSize();
 }
 
 GLuint CGfxUniformPointLight::GetBuffer(void) const
 {
-	return m_uniformBuffer.GetBuffer();
+	return m_pUniformBuffer->GetBuffer();
 }

@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "GfxUniformBuffer.h"
 #include "GfxUniformAmbientLight.h"
 
 
@@ -129,13 +130,15 @@ static void SHRotate(float shRedRotate[9], float shGreenRotate[9], float shBlueR
 
 CGfxUniformAmbientLight::CGfxUniformAmbientLight(void)
 	: m_bDirty(false)
+	, m_pUniformBuffer(NULL)
 {
-	m_uniformBuffer.Create(NULL, sizeof(m_params), true);
+	m_pUniformBuffer = new CGfxUniformBuffer;
+	m_pUniformBuffer->Create(NULL, sizeof(m_params), true);
 }
 
 CGfxUniformAmbientLight::~CGfxUniformAmbientLight(void)
 {
-	m_uniformBuffer.Destroy();
+	delete m_pUniformBuffer;
 }
 
 void CGfxUniformAmbientLight::SetSH(float shRed[9], float shGreen[9], float shBlue[9])
@@ -169,16 +172,16 @@ void CGfxUniformAmbientLight::Apply(void)
 {
 	if (m_bDirty) {
 		m_bDirty = false;
-		m_uniformBuffer.SetData(&m_params, sizeof(m_params));
+		m_pUniformBuffer->SetData(&m_params, sizeof(m_params));
 	}
 }
 
 GLuint CGfxUniformAmbientLight::GetSize(void) const
 {
-	return m_uniformBuffer.GetSize();
+	return m_pUniformBuffer->GetSize();
 }
 
 GLuint CGfxUniformAmbientLight::GetBuffer(void) const
 {
-	return m_uniformBuffer.GetBuffer();
+	return m_pUniformBuffer->GetBuffer();
 }

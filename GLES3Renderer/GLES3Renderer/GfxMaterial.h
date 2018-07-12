@@ -1,6 +1,5 @@
 #pragma once
 #include <map>
-#include <vector>
 #include "tinyxml/tinyxml.h"
 #include "tinyxml/tinystr.h"
 
@@ -14,7 +13,6 @@ class CGfxUniformVec2;
 class CGfxUniformVec3;
 class CGfxUniformVec4;
 class CGfxUniformMat4;
-
 class CGfxMaterial
 {
 	friend class CGfxRenderer;
