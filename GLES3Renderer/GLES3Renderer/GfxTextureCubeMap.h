@@ -15,7 +15,7 @@ private:
 
 
 public:
-	bool Create(const char *szFileName);
+	bool Load(const char *szFileName);
 	bool Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels);
 
 public:

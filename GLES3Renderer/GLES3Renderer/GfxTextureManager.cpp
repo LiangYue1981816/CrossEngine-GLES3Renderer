@@ -83,7 +83,7 @@ CGfxTexture2D* CGfxTextureManager::LoadTexture2D(const char *szFileName)
 
 	if (m_pTextures[name] == NULL) {
 		m_pTextures[name] = new CGfxTexture2D(name);
-		m_pTextures[name]->Create(szFileName);
+		m_pTextures[name]->Load(szFileName);
 	}
 
 	m_pTextures[name]->refCount++;
@@ -97,7 +97,7 @@ CGfxTexture2DArray* CGfxTextureManager::LoadTexture2DArray(const char *szFileNam
 
 	if (m_pTextures[name] == NULL) {
 		m_pTextures[name] = new CGfxTexture2DArray(name);
-		m_pTextures[name]->Create(szFileName);
+		m_pTextures[name]->Load(szFileName);
 	}
 
 	m_pTextures[name]->refCount++;
@@ -111,7 +111,7 @@ CGfxTextureCubeMap* CGfxTextureManager::LoadTextureCubeMap(const char *szFileNam
 
 	if (m_pTextures[name] == NULL) {
 		m_pTextures[name] = new CGfxTextureCubeMap(name);
-		m_pTextures[name]->Create(szFileName);
+		m_pTextures[name]->Load(szFileName);
 	}
 
 	m_pTextures[name]->refCount++;

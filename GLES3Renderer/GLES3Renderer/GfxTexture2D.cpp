@@ -14,7 +14,7 @@ CGfxTexture2D::~CGfxTexture2D(void)
 
 }
 
-bool CGfxTexture2D::Create(const char *szFileName)
+bool CGfxTexture2D::Load(const char *szFileName)
 {
 	Destroy();
 

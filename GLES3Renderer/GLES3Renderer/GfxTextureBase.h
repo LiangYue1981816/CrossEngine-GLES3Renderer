@@ -13,8 +13,8 @@ protected:
 
 
 public:
+	virtual bool Load(const char *szFileName) = 0;
 	virtual bool Create(GLuint texture);
-	virtual bool Create(const char *szFileName) = 0;
 	virtual void Destroy(void);
 
 public:

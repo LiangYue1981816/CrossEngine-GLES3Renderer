@@ -14,7 +14,7 @@ CGfxTextureCubeMap::~CGfxTextureCubeMap(void)
 
 }
 
-bool CGfxTextureCubeMap::Create(const char *szFileName)
+bool CGfxTextureCubeMap::Load(const char *szFileName)
 {
 	Destroy();
 
