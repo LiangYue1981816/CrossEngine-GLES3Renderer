@@ -115,6 +115,7 @@
     <ClInclude Include="GLES3Renderer\GfxMaterial.h" />
     <ClInclude Include="GLES3Renderer\GfxMesh.h" />
     <ClInclude Include="GLES3Renderer\GfxProgram.h" />
+    <ClInclude Include="GLES3Renderer\GfxProgramManager.h" />
     <ClInclude Include="GLES3Renderer\GfxRenderer.h" />
     <ClInclude Include="GLES3Renderer\GfxSampler.h" />
     <ClInclude Include="GLES3Renderer\GfxTexture2D.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="GLES3Renderer\GfxMaterial.cpp" />
     <ClCompile Include="GLES3Renderer\GfxMesh.cpp" />
     <ClCompile Include="GLES3Renderer\GfxProgram.cpp" />
+    <ClCompile Include="GLES3Renderer\GfxProgramManager.cpp" />
     <ClCompile Include="GLES3Renderer\GfxRenderer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxSampler.cpp" />
     <ClCompile Include="GLES3Renderer\GfxTexture2D.cpp" />

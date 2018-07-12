@@ -15,7 +15,16 @@ CGfxTextureManager::CGfxTextureManager(void)
 
 CGfxTextureManager::~CGfxTextureManager(void)
 {
+	for (const auto &itSampler : m_pSamplers) {
+		delete itSampler.second;
+	}
 
+	for (const auto &itTexture : m_pTextures) {
+		delete itTexture.second;
+	}
+
+	m_pSamplers.clear();
+	m_pTextures.clear();
 }
 
 CGfxSampler* CGfxTextureManager::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
