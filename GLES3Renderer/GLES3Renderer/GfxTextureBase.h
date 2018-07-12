@@ -7,13 +7,15 @@ class CGfxTextureBase
 	friend class CGfxTextureManager;
 
 
-public:
+protected:
 	CGfxTextureBase(GLuint name);
 	virtual ~CGfxTextureBase(void);
 
 
 public:
+	virtual bool Create(GLuint texture);
 	virtual bool Create(const char *szFileName) = 0;
+	virtual void Destroy(void);
 
 public:
 	GLuint GetName(void) const;
@@ -28,7 +30,9 @@ public:
 
 protected:
 	GLuint m_name;
+
 	GLuint m_texture;
+	GLboolean m_extern;
 
 protected:
 	GLenum m_format;

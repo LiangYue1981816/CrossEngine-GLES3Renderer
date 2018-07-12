@@ -16,11 +16,13 @@ CGfxTexture2D::~CGfxTexture2D(void)
 
 bool CGfxTexture2D::Create(const char *szFileName)
 {
+	Destroy();
+
 	char szFullPath[260];
 	CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
-	gli::texture2d texture = (gli::texture2d)gli::load(szFullPath);
 
 	gli::gl GL(gli::gl::PROFILE_ES30);
+	gli::texture2d texture = (gli::texture2d)gli::load(szFullPath);
 	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
 
 	if (texture.target() != gli::TARGET_2D) {
@@ -35,6 +37,8 @@ bool CGfxTexture2D::Create(const char *szFileName)
 
 bool CGfxTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels)
 {
+	Destroy();
+
 	m_format = format;
 	m_internalFormat = internalFormat;
 
@@ -43,6 +47,7 @@ bool CGfxTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, 
 
 	m_mipLevels = mipLevels;
 
+	glGenTextures(1, &m_texture);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 	glTexStorage2D(GL_TEXTURE_2D, m_mipLevels, m_internalFormat, m_width, m_height);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -52,6 +57,10 @@ bool CGfxTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, 
 
 bool CGfxTexture2D::TransferTexture2D(const gli::texture2d &texture)
 {
+	if (m_extern == GL_TRUE) {
+		return false;
+	}
+
 	gli::gl GL(gli::gl::PROFILE_ES30);
 	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
 
@@ -89,6 +98,10 @@ bool CGfxTexture2D::TransferTexture2D(const gli::texture2d &texture)
 
 bool CGfxTexture2D::TransferTexture2D(GLuint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
 {
+	if (m_extern == GL_TRUE) {
+		return false;
+	}
+
 	if (m_mipLevels < level) {
 		return false;
 	}
@@ -104,6 +117,10 @@ bool CGfxTexture2D::TransferTexture2D(GLuint level, GLenum format, GLsizei width
 
 bool CGfxTexture2D::TransferTexture2DCompressed(GLuint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
 {
+	if (m_extern == GL_TRUE) {
+		return false;
+	}
+
 	if (m_mipLevels < level) {
 		return false;
 	}
