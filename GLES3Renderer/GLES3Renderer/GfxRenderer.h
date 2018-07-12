@@ -3,12 +3,15 @@
 #include <vector>
 #include "glew.h"
 #include "GfxMesh.h"
-#include "GfxProgram.h"
+#include "GfxFrameBuffer.h"
+#include "GfxCommandBuffer.h"
+#include "GfxProgramManager.h"
+#include "GfxTextureManager.h"
 #include "GfxMaterial.h"
+#include "GfxProgram.h"
 #include "GfxTexture2D.h"
 #include "GfxTexture2DArray.h"
 #include "GfxTextureCubeMap.h"
-#include "GfxFrameBuffer.h"
 #include "GfxUniformTime.h"
 #include "GfxUniformZBuffer.h"
 #include "GfxUniformProjection.h"
@@ -24,7 +27,6 @@
 #include "GfxUniformVec3.h"
 #include "GfxUniformVec4.h"
 #include "GfxUniformMat4.h"
-#include "GfxCommandBuffer.h"
 
 
 #define ENGINE_TIME_NAME                "Time"
@@ -60,6 +62,10 @@ public:
 	const char* GetShaderFullPath(const char *szFileName, char *szFullPath) const;
 	const char* GetTextureFullPath(const char *szFileName, char *szFullPath) const;
 	const char* GetMaterialFullPath(const char *szFileName, char *szFullPath) const;
+
+public:
+	CGfxProgramManager* GetProgramManager(void) const;
+	CGfxTextureManager* GetTextureManager(void) const;
 
 public:
 	bool LoadMaterial(const char *szFileName, GLuint materialid);
@@ -152,6 +158,10 @@ private:
 
 private:
 	CGfxMaterial *m_pGlobalMaterial;
+
+private:
+	CGfxProgramManager *m_pProgramManager;
+	CGfxTextureManager *m_pTextureManager;
 
 private:
 	static CGfxRenderer *pInstance;

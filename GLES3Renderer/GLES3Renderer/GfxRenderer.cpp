@@ -1,6 +1,8 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUtils.h"
 #include "GfxRenderer.h"
+#include "GfxVertexAttribute.h"
 
 
 CGfxRenderer* CGfxRenderer::pInstance = NULL;
@@ -27,6 +29,8 @@ void CGfxRenderer::Destroy(void)
 
 CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
 	: m_pGlobalMaterial(NULL)
+	, m_pProgramManager(NULL)
+	, m_pTextureManager(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -53,12 +57,17 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 
 	m_material = -1;
 	m_pGlobalMaterial = new CGfxMaterial;
+
+	m_pProgramManager = new CGfxProgramManager;
+	m_pTextureManager = new CGfxTextureManager;
 }
 
 CGfxRenderer::~CGfxRenderer(void)
 {
 	m_meshScreen.Destroy();
 	delete m_pGlobalMaterial;
+	delete m_pProgramManager;
+	delete m_pTextureManager;
 }
 
 const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -77,6 +86,16 @@ const char* CGfxRenderer::GetMaterialFullPath(const char *szFileName, char *szFu
 {
 	sprintf(szFullPath, "%s/%s", m_szMaterialPath, szFileName);
 	return szFullPath;
+}
+
+CGfxProgramManager* CGfxRenderer::GetProgramManager(void) const
+{
+	return m_pProgramManager;
+}
+
+CGfxTextureManager* CGfxRenderer::GetTextureManager(void) const
+{
+	return m_pTextureManager;
 }
 
 bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
