@@ -2,6 +2,8 @@
 #include <map>
 #include <vector>
 #include "glew.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "GfxMesh.h"
 #include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
