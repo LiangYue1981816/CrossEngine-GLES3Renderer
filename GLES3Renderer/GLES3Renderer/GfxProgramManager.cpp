@@ -19,16 +19,16 @@ CGfxProgramManager::~CGfxProgramManager(void)
 	m_pPrograms.clear();
 }
 
-CGfxProgram* CGfxProgramManager::Create(const char *szVertexFileName, const char *szFragmentFileName)
+CGfxProgram* CGfxProgramManager::Load(const char *szVertexFileName, const char *szFragmentFileName)
 {
-	GLuint64 hashVertex = HashValue(szVertexFileName);
-	GLuint64 hashFragment = HashValue(szFragmentFileName);
-	GLuint64 hash = hashVertex << 32 | hashFragment;
+	GLuint64 nameVertex = HashValue(szVertexFileName);
+	GLuint64 nameFragment = HashValue(szFragmentFileName);
+	GLuint64 name = nameVertex << 32 | nameFragment;
 
-	if (m_pPrograms[hash] == NULL) {
-		m_pPrograms[hash] = new CGfxProgram;
-		m_pPrograms[hash]->Create(szVertexFileName, szFragmentFileName);
+	if (m_pPrograms[name] == NULL) {
+		m_pPrograms[name] = new CGfxProgram;
+		m_pPrograms[name]->Create(szVertexFileName, szFragmentFileName);
 	}
 
-	return m_pPrograms[hash];
+	return m_pPrograms[name];
 }

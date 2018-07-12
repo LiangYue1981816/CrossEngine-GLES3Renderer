@@ -29,55 +29,94 @@ CGfxTextureManager::~CGfxTextureManager(void)
 
 CGfxSampler* CGfxTextureManager::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
-	GLuint64 hash = (((GLuint64)minFilter) << 32) | (((GLuint64)magFilter) << 16) | ((GLuint64)addressMode);
+	GLuint64 name = (((GLuint64)minFilter) << 32) | (((GLuint64)magFilter) << 16) | ((GLuint64)addressMode);
 
-	if (m_pSamplers[hash] == NULL) {
-		m_pSamplers[hash] = new CGfxSampler(minFilter, magFilter, addressMode);
+	if (m_pSamplers[name] == NULL) {
+		m_pSamplers[name] = new CGfxSampler(minFilter, magFilter, addressMode);
 	}
 
-	return m_pSamplers[hash];
+	return m_pSamplers[name];
 }
 
-CGfxTexture2D* CGfxTextureManager::CreateTexture2D(const char *szFileName)
+CGfxTexture2D* CGfxTextureManager::CreateTexture2D(const char *szName)
 {
-	GLuint hash = HashValue(szFileName);
+	GLuint name = HashValue(szName);
 
-	if (m_pTextures[hash] == NULL) {
-		m_pTextures[hash] = new CGfxTexture2D(hash);
-		m_pTextures[hash]->Create(szFileName);
+	if (m_pTextures[name] == NULL) {
+		m_pTextures[name] = new CGfxTexture2D(name);
 	}
 
-	m_pTextures[hash]->refCount++;
+	m_pTextures[name]->refCount++;
 
-	return (CGfxTexture2D *)m_pTextures[hash];
+	return (CGfxTexture2D *)m_pTextures[name];
 }
 
-CGfxTexture2DArray* CGfxTextureManager::CreateTexture2DArray(const char *szFileName)
+CGfxTexture2DArray* CGfxTextureManager::CreateTexture2DArray(const char *szName)
 {
-	GLuint hash = HashValue(szFileName);
+	GLuint name = HashValue(szName);
 
-	if (m_pTextures[hash] == NULL) {
-		m_pTextures[hash] = new CGfxTexture2DArray(hash);
-		m_pTextures[hash]->Create(szFileName);
+	if (m_pTextures[name] == NULL) {
+		m_pTextures[name] = new CGfxTexture2DArray(name);
 	}
 
-	m_pTextures[hash]->refCount++;
+	m_pTextures[name]->refCount++;
 
-	return (CGfxTexture2DArray *)m_pTextures[hash];
+	return (CGfxTexture2DArray *)m_pTextures[name];
 }
 
-CGfxTextureCubeMap* CGfxTextureManager::CreateTextureCubeMap(const char *szFileName)
+CGfxTextureCubeMap* CGfxTextureManager::CreateTextureCubeMap(const char *szName)
 {
-	GLuint hash = HashValue(szFileName);
+	GLuint name = HashValue(szName);
 
-	if (m_pTextures[hash] == NULL) {
-		m_pTextures[hash] = new CGfxTextureCubeMap(hash);
-		m_pTextures[hash]->Create(szFileName);
+	if (m_pTextures[name] == NULL) {
+		m_pTextures[name] = new CGfxTextureCubeMap(name);
 	}
 
-	m_pTextures[hash]->refCount++;
+	m_pTextures[name]->refCount++;
 
-	return (CGfxTextureCubeMap *)m_pTextures[hash];
+	return (CGfxTextureCubeMap *)m_pTextures[name];
+}
+
+CGfxTexture2D* CGfxTextureManager::LoadTexture2D(const char *szFileName)
+{
+	GLuint name = HashValue(szFileName);
+
+	if (m_pTextures[name] == NULL) {
+		m_pTextures[name] = new CGfxTexture2D(name);
+		m_pTextures[name]->Create(szFileName);
+	}
+
+	m_pTextures[name]->refCount++;
+
+	return (CGfxTexture2D *)m_pTextures[name];
+}
+
+CGfxTexture2DArray* CGfxTextureManager::LoadTexture2DArray(const char *szFileName)
+{
+	GLuint name = HashValue(szFileName);
+
+	if (m_pTextures[name] == NULL) {
+		m_pTextures[name] = new CGfxTexture2DArray(name);
+		m_pTextures[name]->Create(szFileName);
+	}
+
+	m_pTextures[name]->refCount++;
+
+	return (CGfxTexture2DArray *)m_pTextures[name];
+}
+
+CGfxTextureCubeMap* CGfxTextureManager::LoadTextureCubeMap(const char *szFileName)
+{
+	GLuint name = HashValue(szFileName);
+
+	if (m_pTextures[name] == NULL) {
+		m_pTextures[name] = new CGfxTextureCubeMap(name);
+		m_pTextures[name]->Create(szFileName);
+	}
+
+	m_pTextures[name]->refCount++;
+
+	return (CGfxTextureCubeMap *)m_pTextures[name];
 }
 
 void CGfxTextureManager::DestroyTexture(CGfxTextureBase *pTexture)

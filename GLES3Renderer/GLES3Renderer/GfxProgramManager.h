@@ -15,7 +15,7 @@ private:
 
 
 public:
-	CGfxProgram* Create(const char *szVertexFileName, const char *szFragmentFileName);
+	CGfxProgram* Load(const char *szVertexFileName, const char *szFragmentFileName);
 
 
 private:
