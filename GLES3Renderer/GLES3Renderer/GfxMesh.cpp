@@ -5,6 +5,7 @@
 #include "GfxVertexBuffer.h"
 #include "GfxInstanceBuffer.h"
 #include "GfxVertexArrayObject.h"
+#include "GfxVertexAttribute.h"
 
 
 CGfxMesh::CGfxMesh(void)

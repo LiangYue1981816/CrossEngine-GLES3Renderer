@@ -11,7 +11,10 @@ class CGfxTextureCubeMap;
 
 class CGfxTextureManager
 {
-public:
+	friend class CGfxRenderer;
+
+
+private:
 	CGfxTextureManager(void);
 	virtual ~CGfxTextureManager(void);
 

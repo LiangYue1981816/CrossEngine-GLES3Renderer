@@ -1,6 +1,5 @@
 #pragma once
 #include "glew.h"
-#include "glm/glm.hpp"
 
 
 class CGfxIndexBuffer

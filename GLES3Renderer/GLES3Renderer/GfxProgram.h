@@ -1,6 +1,5 @@
 #pragma once
 #include <map>
-#include <vector>
 #include "glew.h"
 #include "spirv-cross/spirv_cfg.hpp"
 #include "spirv-cross/spirv_cpp.hpp"
