@@ -10,7 +10,10 @@
 
 class CGfxProgram
 {
-public:
+	friend class CGfxProgramManager;
+
+
+private:
 	CGfxProgram(void);
 	virtual ~CGfxProgram(void);
 

@@ -65,26 +65,14 @@ CGfxProgram::~CGfxProgram(void)
 
 bool CGfxProgram::Create(const char *szVertexFileName, const char *szFragmentFileName)
 {
-	try {
-		Destroy();
+	Destroy();
 
-		printf("\t\tCreate ... \n");
-		{
-			int err = 0;
-			if (CreateShader(szVertexFileName, GL_VERTEX_SHADER, m_vertexShader, m_pShaderCompilers[0]) == false) throw err++;
-			if (CreateShader(szFragmentFileName, GL_FRAGMENT_SHADER, m_fragmentShader, m_pShaderCompilers[1]) == false) throw err++;
-			if (CreateProgram() == false) throw err++;
-			if (CreateLocations() == false) throw err++;
-		}
-		printf("\t\tOK\n");
-		return true;
-	}
-	catch (int err) {
-		Destroy();
+	if (CreateShader(szVertexFileName, GL_VERTEX_SHADER, m_vertexShader, m_pShaderCompilers[0]) == false) return false;
+	if (CreateShader(szFragmentFileName, GL_FRAGMENT_SHADER, m_fragmentShader, m_pShaderCompilers[1]) == false) return false;
+	if (CreateProgram() == false) return false;
+	if (CreateLocations() == false) return false;
 
-		printf("\t\tFail(%d)\n", err);
-		return false;
-	}
+	return true;
 }
 
 bool CGfxProgram::CreateShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler)
@@ -92,78 +80,41 @@ bool CGfxProgram::CreateShader(const char *szFileName, GLenum type, GLuint &shad
 	shader = 0;
 	pShaderCompiler = NULL;
 
-	try {
-		printf("\t\t\tCreateShader(%s) ... ", szFileName);
-		{
-			char szFullPath[260];
-			CGfxRenderer::GetInstance()->GetShaderFullPath(szFileName, szFullPath);
+	char szFullPath[260];
+	CGfxRenderer::GetInstance()->GetShaderFullPath(szFileName, szFullPath);
 
-			std::vector<GLuint> words = LoadShaderBinary(szFullPath);
-			pShaderCompiler = new spirv_cross::CompilerGLSL(words.data(), words.size());
+	std::vector<GLuint> words = LoadShaderBinary(szFullPath);
+	pShaderCompiler = new spirv_cross::CompilerGLSL(words.data(), words.size());
 
-			spirv_cross::CompilerGLSL::Options options;
-			options.version = 300;
-			options.es = true;
-			pShaderCompiler->set_options(options);
+	spirv_cross::CompilerGLSL::Options options;
+	options.version = 300;
+	options.es = true;
+	pShaderCompiler->set_options(options);
 
-			const std::string strSource = pShaderCompiler->compile();
-			const char *szSource[1] = { strSource.c_str() };
+	const std::string strSource = pShaderCompiler->compile();
+	const char *szSource[1] = { strSource.c_str() };
 
-			shader = glCreateShader(type);
-			glShaderSource(shader, 1, szSource, NULL);
-			glCompileShader(shader);
+	shader = glCreateShader(type);
+	glShaderSource(shader, 1, szSource, NULL);
+	glCompileShader(shader);
 
-			GLint success;
-			glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-			if (success == GL_FALSE) throw success;
-		}
-		printf("OK\n");
-		return true;
-	}
-	catch (int) {
-		static char szLog[64 * 1024];
-		glGetShaderInfoLog(shader, sizeof(szLog), NULL, szLog);
-		glDeleteShader(shader);
-		shader = 0;
+	GLint success;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
-		if (pShaderCompiler) {
-			delete pShaderCompiler;
-			pShaderCompiler = NULL;
-		}
-
-		printf("\n");
-		printf("\t\t\tCompile Error: %s\n", szLog);
-		return false;
-	}
+	return success == GL_TRUE;
 }
 
 bool CGfxProgram::CreateProgram(void)
 {
-	try {
-		printf("\t\t\tCreateProgram() ... ");
-		{
-			m_program = glCreateProgram();
-			glAttachShader(m_program, m_vertexShader);
-			glAttachShader(m_program, m_fragmentShader);
-			glLinkProgram(m_program);
+	m_program = glCreateProgram();
+	glAttachShader(m_program, m_vertexShader);
+	glAttachShader(m_program, m_fragmentShader);
+	glLinkProgram(m_program);
 
-			GLint success;
-			glGetProgramiv(m_program, GL_LINK_STATUS, &success);
-			if (success == GL_FALSE) throw success;
-		}
-		printf("OK\n");
-		return true;
-	}
-	catch (int) {
-		static char szLog[64 * 1024];
-		glGetProgramInfoLog(m_program, sizeof(szLog), NULL, szLog);
-		glDeleteProgram(m_program);
-		m_program = 0;
+	GLint success;
+	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
 
-		printf("\n");
-		printf("\t\t\tLink Error: %s\n", szLog);
-		return false;
-	}
+	return success == GL_TRUE;
 }
 
 bool CGfxProgram::CreateLocations(void)

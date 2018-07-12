@@ -662,20 +662,16 @@ bool CGfxMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 
 void CGfxMaterial::Destroy(void)
 {
-	if (m_pProgram) {
-		delete m_pProgram;
-	}
-
 	for (auto &itTexture : m_pTexture2ds) {
-		delete itTexture.second;
+		CGfxRenderer::GetInstance()->GetTextureManager()->DestroyTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTexture2dArrays) {
-		delete itTexture.second;
+		CGfxRenderer::GetInstance()->GetTextureManager()->DestroyTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTextureCubeMaps) {
-		delete itTexture.second;
+		CGfxRenderer::GetInstance()->GetTextureManager()->DestroyTexture(itTexture.second);
 	}
 
 	for (auto &itUniform : m_pUniformVec1s) {
@@ -699,6 +695,7 @@ void CGfxMaterial::Destroy(void)
 	}
 
 	m_pProgram = NULL;
+	m_pSamplers.clear();
 	m_pTexture2ds.clear();
 	m_pTexture2dArrays.clear();
 	m_pTextureCubeMaps.clear();

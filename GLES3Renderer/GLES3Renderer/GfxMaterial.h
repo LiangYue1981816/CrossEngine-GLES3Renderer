@@ -5,6 +5,7 @@
 
 
 class CGfxProgram;
+class CGfxSampler;
 class CGfxTexture2D;
 class CGfxTexture2DArray;
 class CGfxTextureCubeMap;
@@ -89,6 +90,7 @@ private:
 	GLfloat m_polygonOffsetUnits;
 
 private:
+	std::map<GLuint, CGfxSampler*> m_pSamplers;
 	std::map<GLuint, CGfxTexture2D*> m_pTexture2ds;
 	std::map<GLuint, CGfxTexture2DArray*> m_pTexture2dArrays;
 	std::map<GLuint, CGfxTextureCubeMap*> m_pTextureCubeMaps;
