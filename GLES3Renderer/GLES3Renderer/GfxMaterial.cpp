@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "GfxUtils.h"
 #include "GfxRenderer.h"
 
 
@@ -226,19 +227,19 @@ void CGfxMaterial::BindUniforms(CGfxProgram *pProgram) const
 void CGfxMaterial::BindTextures(CGfxProgram *pProgram, GLuint indexUnit) const
 {
 	for (const auto &itTexture : m_pTexture2ds) {
-		if (pProgram->BindTexture2D(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), indexUnit)) {
+		if (pProgram->BindTexture2D(itTexture.first, itTexture.second->GetTexture(), m_pSamplers.find(itTexture.first)->second->GetSampler(), indexUnit)) {
 			indexUnit++;
 		}
 	}
 
 	for (const auto &itTexture : m_pTexture2dArrays) {
-		if (pProgram->BindTextureArray(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), indexUnit)) {
+		if (pProgram->BindTextureArray(itTexture.first, itTexture.second->GetTexture(), m_pSamplers.find(itTexture.first)->second->GetSampler(), indexUnit)) {
 			indexUnit++;
 		}
 	}
 
 	for (const auto &itTexture : m_pTextureCubeMaps) {
-		if (pProgram->BindTextureCubeMap(itTexture.first, itTexture.second->GetTexture(), itTexture.second->GetSampler(), indexUnit)) {
+		if (pProgram->BindTextureCubeMap(itTexture.first, itTexture.second->GetTexture(), m_pSamplers.find(itTexture.first)->second->GetSampler(), indexUnit)) {
 			indexUnit++;
 		}
 	}
@@ -370,9 +371,7 @@ bool CGfxMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 			const char *szFragmentFileName = pProgramNode->ToElement()->AttributeString("fragment_file_name");
 			if (szVertexFileName == NULL || szFragmentFileName == NULL) throw err++;
 
-			m_pProgram = new CGfxProgram;
-			if (m_pProgram == NULL) throw err++;
-			if (m_pProgram->Create(szVertexFileName, szFragmentFileName) == false) throw err++;
+			m_pProgram = CGfxRenderer::GetInstance()->GetProgramManager()->Load(szVertexFileName, szFragmentFileName);
 		}
 		printf("\tOK\n");
 		return true;
@@ -409,11 +408,8 @@ bool CGfxMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsTextureValid(name)) {
-					if (m_pTexture2ds[name] = new CGfxTexture2D) {
-						if (m_pTexture2ds[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
-							throw err++;
-						}
-					}
+					m_pSamplers[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateSampler(minFilter, magFilter, addressMode);
+					m_pTexture2ds[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTexture2D(szFileName);
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2D", pTextureNode));
 		}
@@ -452,11 +448,8 @@ bool CGfxMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsTextureValid(name)) {
-					if (m_pTexture2dArrays[name] = new CGfxTexture2DArray) {
-						if (m_pTexture2dArrays[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
-							throw err++;
-						}
-					}
+					m_pSamplers[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateSampler(minFilter, magFilter, addressMode);
+					m_pTexture2dArrays[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTexture2DArray(szFileName);
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2DArray", pTextureNode));
 		}
@@ -495,11 +488,8 @@ bool CGfxMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 				}
 
 				if (m_pProgram->IsTextureValid(name)) {
-					if (m_pTextureCubeMaps[name] = new CGfxTextureCubeMap) {
-						if (m_pTextureCubeMaps[name]->Create(szFileName, minFilter, magFilter, addressMode) == false) {
-							throw err++;
-						}
-					}
+					m_pSamplers[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateSampler(minFilter, magFilter, addressMode);
+					m_pTextureCubeMaps[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTextureCubeMap(szFileName);
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("TextureCubeMap", pTextureNode));
 		}
@@ -747,10 +737,6 @@ void CGfxMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat 
 
 CGfxProgram* CGfxMaterial::GetProgram(void)
 {
-	if (m_pProgram == NULL) {
-		m_pProgram = new CGfxProgram;
-	}
-
 	return m_pProgram;
 }
 
@@ -760,7 +746,7 @@ CGfxTexture2D* CGfxMaterial::GetTexture2D(const char *szName)
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2ds[name] == NULL) {
-			m_pTexture2ds[name] = new CGfxTexture2D;
+			m_pTexture2ds[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTexture2D(szName);
 		}
 
 		return m_pTexture2ds[name];
@@ -775,7 +761,7 @@ CGfxTexture2DArray* CGfxMaterial::GetTexture2DArray(const char *szName)
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2dArrays[name] == NULL) {
-			m_pTexture2dArrays[name] = new CGfxTexture2DArray;
+			m_pTexture2dArrays[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTexture2DArray(szName);
 		}
 
 		return m_pTexture2dArrays[name];
@@ -790,7 +776,7 @@ CGfxTextureCubeMap* CGfxMaterial::GetTextureCubeMap(const char *szName)
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTextureCubeMaps[name] == NULL) {
-			m_pTextureCubeMaps[name] = new CGfxTextureCubeMap;
+			m_pTextureCubeMaps[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTextureCubeMap(szName);
 		}
 
 		return m_pTextureCubeMaps[name];
