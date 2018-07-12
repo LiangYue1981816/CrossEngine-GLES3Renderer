@@ -63,19 +63,19 @@ CGfxProgram::~CGfxProgram(void)
 	Destroy();
 }
 
-bool CGfxProgram::Create(const char *szVertexFileName, const char *szFragmentFileName)
+bool CGfxProgram::Load(const char *szVertexFileName, const char *szFragmentFileName)
 {
 	Destroy();
 
-	if (CreateShader(szVertexFileName, GL_VERTEX_SHADER, m_vertexShader, m_pShaderCompilers[0]) == false) return false;
-	if (CreateShader(szFragmentFileName, GL_FRAGMENT_SHADER, m_fragmentShader, m_pShaderCompilers[1]) == false) return false;
+	if (LoadShader(szVertexFileName, GL_VERTEX_SHADER, m_vertexShader, m_pShaderCompilers[0]) == false) return false;
+	if (LoadShader(szFragmentFileName, GL_FRAGMENT_SHADER, m_fragmentShader, m_pShaderCompilers[1]) == false) return false;
 	if (CreateProgram() == false) return false;
 	if (CreateLocations() == false) return false;
 
 	return true;
 }
 
-bool CGfxProgram::CreateShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler)
+bool CGfxProgram::LoadShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler)
 {
 	shader = 0;
 	pShaderCompiler = NULL;

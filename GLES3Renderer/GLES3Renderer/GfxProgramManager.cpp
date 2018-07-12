@@ -27,7 +27,7 @@ CGfxProgram* CGfxProgramManager::Load(const char *szVertexFileName, const char *
 
 	if (m_pPrograms[name] == NULL) {
 		m_pPrograms[name] = new CGfxProgram;
-		m_pPrograms[name]->Create(szVertexFileName, szFragmentFileName);
+		m_pPrograms[name]->Load(szVertexFileName, szFragmentFileName);
 	}
 
 	return m_pPrograms[name];

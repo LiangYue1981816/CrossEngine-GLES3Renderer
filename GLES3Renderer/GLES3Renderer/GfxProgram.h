@@ -19,11 +19,11 @@ private:
 
 
 public:
-	bool Create(const char *szVertexFileName, const char *szFragmentFileName);
+	bool Load(const char *szVertexFileName, const char *szFragmentFileName);
 	void Destroy(void);
 
 private:
-	bool CreateShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler);
+	bool LoadShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler);
 	bool CreateProgram(void);
 	bool CreateLocations(void);
 
