@@ -113,6 +113,7 @@
     <ClInclude Include="GLES3Renderer\GfxIndexBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxInstanceBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxMaterial.h" />
+    <ClInclude Include="GLES3Renderer\GfxMaterialManager.h" />
     <ClInclude Include="GLES3Renderer\GfxMesh.h" />
     <ClInclude Include="GLES3Renderer\GfxProgram.h" />
     <ClInclude Include="GLES3Renderer\GfxProgramManager.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="GLES3Renderer\GfxIndexBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxInstanceBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxMaterial.cpp" />
+    <ClCompile Include="GLES3Renderer\GfxMaterialManager.cpp" />
     <ClCompile Include="GLES3Renderer\GfxMesh.cpp" />
     <ClCompile Include="GLES3Renderer\GfxProgram.cpp" />
     <ClCompile Include="GLES3Renderer\GfxProgramManager.cpp" />
