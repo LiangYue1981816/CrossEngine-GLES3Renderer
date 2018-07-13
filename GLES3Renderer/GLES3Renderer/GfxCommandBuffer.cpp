@@ -123,10 +123,10 @@ bool CGfxCommandBuffer::BindMaterial(GLuint material)
 	return false;
 }
 
-bool CGfxCommandBuffer::BindInputTexture(const char *szName, GLuint texture)
+bool CGfxCommandBuffer::BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
-		m_commands.push_back(new CGfxCommandBindInputTexture(szName, texture));
+		m_commands.push_back(new CGfxCommandBindInputTexture(szName, texture, minFilter, magFilter, addressMode));
 		return true;
 	}
 

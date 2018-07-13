@@ -280,9 +280,9 @@ bool CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint mate
 	return pCommandBuffer->BindMaterial(material);
 }
 
-bool CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture)
+bool CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
-	return pCommandBuffer->BindInputTexture(szName, texture);
+	return pCommandBuffer->BindInputTexture(szName, texture, minFilter, magFilter, addressMode);
 }
 
 bool CGfxRenderer::CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth)
@@ -376,9 +376,8 @@ void CGfxRenderer::BindMaterial(GLuint material)
 	m_pGlobalMaterial->BindTextures(m_pMaterials[m_material]->GetProgram(), m_pMaterials[m_material]->GetTextureUnits());
 }
 
-void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture)
+void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
-	if (CGfxTexture2D *pTexture = m_pGlobalMaterial->GetTexture2D(szName)) {
-		pTexture->CreateExtern(texture);
-	}
+	m_pGlobalMaterial->GetTexture2D(szName)->CreateExtern(texture);
+	m_pGlobalMaterial->GetSampler(szName, minFilter, magFilter, addressMode);
 }

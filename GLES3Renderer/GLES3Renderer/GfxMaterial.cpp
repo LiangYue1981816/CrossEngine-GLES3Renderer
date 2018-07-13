@@ -740,6 +740,21 @@ CGfxProgram* CGfxMaterial::GetProgram(void)
 	return m_pProgram;
 }
 
+CGfxSampler* CGfxMaterial::GetSampler(const char *szName, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+{
+	GLuint name = HashValue(szName);
+
+	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
+		if (m_pSamplers[name] == NULL) {
+			m_pSamplers[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateSampler(minFilter, magFilter, addressMode);
+		}
+
+		return m_pSamplers[name];
+	}
+
+	return NULL;
+}
+
 CGfxTexture2D* CGfxMaterial::GetTexture2D(const char *szName)
 {
 	GLuint name = HashValue(szName);

@@ -46,7 +46,7 @@ public:
 
 	bool BindMesh(CGfxMesh *pMesh);
 	bool BindMaterial(GLuint material);
-	bool BindInputTexture(const char *szName, GLuint texture);
+	bool BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 	bool ClearDepth(float depth);
 	bool ClearColor(float red, float green, float blue, float alpha);

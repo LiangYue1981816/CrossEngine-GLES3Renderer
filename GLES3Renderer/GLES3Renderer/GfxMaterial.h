@@ -59,6 +59,7 @@ public:
 public:
 	CGfxProgram* GetProgram(void);
 
+	CGfxSampler* GetSampler(const char *szName, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	CGfxTexture2D* GetTexture2D(const char *szName);
 	CGfxTexture2DArray* GetTexture2DArray(const char *szName);
 	CGfxTextureCubeMap* GetTextureCubeMap(const char *szName);

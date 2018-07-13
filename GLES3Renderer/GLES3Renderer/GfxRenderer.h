@@ -117,7 +117,7 @@ public:
 	bool CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 
 	bool CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material);
-	bool CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture);
+	bool CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 	bool CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);
 	bool CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha);
@@ -133,7 +133,7 @@ public:
 
 private:
 	void BindMaterial(GLuint material);
-	void BindInputTexture(const char *szName, GLuint texture);
+	void BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 
 private:
