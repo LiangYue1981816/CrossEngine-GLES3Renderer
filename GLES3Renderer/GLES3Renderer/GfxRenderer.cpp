@@ -378,7 +378,7 @@ void CGfxRenderer::BindMaterial(GLuint material)
 
 void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture)
 {
-	if (CGfxTextureBase *pTexture = m_pGlobalMaterial->GetTexture2D(szName)) {
-		pTexture->Create(texture);
+	if (CGfxTexture2D *pTexture = m_pGlobalMaterial->GetTexture2D(szName)) {
+		pTexture->CreateExtern(texture);
 	}
 }

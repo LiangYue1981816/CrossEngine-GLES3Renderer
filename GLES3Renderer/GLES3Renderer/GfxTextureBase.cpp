@@ -28,7 +28,7 @@ CGfxTextureBase::~CGfxTextureBase(void)
 	Destroy();
 }
 
-bool CGfxTextureBase::Create(GLuint texture)
+bool CGfxTextureBase::CreateExtern(GLuint texture)
 {
 	Destroy();
 
