@@ -175,6 +175,7 @@ bool CGfxProgram::SetUniformLocation(const char *szName)
 		GLuint location = glGetUniformBlockIndex(m_program, szName);
 
 		if (location != GL_INVALID_INDEX) {
+			m_names[name] = szName;
 			m_uniformBlockLocations[name] = location;
 			glUniformBlockBinding(m_program, location, location);
 			return true;
@@ -192,6 +193,7 @@ bool CGfxProgram::SetTextureLocation(const char *szName)
 		GLuint location = glGetUniformLocation(m_program, szName);
 
 		if (location != GL_INVALID_INDEX) {
+			m_names[name] = szName;
 			m_sampledImageLocations[name] = location;
 			return true;
 		}

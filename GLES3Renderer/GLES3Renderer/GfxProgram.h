@@ -45,6 +45,7 @@ public:
 
 
 private:
+	std::map<uint32_t, std::string> m_names;
 	std::map<uint32_t, uint32_t> m_uniformBlockLocations;
 	std::map<uint32_t, uint32_t> m_sampledImageLocations;
 
