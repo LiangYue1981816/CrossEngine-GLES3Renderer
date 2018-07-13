@@ -81,6 +81,8 @@
 #define __glew_h__
 #define __GLEW_H__
 
+#include "gles3/gl3.h"
+
 #if defined(__gl_h_) || defined(__GL_H__) || defined(_GL_H) || defined(__X_GL_H)
 #error gl.h included before glew.h
 #endif
@@ -1676,9 +1678,6 @@ typedef void (GLAPIENTRY * PFNGLWINDOWPOS3SVPROC) (const GLshort *p);
 #define GL_DYNAMIC_COPY 0x88EA
 #define GL_SAMPLES_PASSED 0x8914
 
-typedef ptrdiff_t GLintptr;
-typedef ptrdiff_t GLsizeiptr;
-
 typedef void (GLAPIENTRY * PFNGLBEGINQUERYPROC) (GLenum target, GLuint id);
 typedef void (GLAPIENTRY * PFNGLBINDBUFFERPROC) (GLenum target, GLuint buffer);
 typedef void (GLAPIENTRY * PFNGLBUFFERDATAPROC) (GLenum target, GLsizeiptr size, const void* data, GLenum usage);
@@ -1728,7 +1727,7 @@ typedef GLboolean (GLAPIENTRY * PFNGLUNMAPBUFFERPROC) (GLenum target);
 #ifndef GL_VERSION_2_0
 #define GL_VERSION_2_0 1
 
-#define GL_BLEND_EQUATION_RGB GL_BLEND_EQUATION
+#define GL_BLEND_EQUATION_RGB 0x8009
 #define GL_VERTEX_ATTRIB_ARRAY_ENABLED 0x8622
 #define GL_VERTEX_ATTRIB_ARRAY_SIZE 0x8623
 #define GL_VERTEX_ATTRIB_ARRAY_STRIDE 0x8624
@@ -2063,9 +2062,9 @@ typedef void (GLAPIENTRY * PFNGLUNIFORMMATRIX4X3FVPROC) (GLint location, GLsizei
 #define GL_CLIP_DISTANCE3 GL_CLIP_PLANE3
 #define GL_CLIP_DISTANCE4 GL_CLIP_PLANE4
 #define GL_CLIP_DISTANCE5 GL_CLIP_PLANE5
-#define GL_COMPARE_REF_TO_TEXTURE GL_COMPARE_R_TO_TEXTURE_ARB
+#define GL_COMPARE_REF_TO_TEXTURE 0x884E
 #define GL_MAX_CLIP_DISTANCES GL_MAX_CLIP_PLANES
-#define GL_MAX_VARYING_COMPONENTS GL_MAX_VARYING_FLOATS
+#define GL_MAX_VARYING_COMPONENTS 0x8B4B
 #define GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT 0x0001
 #define GL_MAJOR_VERSION 0x821B
 #define GL_MINOR_VERSION 0x821C
