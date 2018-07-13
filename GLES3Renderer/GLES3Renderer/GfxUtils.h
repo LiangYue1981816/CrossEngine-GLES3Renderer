@@ -1,5 +1,5 @@
 #pragma once
-#include "gles/gl3.h"
+#include "gles3/gl3.h"
 
 
 extern GLuint HashValue(const char *szString);

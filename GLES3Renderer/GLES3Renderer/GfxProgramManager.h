@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include "gles/gl3.h"
+#include "gles3/gl3.h"
 
 
 class CGfxProgram;
