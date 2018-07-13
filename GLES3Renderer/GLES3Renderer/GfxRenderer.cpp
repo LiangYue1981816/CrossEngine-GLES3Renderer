@@ -31,6 +31,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	: m_pGlobalMaterial(NULL)
 	, m_pProgramManager(NULL)
 	, m_pTextureManager(NULL)
+	, m_pMaterialManager(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -60,19 +61,17 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 
 	m_pProgramManager = new CGfxProgramManager;
 	m_pTextureManager = new CGfxTextureManager;
+	m_pMaterialManager = new CGfxMaterialManager;
 }
 
 CGfxRenderer::~CGfxRenderer(void)
 {
 	m_meshScreen.Destroy();
 
-	for (const auto &itMaterial : m_pMaterials) {
-		delete itMaterial.second;
-	}
-
 	delete m_pGlobalMaterial;
 	delete m_pProgramManager;
 	delete m_pTextureManager;
+	delete m_pMaterialManager;
 }
 
 const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -103,37 +102,20 @@ CGfxTextureManager* CGfxRenderer::GetTextureManager(void) const
 	return m_pTextureManager;
 }
 
+CGfxMaterialManager* CGfxRenderer::GetMaterialManager(void) const
+{
+	return m_pMaterialManager;
+}
+
 bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 {
-	try {
-		int err = 0;
-
-		if (m_pMaterials[materialid] == NULL) {
-			m_pMaterials[materialid] = new CGfxMaterial;
-		}
-
-		if (m_pMaterials[materialid] == NULL) {
-			throw err++;
-		}
-
-		if (m_pMaterials[materialid]->Create(szFileName) == false) {
-			throw err++;
-		}
-
-		return true;
-	}
-	catch (int) {
-		delete m_pMaterials[materialid];
-		m_pMaterials.erase(materialid);
-
-		return false;
-	}
+	return m_pMaterialManager->Load(szFileName, materialid);
 }
 
 CGfxMaterial* CGfxRenderer::GetMaterial(GLuint id) const
 {
-	const auto &itMaterial = m_pMaterials.find(id);
-	return itMaterial != m_pMaterials.end() ? itMaterial->second : m_pGlobalMaterial;
+	CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(id);
+	return pMaterial != NULL ? pMaterial : m_pGlobalMaterial;
 }
 
 void CGfxRenderer::SetTime(float t, float dt)
@@ -351,29 +333,23 @@ void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
 
 void CGfxRenderer::BindMaterial(GLuint material)
 {
-	if (m_pMaterials.find(material) == m_pMaterials.end()) {
-		return;
+	if (CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(material)) {
+		m_material = material;
+
+		pMaterial->Bind();
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_NAME), m_uniformShadow.GetBuffer(), m_uniformShadow.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
+		pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
+
+		m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());
+		m_pGlobalMaterial->BindTextures(pMaterial->GetProgram(), pMaterial->GetTextureUnits());
 	}
-
-	if (m_material == material) {
-		return;
-	}
-
-	m_material = material;
-
-	m_pMaterials[m_material]->Bind();
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_NAME), m_uniformShadow.GetBuffer(), m_uniformShadow.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
-	m_pMaterials[m_material]->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
-
-	m_pGlobalMaterial->BindUniforms(m_pMaterials[m_material]->GetProgram());
-	m_pGlobalMaterial->BindTextures(m_pMaterials[m_material]->GetProgram(), m_pMaterials[m_material]->GetTextureUnits());
 }
 
 void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)

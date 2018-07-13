@@ -9,6 +9,7 @@
 #include "GfxCommandBuffer.h"
 #include "GfxProgramManager.h"
 #include "GfxTextureManager.h"
+#include "GfxMaterialManager.h"
 #include "GfxMaterial.h"
 #include "GfxProgram.h"
 #include "GfxSampler.h"
@@ -69,6 +70,7 @@ public:
 public:
 	CGfxProgramManager* GetProgramManager(void) const;
 	CGfxTextureManager* GetTextureManager(void) const;
+	CGfxMaterialManager* GetMaterialManager(void) const;
 
 public:
 	bool LoadMaterial(const char *szFileName, GLuint materialid);
@@ -157,12 +159,12 @@ private:
 
 private:
 	GLuint m_material;
-	std::map<GLuint, CGfxMaterial*> m_pMaterials;
+	CGfxMaterial *m_pGlobalMaterial;
 
 private:
-	CGfxMaterial *m_pGlobalMaterial;
 	CGfxProgramManager *m_pProgramManager;
 	CGfxTextureManager *m_pTextureManager;
+	CGfxMaterialManager *m_pMaterialManager;
 
 private:
 	static CGfxRenderer *pInstance;
