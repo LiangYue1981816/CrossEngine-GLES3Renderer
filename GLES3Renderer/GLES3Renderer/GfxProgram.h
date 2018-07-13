@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include "glew.h"
+#include "gles/gl3.h"
 #include "spirv-cross/spirv_cfg.hpp"
 #include "spirv-cross/spirv_cpp.hpp"
 #include "spirv-cross/spirv_msl.hpp"

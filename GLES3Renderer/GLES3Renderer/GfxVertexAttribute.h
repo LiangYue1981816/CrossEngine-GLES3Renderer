@@ -1,5 +1,5 @@
 #pragma once
-#include "glew.h"
+#include "gles/gl3.h"
 
 
 #define VERTEX_ATTRIBUTE_POSITION                0x00000001

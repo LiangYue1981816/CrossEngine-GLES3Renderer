@@ -1,5 +1,5 @@
 #pragma once
-#include "glew.h"
+#include "gles/gl3.h"
 
 
 class CGfxSampler

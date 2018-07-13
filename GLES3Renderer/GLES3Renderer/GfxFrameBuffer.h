@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
-#include "glew.h"
+#include "gles/gl3.h"
 
 
 class CGfxFrameBuffer
