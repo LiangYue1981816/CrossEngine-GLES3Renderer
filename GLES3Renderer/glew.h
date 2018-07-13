@@ -266,7 +266,6 @@ typedef _W64 int ptrdiff_t;
 #endif
 
 #define GLEW_VAR_EXPORT GLEWAPI
-#define GLEW_FUN_EXPORT GLEWAPI
 
 #ifdef __cplusplus
 extern "C" {
