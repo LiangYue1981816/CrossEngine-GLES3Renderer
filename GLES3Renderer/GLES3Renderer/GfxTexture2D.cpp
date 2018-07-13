@@ -57,6 +57,10 @@ bool CGfxTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, 
 
 bool CGfxTexture2D::TransferTexture2D(const gli::texture2d &texture)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -98,6 +102,10 @@ bool CGfxTexture2D::TransferTexture2D(const gli::texture2d &texture)
 
 bool CGfxTexture2D::TransferTexture2D(GLuint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -117,6 +125,10 @@ bool CGfxTexture2D::TransferTexture2D(GLuint level, GLenum format, GLsizei width
 
 bool CGfxTexture2D::TransferTexture2DCompressed(GLuint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}

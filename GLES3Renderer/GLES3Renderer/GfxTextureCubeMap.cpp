@@ -57,6 +57,10 @@ bool CGfxTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei wi
 
 bool CGfxTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -108,6 +112,10 @@ bool CGfxTextureCubeMap::TransferTextureCubeMap(const gli::texture_cube &texture
 
 bool CGfxTextureCubeMap::TransferTexture2D(GLuint face, const gli::texture2d &texture)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -149,6 +157,10 @@ bool CGfxTextureCubeMap::TransferTexture2D(GLuint face, const gli::texture2d &te
 
 bool CGfxTextureCubeMap::TransferTexture2D(GLuint face, GLuint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -168,6 +180,10 @@ bool CGfxTextureCubeMap::TransferTexture2D(GLuint face, GLuint level, GLenum for
 
 bool CGfxTextureCubeMap::TransferTexture2DCompressed(GLuint face, GLuint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}

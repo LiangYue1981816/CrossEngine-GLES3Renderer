@@ -58,6 +58,10 @@ bool CGfxTexture2DArray::Create(GLenum format, GLenum internalFormat, GLsizei wi
 
 bool CGfxTexture2DArray::TransferTexture2DArray(const gli::texture2d_array &texture)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -105,6 +109,10 @@ bool CGfxTexture2DArray::TransferTexture2DArray(const gli::texture2d_array &text
 
 bool CGfxTexture2DArray::TransferTexture2D(GLuint layer, const gli::texture2d &texture)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -150,6 +158,10 @@ bool CGfxTexture2DArray::TransferTexture2D(GLuint layer, const gli::texture2d &t
 
 bool CGfxTexture2DArray::TransferTexture2D(GLuint layer, GLuint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
@@ -173,6 +185,10 @@ bool CGfxTexture2DArray::TransferTexture2D(GLuint layer, GLuint level, GLenum fo
 
 bool CGfxTexture2DArray::TransferTexture2DCompressed(GLuint layer, GLuint level, GLenum format, GLsizei width, GLsizei height, GLsizei size, const GLvoid *data)
 {
+	if (m_texture == 0) {
+		return false;
+	}
+
 	if (m_extern == GL_TRUE) {
 		return false;
 	}
