@@ -761,7 +761,7 @@ CGfxTexture2D* CGfxMaterial::GetTexture2D(const char *szName)
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2ds[name] == NULL) {
-			m_pTexture2ds[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTexture2D(szName);
+			m_pTexture2ds[name] = new CGfxTexture2D(HashValue(szName));
 		}
 
 		return m_pTexture2ds[name];
@@ -776,7 +776,7 @@ CGfxTexture2DArray* CGfxMaterial::GetTexture2DArray(const char *szName)
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTexture2dArrays[name] == NULL) {
-			m_pTexture2dArrays[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTexture2DArray(szName);
+			m_pTexture2dArrays[name] = new CGfxTexture2DArray(HashValue(szName));
 		}
 
 		return m_pTexture2dArrays[name];
@@ -791,7 +791,7 @@ CGfxTextureCubeMap* CGfxMaterial::GetTextureCubeMap(const char *szName)
 
 	if ((m_pProgram == NULL) || (m_pProgram && m_pProgram->IsTextureValid(name))) {
 		if (m_pTextureCubeMaps[name] == NULL) {
-			m_pTextureCubeMaps[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateTextureCubeMap(szName);
+			m_pTextureCubeMaps[name] = new CGfxTextureCubeMap(HashValue(szName));
 		}
 
 		return m_pTextureCubeMaps[name];

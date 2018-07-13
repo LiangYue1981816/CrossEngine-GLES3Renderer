@@ -6,6 +6,7 @@
 
 class CGfxTexture2DArray : public CGfxTextureBase
 {
+	friend class CGfxMaterial;
 	friend class CGfxTextureManager;
 
 

@@ -6,6 +6,7 @@
 
 class CGfxTextureCubeMap : public CGfxTextureBase
 {
+	friend class CGfxMaterial;
 	friend class CGfxTextureManager;
 
 
