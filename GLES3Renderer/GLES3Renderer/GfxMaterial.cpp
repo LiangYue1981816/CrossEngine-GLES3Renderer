@@ -360,7 +360,7 @@ bool CGfxMaterial::LoadBase(TiXmlNode *pMaterialNode)
 bool CGfxMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 {
 	try {
-		printf("\tLoadProgram ... \n");
+		printf("\tLoadProgram ... ");
 		{
 			int err = 0;
 
@@ -373,11 +373,11 @@ bool CGfxMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 
 			m_pProgram = CGfxRenderer::GetInstance()->GetProgramManager()->Load(szVertexFileName, szFragmentFileName);
 		}
-		printf("\tOK\n");
+		printf("OK\n");
 		return true;
 	}
 	catch (int err) {
-		printf("\tFail(%d)\n", err);
+		printf("Fail(%d)\n", err);
 		return false;
 	}
 }
@@ -388,7 +388,7 @@ bool CGfxMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 		TiXmlNode *pTextureNode = pMaterialNode->FirstChild("Texture2D");
 		if (pTextureNode == NULL) return true;
 
-		printf("\tLoadTexture2D ... \n");
+		printf("\tLoadTexture2D ... ");
 		{
 			do {
 				int err = 0;
@@ -413,11 +413,11 @@ bool CGfxMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2D", pTextureNode));
 		}
-		printf("\tOK\n");
+		printf("OK\n");
 		return true;
 	}
 	catch (int err) {
-		printf("\tFail(%d)\n", err);
+		printf("Fail(%d)\n", err);
 		return false;
 	}
 }
@@ -428,7 +428,7 @@ bool CGfxMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 		TiXmlNode *pTextureNode = pMaterialNode->FirstChild("Texture2DArray");
 		if (pTextureNode == NULL) return true;
 
-		printf("\tLoadTexture2DArray ... \n");
+		printf("\tLoadTexture2DArray ... ");
 		{
 			do {
 				int err = 0;
@@ -453,11 +453,11 @@ bool CGfxMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2DArray", pTextureNode));
 		}
-		printf("\tOK\n");
+		printf("OK\n");
 		return true;
 	}
 	catch (int err) {
-		printf("\tFail(%d)\n", err);
+		printf("Fail(%d)\n", err);
 		return false;
 	}
 }
@@ -468,7 +468,7 @@ bool CGfxMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 		TiXmlNode *pTextureNode = pMaterialNode->FirstChild("TextureCubeMap");
 		if (pTextureNode == NULL) return true;
 
-		printf("\tLoadTextureCubeMap ... \n");
+		printf("\tLoadTextureCubeMap ... ");
 		{
 			do {
 				int err = 0;
@@ -493,11 +493,11 @@ bool CGfxMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("TextureCubeMap", pTextureNode));
 		}
-		printf("\tOK\n");
+		printf("OK\n");
 		return true;
 	}
 	catch (int err) {
-		printf("\tFail(%d)\n", err);
+		printf("Fail(%d)\n", err);
 		return false;
 	}
 }

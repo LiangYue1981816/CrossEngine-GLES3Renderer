@@ -17,9 +17,10 @@ class CGfxUniformMat4;
 class CGfxMaterial
 {
 	friend class CGfxRenderer;
+	friend class CGfxMaterialManager;
 
 
-public:
+private:
 	CGfxMaterial(void);
 	virtual ~CGfxMaterial(void);
 
