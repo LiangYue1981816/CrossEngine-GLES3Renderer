@@ -69,9 +69,9 @@ CGfxRenderer::~CGfxRenderer(void)
 	m_meshScreen.Destroy();
 
 	delete m_pGlobalMaterial;
+	delete m_pMaterialManager;
 	delete m_pProgramManager;
 	delete m_pTextureManager;
-	delete m_pMaterialManager;
 }
 
 const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
