@@ -112,9 +112,9 @@ bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint materialid)
 	return m_pMaterialManager->Load(szFileName, materialid);
 }
 
-CGfxMaterial* CGfxRenderer::GetMaterial(GLuint id) const
+CGfxMaterial* CGfxRenderer::GetMaterial(GLuint materialid) const
 {
-	CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(id);
+	CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(materialid);
 	return pMaterial != NULL ? pMaterial : m_pGlobalMaterial;
 }
 
