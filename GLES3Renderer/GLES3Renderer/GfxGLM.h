@@ -95,7 +95,7 @@ namespace glm {
 			vec3 minVertex( FLT_MAX,  FLT_MAX,  FLT_MAX);
 			vec3 maxVertex(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-			for (int indexVertex = 0; indexVertex < count; indexVertex++) {
+			for (size_t indexVertex = 0; indexVertex < count; indexVertex++) {
 				if (minVertex.x > vertices[indexVertex].x) minVertex.x = vertices[indexVertex].x;
 				if (minVertex.y > vertices[indexVertex].y) minVertex.y = vertices[indexVertex].y;
 				if (minVertex.z > vertices[indexVertex].z) minVertex.z = vertices[indexVertex].z;
@@ -222,7 +222,7 @@ namespace glm {
 			vec3 minVertex( FLT_MAX,  FLT_MAX,  FLT_MAX);
 			vec3 maxVertex(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-			for (int indexVertex = 0; indexVertex < count; indexVertex++) {
+			for (size_t indexVertex = 0; indexVertex < count; indexVertex++) {
 				if (minVertex.x > vertices[indexVertex].x) minVertex.x = vertices[indexVertex].x;
 				if (minVertex.y > vertices[indexVertex].y) minVertex.y = vertices[indexVertex].y;
 				if (minVertex.z > vertices[indexVertex].z) minVertex.z = vertices[indexVertex].z;
