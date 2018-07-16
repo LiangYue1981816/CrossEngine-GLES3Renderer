@@ -5,12 +5,18 @@
 #include "GfxGLM.h"
 
 
+class CGfxFrameBuffer;
+class CGfxMesh;
 class CGfxCamera
 {
 public:
 	CGfxCamera(void);
 	virtual ~CGfxCamera(void);
 
+
+public:
+	void SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
+	const CGfxFrameBuffer* GetFrameBuffer(void) const;
 
 public:
 	void SetViewport(float x, float y, float width, float height);
@@ -27,7 +33,15 @@ public:
 	bool IsVisible(const glm::aabb &aabb);
 	bool IsVisible(const glm::sphere &sphere);
 
-
 public:
+	void AddQueue(GLuint material, CGfxMesh *pMesh);
+	void ClearQueue(void);
+
+
+private:
+	CGfxFrameBuffer *m_pFrameBuffer;
+
+private:
 	glm::camera m_camera;
+	std::map<GLuint, std::vector<CGfxMesh*>> m_queue;
 };

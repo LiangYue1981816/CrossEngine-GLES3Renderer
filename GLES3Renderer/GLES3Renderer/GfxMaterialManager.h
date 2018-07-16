@@ -15,8 +15,8 @@ private:
 
 
 public:
-	bool Load(const char *szFileName, GLuint materialid);
-	CGfxMaterial* GetMaterial(GLuint materialid) const;
+	bool Load(const char *szFileName, GLuint material);
+	CGfxMaterial* GetMaterial(GLuint material) const;
 
 
 private:

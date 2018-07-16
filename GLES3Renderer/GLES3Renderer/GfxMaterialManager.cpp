@@ -17,35 +17,35 @@ CGfxMaterialManager::~CGfxMaterialManager(void)
 	}
 }
 
-bool CGfxMaterialManager::Load(const char *szFileName, GLuint materialid)
+bool CGfxMaterialManager::Load(const char *szFileName, GLuint material)
 {
 	try {
 		int err = 0;
 
-		if (m_pMaterials[materialid] == NULL) {
-			m_pMaterials[materialid] = new CGfxMaterial;
+		if (m_pMaterials[material] == NULL) {
+			m_pMaterials[material] = new CGfxMaterial;
 		}
 
-		if (m_pMaterials[materialid] == NULL) {
+		if (m_pMaterials[material] == NULL) {
 			throw err++;
 		}
 
-		if (m_pMaterials[materialid]->Create(szFileName) == false) {
+		if (m_pMaterials[material]->Create(szFileName) == false) {
 			throw err++;
 		}
 
 		return true;
 	}
 	catch (int) {
-		delete m_pMaterials[materialid];
-		m_pMaterials.erase(materialid);
+		delete m_pMaterials[material];
+		m_pMaterials.erase(material);
 
 		return false;
 	}
 }
 
-CGfxMaterial* CGfxMaterialManager::GetMaterial(GLuint materialid) const
+CGfxMaterial* CGfxMaterialManager::GetMaterial(GLuint material) const
 {
-	const auto &itMaterial = m_pMaterials.find(materialid);
+	const auto &itMaterial = m_pMaterials.find(material);
 	return itMaterial != m_pMaterials.end() ? itMaterial->second : NULL;
 }

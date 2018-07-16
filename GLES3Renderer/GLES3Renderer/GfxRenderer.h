@@ -73,8 +73,8 @@ public:
 	CGfxMaterialManager* GetMaterialManager(void) const;
 
 public:
-	bool LoadMaterial(const char *szFileName, GLuint materialid);
-	CGfxMaterial* GetMaterial(GLuint materialid) const;
+	bool LoadMaterial(const char *szFileName, GLuint material);
+	CGfxMaterial* GetMaterial(GLuint material) const;
 
 public:
 	void SetTime(float t, float dt);

@@ -4,6 +4,7 @@
 
 
 CGfxCamera::CGfxCamera(void)
+	: m_pFrameBuffer(NULL)
 {
 
 }
@@ -11,6 +12,16 @@ CGfxCamera::CGfxCamera(void)
 CGfxCamera::~CGfxCamera(void)
 {
 
+}
+
+void CGfxCamera::SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
+{
+	m_pFrameBuffer = pFrameBuffer;
+}
+
+const CGfxFrameBuffer* CGfxCamera::GetFrameBuffer(void) const
+{
+	return m_pFrameBuffer;
 }
 
 void CGfxCamera::SetViewport(float x, float y, float width, float height)
@@ -56,4 +67,14 @@ bool CGfxCamera::IsVisible(const glm::aabb &aabb)
 bool CGfxCamera::IsVisible(const glm::sphere &sphere)
 {
 	return m_camera.visible(sphere);
+}
+
+void CGfxCamera::AddQueue(GLuint material, CGfxMesh *pMesh)
+{
+	m_queue[material].push_back(pMesh);
+}
+
+void CGfxCamera::ClearQueue(void)
+{
+	m_queue.clear();
 }
