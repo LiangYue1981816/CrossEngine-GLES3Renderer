@@ -165,6 +165,10 @@ void CGfxProgram::Destroy(void)
 	m_fragmentShader = 0;
 	m_pShaderCompilers[0] = NULL;
 	m_pShaderCompilers[1] = NULL;
+
+	m_names.clear();
+	m_uniformBlockLocations.clear();
+	m_sampledImageLocations.clear();
 }
 
 bool CGfxProgram::SetUniformLocation(const char *szName)
