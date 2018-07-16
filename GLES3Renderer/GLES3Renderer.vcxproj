@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GLES3Renderer\GfxCamera.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBeginPass.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindInputTexture.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="GLES3Renderer\GfxCommandSetScissor.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandSetViewport.h" />
     <ClInclude Include="GLES3Renderer\GfxFrameBuffer.h" />
+    <ClInclude Include="GLES3Renderer\GfxGLM.h" />
     <ClInclude Include="GLES3Renderer\GfxIndexBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxInstanceBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxMaterial.h" />
@@ -149,6 +151,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GLES3Renderer\GfxCamera.cpp" />
     <ClCompile Include="GLES3Renderer\GfxCommandBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxFrameBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxIndexBuffer.cpp" />

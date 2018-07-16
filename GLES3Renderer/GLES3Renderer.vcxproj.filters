@@ -148,6 +148,12 @@
     <ClInclude Include="GLES3Renderer\GfxMaterialManager.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxCamera.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLES3Renderer\GfxGLM.h">
+      <Filter>GLES3Renderer\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -295,6 +301,9 @@
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLES3Renderer\GfxMaterialManager.cpp">
+      <Filter>GLES3Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\GfxCamera.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
