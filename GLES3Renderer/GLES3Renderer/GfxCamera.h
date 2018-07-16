@@ -5,8 +5,9 @@
 #include "GfxGLM.h"
 
 
-class CGfxFrameBuffer;
 class CGfxMesh;
+class CGfxFrameBuffer;
+class CGfxCommandBuffer;
 class CGfxCamera
 {
 public:
@@ -37,11 +38,17 @@ public:
 	void AddQueue(GLuint material, CGfxMesh *pMesh);
 	void ClearQueue(void);
 
+public:
+	void CmdDraw(void);
+	void Submit(void);
+
 
 private:
 	CGfxFrameBuffer *m_pFrameBuffer;
+	CGfxCommandBuffer *m_pCommandBuffer;
 
 private:
 	glm::camera m_camera;
-	std::map<GLuint, std::vector<CGfxMesh*>> m_queue;
+	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueOpaque;
+	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueTransparent;
 };

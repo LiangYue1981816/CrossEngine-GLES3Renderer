@@ -57,6 +57,8 @@ public:
 	void SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor);
 	void SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units);
 
+	bool IsEnableBlend(void) const;
+
 public:
 	CGfxProgram* GetProgram(void);
 

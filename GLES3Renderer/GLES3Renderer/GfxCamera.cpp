@@ -1,17 +1,19 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "GfxCamera.h"
+#include "GfxRenderer.h"
 
 
 CGfxCamera::CGfxCamera(void)
 	: m_pFrameBuffer(NULL)
+	, m_pCommandBuffer(NULL)
 {
-
+	m_pCommandBuffer = new CGfxCommandBuffer(true);
 }
 
 CGfxCamera::~CGfxCamera(void)
 {
-
+	delete m_pCommandBuffer;
 }
 
 void CGfxCamera::SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
@@ -71,10 +73,28 @@ bool CGfxCamera::IsVisible(const glm::sphere &sphere)
 
 void CGfxCamera::AddQueue(GLuint material, CGfxMesh *pMesh)
 {
-	m_queue[material].push_back(pMesh);
+	if (CGfxMaterial *pMaterial = CGfxRenderer::GetInstance()->GetMaterial(material)) {
+		if (pMaterial->IsEnableBlend()) {
+//			m_queueTransparent[material].push_back(pMesh);
+		}
+		else {
+//			m_queueOpaque[material].push_back(pMesh);
+		}
+	}
 }
 
 void CGfxCamera::ClearQueue(void)
 {
-	m_queue.clear();
+	m_queueOpaque.clear();
+	m_queueTransparent.clear();
+}
+
+void CGfxCamera::CmdDraw(void)
+{
+
+}
+
+void Submit(void)
+{
+
 }

@@ -735,6 +735,11 @@ void CGfxMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat 
 	m_polygonOffsetUnits = units;
 }
 
+bool CGfxMaterial::IsEnableBlend(void) const
+{
+	return m_bEnableBlend;
+}
+
 CGfxProgram* CGfxMaterial::GetProgram(void)
 {
 	return m_pProgram;
