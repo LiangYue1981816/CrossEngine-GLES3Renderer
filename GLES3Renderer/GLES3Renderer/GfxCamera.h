@@ -62,12 +62,12 @@ private:
 	float m_clearColorAlpha;
 
 private:
-	CGfxFrameBuffer *m_pFrameBuffer;
-	CGfxCommandBuffer *m_pCommandBuffer;
-
-private:
 	glm::camera m_camera;
 	std::map<CGfxMesh*, CGfxMesh*> m_meshs;
 	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueOpaque;
 	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueTransparent;
+
+private:
+	CGfxFrameBuffer * m_pFrameBuffer;
+	CGfxCommandBuffer *m_pCommandBuffer;
 };
