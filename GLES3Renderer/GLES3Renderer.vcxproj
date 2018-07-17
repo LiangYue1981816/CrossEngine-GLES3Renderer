@@ -61,7 +61,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./;./GLES3Renderer;./pthread-win32;./thread;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;./GLES3Renderer;./GLES3Renderer/thread;./pthread-win32;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -188,6 +188,8 @@
     <ClCompile Include="GLES3Renderer\GfxVertexArrayObject.cpp" />
     <ClCompile Include="GLES3Renderer\GfxVertexAttribute.cpp" />
     <ClCompile Include="GLES3Renderer\GfxVertexBuffer.cpp" />
+    <ClCompile Include="GLES3Renderer\thread\event.c" />
+    <ClCompile Include="GLES3Renderer\thread\thread.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GLES3Renderer\spirv-cross\spirv_cfg.cpp" />
     <ClCompile Include="GLES3Renderer\spirv-cross\spirv_cpp.cpp" />
@@ -204,8 +206,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="thread\event.c" />
-    <ClCompile Include="thread\thread.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

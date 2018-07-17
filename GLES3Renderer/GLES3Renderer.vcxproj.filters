@@ -279,12 +279,6 @@
     <ClCompile Include="GLES3Renderer\GfxCommandBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="thread\event.c">
-      <Filter>thread</Filter>
-    </ClCompile>
-    <ClCompile Include="thread\thread.c">
-      <Filter>thread</Filter>
-    </ClCompile>
     <ClCompile Include="GLES3Renderer\GfxTextureManager.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
@@ -306,6 +300,12 @@
     <ClCompile Include="GLES3Renderer\GfxCamera.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GLES3Renderer\thread\event.c">
+      <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="GLES3Renderer\thread\thread.c">
+      <Filter>thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GLES3Renderer">
@@ -323,11 +323,11 @@
     <Filter Include="GLES3Renderer\Source Files\Commands">
       <UniqueIdentifier>{86a12a46-8a95-4d82-9b0e-9092d3cbae6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="thread">
-      <UniqueIdentifier>{302dbc0a-3f76-497a-8b8f-bacc989d6851}</UniqueIdentifier>
-    </Filter>
     <Filter Include="xml">
       <UniqueIdentifier>{31d2c0c8-b73e-4461-8fbf-00b7d2a76334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thread">
+      <UniqueIdentifier>{eef01df9-a98a-4a71-ac41-350131b872a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

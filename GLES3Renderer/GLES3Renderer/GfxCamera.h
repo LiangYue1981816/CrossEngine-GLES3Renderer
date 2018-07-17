@@ -41,7 +41,6 @@ public:
 public:
 	void CmdDraw(void);
 	void Submit(void);
-	void ClearCommandBuffer(void);
 
 
 private:

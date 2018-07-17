@@ -107,15 +107,14 @@ void CGfxCamera::ClearQueue(void)
 
 void CGfxCamera::CmdDraw(void)
 {
+	CGfxRenderer::GetInstance()->CmdBeginPass(m_pCommandBuffer, m_pFrameBuffer);
+	{
 
+	}
+	CGfxRenderer::GetInstance()->CmdEndPass(m_pCommandBuffer);
 }
 
 void CGfxCamera::Submit(void)
-{
-
-}
-
-void CGfxCamera::ClearCommandBuffer(void)
 {
 
 }
