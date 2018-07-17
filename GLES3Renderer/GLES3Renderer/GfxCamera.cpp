@@ -144,10 +144,14 @@ void CGfxCamera::ClearQueue(void)
 	m_meshs.clear();
 	m_queueOpaque.clear();
 	m_queueTransparent.clear();
+
+	m_pCommandBuffer->Clearup();
 }
 
 void CGfxCamera::CmdDraw(void)
 {
+	m_pCommandBuffer->Clearup();
+
 	CGfxRenderer::GetInstance()->CmdBeginPass(m_pCommandBuffer, m_pFrameBuffer);
 	{
 		CGfxRenderer::GetInstance()->CmdSetScissor(m_pCommandBuffer, 0, 0, m_pFrameBuffer->GetWidth(), m_pFrameBuffer->GetHeight());
