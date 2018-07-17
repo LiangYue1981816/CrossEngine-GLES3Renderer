@@ -78,11 +78,15 @@ void CGfxCamera::AddQueue(GLuint material, CGfxMesh *pMesh, const glm::mat4 &mtx
 		if (m_meshs[pMesh] == NULL) {
 			m_meshs[pMesh] = pMesh;
 
+			glm::vec4 position = mtxTransform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+			glm::vec3 distance = glm::vec3(position.x - m_camera.position.x, position.y - m_camera.position.y, position.z - m_camera.position.z);
+			GLuint length = (GLuint)glm::length(distance);
+
 			if (pMaterial->IsEnableBlend()) {
-				m_queueTransparent[material].push_back(pMesh);
+				m_queueTransparent[material][UINT_MAX - length].push_back(pMesh);
 			}
 			else {
-				m_queueOpaque[material].push_back(pMesh);
+				m_queueOpaque[material][length].push_back(pMesh);
 			}
 		}
 

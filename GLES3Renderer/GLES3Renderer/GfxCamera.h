@@ -51,6 +51,6 @@ private:
 private:
 	glm::camera m_camera;
 	std::map<CGfxMesh*, CGfxMesh*> m_meshs;
-	std::map<GLuint, std::vector<CGfxMesh*>> m_queueOpaque;
-	std::map<GLuint, std::vector<CGfxMesh*>> m_queueTransparent;
+	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueOpaque;
+	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueTransparent;
 };
