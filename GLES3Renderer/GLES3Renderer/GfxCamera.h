@@ -35,12 +35,13 @@ public:
 	bool IsVisible(const glm::sphere &sphere);
 
 public:
-	void AddQueue(GLuint material, CGfxMesh *pMesh);
+	void AddQueue(GLuint material, CGfxMesh *pMesh, const glm::mat4 &mtxTransform);
 	void ClearQueue(void);
 
 public:
 	void CmdDraw(void);
 	void Submit(void);
+	void ClearCommandBuffer(void);
 
 
 private:
@@ -49,6 +50,7 @@ private:
 
 private:
 	glm::camera m_camera;
-	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueOpaque;
-	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueTransparent;
+	std::map<CGfxMesh*, CGfxMesh*> m_meshs;
+	std::map<GLuint, std::vector<CGfxMesh*>> m_queueOpaque;
+	std::map<GLuint, std::vector<CGfxMesh*>> m_queueTransparent;
 };

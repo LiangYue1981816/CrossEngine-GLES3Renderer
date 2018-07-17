@@ -13,6 +13,7 @@ CGfxCamera::CGfxCamera(void)
 
 CGfxCamera::~CGfxCamera(void)
 {
+	ClearQueue();
 	delete m_pCommandBuffer;
 }
 
@@ -71,20 +72,31 @@ bool CGfxCamera::IsVisible(const glm::sphere &sphere)
 	return m_camera.visible(sphere);
 }
 
-void CGfxCamera::AddQueue(GLuint material, CGfxMesh *pMesh)
+void CGfxCamera::AddQueue(GLuint material, CGfxMesh *pMesh, const glm::mat4 &mtxTransform)
 {
 	if (CGfxMaterial *pMaterial = CGfxRenderer::GetInstance()->GetMaterial(material)) {
-		if (pMaterial->IsEnableBlend()) {
-//			m_queueTransparent[material].push_back(pMesh);
+		if (m_meshs[pMesh] == NULL) {
+			m_meshs[pMesh] = pMesh;
+
+			if (pMaterial->IsEnableBlend()) {
+				m_queueTransparent[material].push_back(pMesh);
+			}
+			else {
+				m_queueOpaque[material].push_back(pMesh);
+			}
 		}
-		else {
-//			m_queueOpaque[material].push_back(pMesh);
-		}
+
+		pMesh->AddInstance(mtxTransform);
 	}
 }
 
 void CGfxCamera::ClearQueue(void)
 {
+	for (const auto &itMesh : m_meshs) {
+		itMesh.second->ClearInstance();
+	}
+
+	m_meshs.clear();
 	m_queueOpaque.clear();
 	m_queueTransparent.clear();
 }
@@ -94,7 +106,12 @@ void CGfxCamera::CmdDraw(void)
 
 }
 
-void Submit(void)
+void CGfxCamera::Submit(void)
+{
+
+}
+
+void CGfxCamera::ClearCommandBuffer(void)
 {
 
 }
