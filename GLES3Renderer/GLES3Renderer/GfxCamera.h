@@ -20,10 +20,20 @@ public:
 	const CGfxFrameBuffer* GetFrameBuffer(void) const;
 
 public:
+	void SetEnableClearDepth(bool bEnable);
+	void SetClearDepth(float depth);
+
+	void SetEnableClearColor(bool bEnable);
+	void SetClearColor(float red, float green, float blue, float alpha);
+
+public:
 	void SetViewport(float x, float y, float width, float height);
 	void SetPerspective(float fovy, float aspect, float zNear, float zFar);
 	void SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetLookat(const glm::vec3 &position, const glm::vec3 &direction, const glm::vec3 &up);
+
+	const float* GetProjectionMatrix(void) const;
+	const float* GetViewMatrix(void) const;
 
 public:
 	glm::vec3 WorldToScreen(const glm::vec3 &world);
@@ -40,8 +50,16 @@ public:
 
 public:
 	void CmdDraw(void);
-	void Submit(void);
 
+
+private:
+	bool m_bEnableClearDepth;
+	bool m_bEnableClearColor;
+	float m_clearDepth;
+	float m_clearColorRed;
+	float m_clearColorGreen;
+	float m_clearColorBlue;
+	float m_clearColorAlpha;
 
 private:
 	CGfxFrameBuffer *m_pFrameBuffer;

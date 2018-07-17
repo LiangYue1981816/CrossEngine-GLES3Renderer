@@ -7,6 +7,14 @@
 CGfxCamera::CGfxCamera(void)
 	: m_pFrameBuffer(NULL)
 	, m_pCommandBuffer(NULL)
+
+	, m_bEnableClearDepth(true)
+	, m_bEnableClearColor(true)
+	, m_clearDepth(1.0f)
+	, m_clearColorRed(0.0f)
+	, m_clearColorGreen(0.0f)
+	, m_clearColorBlue(0.0f)
+	, m_clearColorAlpha(0.0f)
 {
 	m_pCommandBuffer = new CGfxCommandBuffer(true);
 }
@@ -27,6 +35,29 @@ const CGfxFrameBuffer* CGfxCamera::GetFrameBuffer(void) const
 	return m_pFrameBuffer;
 }
 
+void CGfxCamera::SetEnableClearDepth(bool bEnable)
+{
+	m_bEnableClearDepth = bEnable;
+}
+
+void CGfxCamera::SetClearDepth(float depth)
+{
+	m_clearDepth = depth;
+}
+
+void CGfxCamera::SetEnableClearColor(bool bEnable)
+{
+	m_bEnableClearColor = bEnable;
+}
+
+void CGfxCamera::SetClearColor(float red, float green, float blue, float alpha)
+{
+	m_clearColorRed = red;
+	m_clearColorGreen = green;
+	m_clearColorBlue = blue;
+	m_clearColorAlpha = alpha;
+}
+
 void CGfxCamera::SetViewport(float x, float y, float width, float height)
 {
 	m_camera.setViewport(x, y, width, height);
@@ -45,6 +76,16 @@ void CGfxCamera::SetOrtho(float left, float right, float bottom, float top, floa
 void CGfxCamera::SetLookat(const glm::vec3 &position, const glm::vec3 &direction, const glm::vec3 &up)
 {
 	m_camera.setLookat(position, position + direction, up);
+}
+
+const float* CGfxCamera::GetProjectionMatrix(void) const
+{
+	return (float *)&m_camera.mtxProjection;
+}
+
+const float* CGfxCamera::GetViewMatrix(void) const
+{
+	return (float *)&m_camera.mtxView;
 }
 
 glm::vec3 CGfxCamera::WorldToScreen(const glm::vec3 &world)
@@ -109,12 +150,26 @@ void CGfxCamera::CmdDraw(void)
 {
 	CGfxRenderer::GetInstance()->CmdBeginPass(m_pCommandBuffer, m_pFrameBuffer);
 	{
+		CGfxRenderer::GetInstance()->CmdSetScissor(m_pCommandBuffer, 0, 0, m_pFrameBuffer->GetWidth(), m_pFrameBuffer->GetHeight());
+		CGfxRenderer::GetInstance()->CmdSetViewport(m_pCommandBuffer, 0, 0, m_pFrameBuffer->GetWidth(), m_pFrameBuffer->GetHeight());
 
+		if (m_bEnableClearDepth) {
+			CGfxRenderer::GetInstance()->CmdClearDepth(m_pCommandBuffer, m_clearDepth);
+		}
+
+		if (m_bEnableClearColor) {
+			CGfxRenderer::GetInstance()->CmdClearColor(m_pCommandBuffer, m_clearColorRed, m_clearColorGreen, m_clearColorBlue, m_clearColorAlpha);
+		}
+
+		for (const auto &itMaterialQueue : m_queueOpaque) {
+			CGfxRenderer::GetInstance()->CmdSetMaterial(m_pCommandBuffer, itMaterialQueue.first);
+
+			for (const auto &itDistanceQueue : itMaterialQueue.second) {
+				for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
+					CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index]);
+				}
+			}
+		}
 	}
 	CGfxRenderer::GetInstance()->CmdEndPass(m_pCommandBuffer);
-}
-
-void CGfxCamera::Submit(void)
-{
-
 }
