@@ -21,9 +21,9 @@ public:
 
 public:
 	void SetEnableClearDepth(bool bEnable);
-	void SetClearDepth(float depth);
-
 	void SetEnableClearColor(bool bEnable);
+
+	void SetClearDepth(float depth);
 	void SetClearColor(float red, float green, float blue, float alpha);
 
 public:

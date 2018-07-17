@@ -40,14 +40,14 @@ void CGfxCamera::SetEnableClearDepth(bool bEnable)
 	m_bEnableClearDepth = bEnable;
 }
 
-void CGfxCamera::SetClearDepth(float depth)
-{
-	m_clearDepth = depth;
-}
-
 void CGfxCamera::SetEnableClearColor(bool bEnable)
 {
 	m_bEnableClearColor = bEnable;
+}
+
+void CGfxCamera::SetClearDepth(float depth)
+{
+	m_clearDepth = depth;
 }
 
 void CGfxCamera::SetClearColor(float red, float green, float blue, float alpha)
