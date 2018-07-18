@@ -55,6 +55,7 @@ public:
 private:
 	bool m_bEnableClearDepth;
 	bool m_bEnableClearColor;
+
 	float m_clearDepth;
 	float m_clearColorRed;
 	float m_clearColorGreen;
@@ -63,11 +64,13 @@ private:
 
 private:
 	glm::camera m_camera;
+
+private:
 	std::map<CGfxMesh*, CGfxMesh*> m_meshs;
 	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueOpaque;
 	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueTransparent;
 
 private:
-	CGfxFrameBuffer * m_pFrameBuffer;
+	CGfxFrameBuffer *m_pFrameBuffer;
 	CGfxCommandBuffer *m_pCommandBuffer;
 };
