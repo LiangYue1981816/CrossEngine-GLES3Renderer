@@ -19,7 +19,7 @@ CGfxProgramManager::~CGfxProgramManager(void)
 	m_pPrograms.clear();
 }
 
-CGfxProgram* CGfxProgramManager::Load(const char *szVertexFileName, const char *szFragmentFileName)
+CGfxProgram* CGfxProgramManager::LoadProgram(const char *szVertexFileName, const char *szFragmentFileName)
 {
 	GLuint64 nameVertex = HashValue(szVertexFileName);
 	GLuint64 nameFragment = HashValue(szFragmentFileName);

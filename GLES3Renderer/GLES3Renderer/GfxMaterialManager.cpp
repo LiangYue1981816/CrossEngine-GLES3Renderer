@@ -17,7 +17,7 @@ CGfxMaterialManager::~CGfxMaterialManager(void)
 	}
 }
 
-bool CGfxMaterialManager::Load(const char *szFileName, GLuint material)
+bool CGfxMaterialManager::LoadMaterial(const char *szFileName, GLuint material)
 {
 	try {
 		int err = 0;

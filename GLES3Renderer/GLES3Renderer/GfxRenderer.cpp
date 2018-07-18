@@ -109,7 +109,7 @@ CGfxMaterialManager* CGfxRenderer::GetMaterialManager(void) const
 
 bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint material)
 {
-	return m_pMaterialManager->Load(szFileName, material);
+	return m_pMaterialManager->LoadMaterial(szFileName, material);
 }
 
 CGfxMaterial* CGfxRenderer::GetMaterial(GLuint material) const

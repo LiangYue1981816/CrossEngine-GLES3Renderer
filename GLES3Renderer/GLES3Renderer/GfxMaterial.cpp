@@ -371,7 +371,7 @@ bool CGfxMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 			const char *szFragmentFileName = pProgramNode->ToElement()->AttributeString("fragment_file_name");
 			if (szVertexFileName == NULL || szFragmentFileName == NULL) throw err++;
 
-			m_pProgram = CGfxRenderer::GetInstance()->GetProgramManager()->Load(szVertexFileName, szFragmentFileName);
+			m_pProgram = CGfxRenderer::GetInstance()->GetProgramManager()->LoadProgram(szVertexFileName, szFragmentFileName);
 		}
 		printf("OK\n");
 		return true;
