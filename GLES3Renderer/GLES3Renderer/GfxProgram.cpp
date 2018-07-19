@@ -101,6 +101,19 @@ bool CGfxProgram::LoadShader(const char *szFileName, GLenum type, GLuint &shader
 	GLint success;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 
+	if (success == GL_FALSE) {
+		static char szError[128 * 1024];
+
+		GLsizei length = 0;
+		memset(szError, sizeof(szError), 0);
+		glGetShaderInfoLog(shader, sizeof(szError), &length, szError);
+
+		LogOutput("Shader: %s\n", szFileName);
+		LogOutput("%s\n", strSource.c_str());
+		LogOutput("Compile Error:\n");
+		LogOutput("%s\n", szError);
+	}
+
 	return success == GL_TRUE;
 }
 
@@ -113,6 +126,17 @@ bool CGfxProgram::CreateProgram(void)
 
 	GLint success;
 	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+
+	if (success == GL_FALSE) {
+		static char szError[128 * 1024];
+
+		GLsizei length = 0;
+		memset(szError, sizeof(szError), 0);
+		glGetProgramInfoLog(m_program, sizeof(szError), &length, szError);
+
+		LogOutput("Program Link Error:\n");
+		LogOutput("%s\n", szError);
+	}
 
 	return success == GL_TRUE;
 }

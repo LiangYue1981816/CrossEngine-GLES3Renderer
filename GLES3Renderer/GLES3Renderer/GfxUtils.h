@@ -3,3 +3,4 @@
 
 
 extern GLuint HashValue(const char *szString);
+extern void LogOutput(const char *szFormat, ...);
