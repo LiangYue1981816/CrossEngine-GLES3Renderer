@@ -113,10 +113,19 @@ CGfxMaterial* CGfxRenderer::LoadMaterial(const char *szFileName)
 	return m_pMaterialManager->LoadMaterial(szFileName);
 }
 
+void CGfxRenderer::FreeMaterial(CGfxMaterial *pMaterial)
+{
+	m_pMaterialManager->FreeMaterial(pMaterial);
+}
+
 CGfxMaterial* CGfxRenderer::GetMaterial(GLuint name) const
 {
-	CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(name);
-	return pMaterial != NULL ? pMaterial : m_pGlobalMaterial;
+	return m_pMaterialManager->GetMaterial(name);
+}
+
+CGfxMaterial* CGfxRenderer::GetGlobalMaterial(void) const
+{
+	return m_pGlobalMaterial;
 }
 
 void CGfxRenderer::SetTime(float t, float dt)

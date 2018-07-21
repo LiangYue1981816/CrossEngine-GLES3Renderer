@@ -87,6 +87,7 @@ public:
 	CGfxUniformVec4* GetUniformVec4(const char *szName);
 	CGfxUniformMat4* GetUniformMat4(const char *szName);
 
+public:
 	GLuint GetTextureUnits(void) const;
 
 
