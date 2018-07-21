@@ -6,6 +6,9 @@
 class CGfxMesh;
 class CGfxMeshManager
 {
+	friend class CGfxRenderer;
+
+
 private:
 	CGfxMeshManager(void);
 	virtual ~CGfxMeshManager(void);
@@ -15,7 +18,8 @@ public:
 	CGfxMesh* LoadMesh(const char *szFileName);
 	void FreeMesh(CGfxMesh *pMesh);
 
-	CGfxMesh* GetMesh(GLuint mesh) const;
+public:
+	CGfxMesh* GetMesh(GLuint name) const;
 
 
 private:

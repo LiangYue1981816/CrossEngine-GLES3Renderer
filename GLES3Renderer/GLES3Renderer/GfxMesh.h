@@ -38,11 +38,11 @@ private:
 	void AddInstance(const glm::mat4 &mtxTransform);
 
 public:
-	GLuint GetVertexFormat(void) const;
-	GLuint GetVertexCount(void) const;
-
 	GLenum GetIndexType(void) const;
 	GLuint GetIndexCount(void) const;
+
+	GLuint GetVertexFormat(void) const;
+	GLuint GetVertexCount(void) const;
 
 	GLuint GetInstanceCount(void) const;
 

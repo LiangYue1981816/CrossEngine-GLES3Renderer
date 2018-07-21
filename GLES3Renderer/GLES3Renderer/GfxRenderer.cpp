@@ -36,6 +36,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	, m_pProgramManager(NULL)
 	, m_pTextureManager(NULL)
 	, m_pMaterialManager(NULL)
+	, m_pMeshManager(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -66,6 +67,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	m_pProgramManager = new CGfxProgramManager;
 	m_pTextureManager = new CGfxTextureManager;
 	m_pMaterialManager = new CGfxMaterialManager;
+	m_pMeshManager = new CGfxMeshManager;
 }
 
 CGfxRenderer::~CGfxRenderer(void)
@@ -76,6 +78,7 @@ CGfxRenderer::~CGfxRenderer(void)
 	delete m_pMaterialManager;
 	delete m_pProgramManager;
 	delete m_pTextureManager;
+	delete m_pMeshManager;
 }
 
 const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -115,6 +118,26 @@ CGfxTextureManager* CGfxRenderer::GetTextureManager(void) const
 CGfxMaterialManager* CGfxRenderer::GetMaterialManager(void) const
 {
 	return m_pMaterialManager;
+}
+
+CGfxMeshManager* CGfxRenderer::GetMeshManager(void) const
+{
+	return m_pMeshManager;
+}
+
+CGfxMesh* CGfxRenderer::LoadMesh(const char *szFileName)
+{
+	return m_pMeshManager->LoadMesh(szFileName);
+}
+
+void CGfxRenderer::FreeMesh(CGfxMesh *pMesh)
+{
+	m_pMeshManager->FreeMesh(pMesh);
+}
+
+CGfxMesh* CGfxRenderer::GetMesh(GLuint name) const
+{
+	return m_pMeshManager->GetMesh(name);
 }
 
 CGfxMaterial* CGfxRenderer::LoadMaterial(const char *szFileName)
@@ -348,6 +371,11 @@ void CGfxRenderer::Update(void)
 void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
 {
 	pCommandBuffer->Execute();
+}
+
+void CGfxRenderer::BindMesh(CGfxMesh *pMesh)
+{
+	pMesh->Bind();
 }
 
 void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)

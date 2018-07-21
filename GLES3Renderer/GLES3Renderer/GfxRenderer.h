@@ -5,12 +5,13 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "GfxUtils.h"
-#include "GfxMesh.h"
 #include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
 #include "GfxProgramManager.h"
 #include "GfxTextureManager.h"
 #include "GfxMaterialManager.h"
+#include "GfxMeshManager.h"
+#include "GfxMesh.h"
 #include "GfxMaterial.h"
 #include "GfxProgram.h"
 #include "GfxSampler.h"
@@ -48,6 +49,7 @@
 
 class CGfxRenderer
 {
+	friend class CGfxCommandBindMesh;
 	friend class CGfxCommandBindMaterial;
 	friend class CGfxCommandBindInputTexture;
 
@@ -73,6 +75,13 @@ public:
 	CGfxProgramManager* GetProgramManager(void) const;
 	CGfxTextureManager* GetTextureManager(void) const;
 	CGfxMaterialManager* GetMaterialManager(void) const;
+	CGfxMeshManager* GetMeshManager(void) const;
+
+public:
+	CGfxMesh* LoadMesh(const char *szFileName);
+	void FreeMesh(CGfxMesh *pMesh);
+
+	CGfxMesh* GetMesh(GLuint name) const;
 
 public:
 	CGfxMaterial* LoadMaterial(const char *szFileName);
@@ -139,6 +148,7 @@ public:
 	void Submit(const CGfxCommandBuffer *pCommandBuffer);
 
 private:
+	void BindMesh(CGfxMesh *pMesh);
 	void BindMaterial(CGfxMaterial *pMaterial);
 	void BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
@@ -171,6 +181,7 @@ private:
 	CGfxProgramManager *m_pProgramManager;
 	CGfxTextureManager *m_pTextureManager;
 	CGfxMaterialManager *m_pMaterialManager;
+	CGfxMeshManager *m_pMeshManager;
 
 private:
 	static CGfxRenderer *pInstance;

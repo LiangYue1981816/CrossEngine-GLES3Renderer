@@ -162,16 +162,6 @@ void CGfxMesh::AddInstance(const glm::mat4 &mtxTransform)
 	m_pInstanceBuffer->AddInstance(mtxTransform);
 }
 
-GLuint CGfxMesh::GetVertexFormat(void) const
-{
-	return m_pVertexBuffer->GetVertexFormat();
-}
-
-GLuint CGfxMesh::GetVertexCount(void) const
-{
-	return m_pVertexBuffer->GetVertexCount();
-}
-
 GLenum CGfxMesh::GetIndexType(void) const
 {
 	return m_pIndexBuffer->GetIndexType();
@@ -180,6 +170,16 @@ GLenum CGfxMesh::GetIndexType(void) const
 GLuint CGfxMesh::GetIndexCount(void) const
 {
 	return m_pIndexBuffer->GetIndexCount();
+}
+
+GLuint CGfxMesh::GetVertexFormat(void) const
+{
+	return m_pVertexBuffer->GetVertexFormat();
+}
+
+GLuint CGfxMesh::GetVertexCount(void) const
+{
+	return m_pVertexBuffer->GetVertexCount();
 }
 
 GLuint CGfxMesh::GetInstanceCount(void) const

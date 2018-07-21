@@ -18,6 +18,7 @@ public:
 	CGfxMaterial* LoadMaterial(const char *szFileName);
 	void FreeMaterial(CGfxMaterial *pMaterial);
 
+public:
 	CGfxMaterial* GetMaterial(GLuint name) const;
 
 

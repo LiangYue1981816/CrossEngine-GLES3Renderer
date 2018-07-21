@@ -1,5 +1,6 @@
 #pragma once
 #include "gles3/gl3.h"
+#include "GfxRenderer.h"
 #include "GfxCommandBuffer.h"
 
 
@@ -20,7 +21,7 @@ public:
 	virtual void Execute(void) const
 	{
 		if (m_pMesh) {
-			m_pMesh->Bind();
+			CGfxRenderer::GetInstance()->BindMesh(m_pMesh);
 		}
 	}
 
