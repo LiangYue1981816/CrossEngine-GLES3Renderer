@@ -30,9 +30,7 @@ void LogOutput(const char *szFormat, ...)
 
 	OutputDebugString(szText);
 
-#else
+#endif
 
 	printf(szText);
-
-#endif
 }

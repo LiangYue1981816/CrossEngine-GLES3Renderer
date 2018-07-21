@@ -49,10 +49,6 @@ private:
 	void BindUniforms(CGfxProgram *pProgram) const;
 	void BindTextures(CGfxProgram *pProgram, GLuint indexUnit) const;
 
-public:
-	bool Create(const char *szFileName);
-	void Destroy(void);
-
 private:
 	bool Load(const char *szFileName);
 	bool LoadState(TiXmlNode *pMaterialNode);
@@ -64,6 +60,7 @@ private:
 	bool LoadUniformVec2(TiXmlNode *pMaterialNode);
 	bool LoadUniformVec3(TiXmlNode *pMaterialNode);
 	bool LoadUniformVec4(TiXmlNode *pMaterialNode);
+	void Free(void);
 
 public:
 	void SetEnableCullFace(bool bEnable, GLenum frontFace);

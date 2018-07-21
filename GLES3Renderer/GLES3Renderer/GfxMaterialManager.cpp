@@ -20,18 +20,16 @@ CGfxMaterialManager::~CGfxMaterialManager(void)
 bool CGfxMaterialManager::LoadMaterial(const char *szFileName, GLuint material)
 {
 	try {
-		int err = 0;
-
 		if (m_pMaterials[material] == NULL) {
 			m_pMaterials[material] = new CGfxMaterial;
 		}
 
 		if (m_pMaterials[material] == NULL) {
-			throw err++;
+			throw 0;
 		}
 
-		if (m_pMaterials[material]->Create(szFileName) == false) {
-			throw err++;
+		if (m_pMaterials[material]->Load(szFileName) == false) {
+			throw 1;
 		}
 
 		return true;
