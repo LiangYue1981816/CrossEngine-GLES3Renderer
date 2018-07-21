@@ -112,24 +112,22 @@ static GLenum StringToBlendDstFactor(const char *szString)
 
 CGfxMaterial::CGfxMaterial(void)
 	: m_pProgram(NULL)
-
-	, m_bEnableCullFace(true)
-	, m_bEnableDepthTest(true)
-	, m_bEnableDepthWrite(true)
-	, m_bEnableColorWriteRed(true)
-	, m_bEnableColorWriteGreen(true)
-	, m_bEnableColorWriteBlue(true)
-	, m_bEnableColorWriteAlpha(true)
-	, m_bEnableBlend(false)
-	, m_bEnablePolygonOffset(false)
-	, m_frontFace(GL_CCW)
-	, m_depthFunc(GL_LESS)
-	, m_srcBlendFactor(GL_SRC_ALPHA)
-	, m_dstBlendFactor(GL_ONE_MINUS_SRC_ALPHA)
-	, m_polygonOffsetFactor(0.0f)
-	, m_polygonOffsetUnits(0.0f)
 {
-
+	m_state.bEnableCullFace = GL_TRUE;
+	m_state.bEnableDepthTest = GL_TRUE;
+	m_state.bEnableDepthWrite = GL_TRUE;
+	m_state.bEnableColorWrite[0] = GL_TRUE;
+	m_state.bEnableColorWrite[1] = GL_TRUE;
+	m_state.bEnableColorWrite[2] = GL_TRUE;
+	m_state.bEnableColorWrite[3] = GL_TRUE;
+	m_state.bEnableBlend = GL_FALSE;
+	m_state.bEnablePolygonOffset = GL_FALSE;
+	m_state.frontFace = GL_CCW;
+	m_state.depthFunc = GL_LESS;
+	m_state.srcBlendFactor = GL_SRC_ALPHA;
+	m_state.dstBlendFactor = GL_ONE_MINUS_SRC_ALPHA;
+	m_state.polygonOffsetFactor = 0.0f;
+	m_state.polygonOffsetUnits = 0.0f;
 }
 
 CGfxMaterial::~CGfxMaterial(void)
@@ -141,59 +139,59 @@ void CGfxMaterial::Bind(void) const
 {
 	if (m_pProgram) {
 		m_pProgram->UseProgram();
-		BindPipeline();
+		BindState();
 		BindUniforms(m_pProgram);
 		BindTextures(m_pProgram, 0);
 	}
 }
 
-void CGfxMaterial::BindPipeline(void) const
+void CGfxMaterial::BindState(void) const
 {
-	if (m_bEnableCullFace) {
+	if (m_state.bEnableCullFace) {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		glFrontFace(m_frontFace);
+		glFrontFace(m_state.frontFace);
 	}
 	else {
 		glDisable(GL_CULL_FACE);
 	}
 
-	if (m_bEnableDepthTest) {
+	if (m_state.bEnableDepthTest) {
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(m_depthFunc);
+		glDepthFunc(m_state.depthFunc);
 	}
 	else {
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	if (m_bEnableDepthWrite) {
+	if (m_state.bEnableDepthWrite) {
 		glDepthMask(GL_TRUE);
 	}
 	else {
 		glDepthMask(GL_FALSE);
 	}
 
-	if (m_bEnableBlend) {
+	if (m_state.bEnableBlend) {
 		glEnable(GL_BLEND);
-		glBlendFunc(m_srcBlendFactor, m_dstBlendFactor);
+		glBlendFunc(m_state.srcBlendFactor, m_state.dstBlendFactor);
 	}
 	else {
 		glDisable(GL_BLEND);
 	}
 
-	if (m_bEnablePolygonOffset) {
+	if (m_state.bEnablePolygonOffset) {
 		glEnable(GL_POLYGON_OFFSET_FILL);
-		glPolygonOffset(m_polygonOffsetFactor, m_polygonOffsetUnits);
+		glPolygonOffset(m_state.polygonOffsetFactor, m_state.polygonOffsetUnits);
 	}
 	else {
 		glDisable(GL_POLYGON_OFFSET_FILL);
 	}
 
 	glColorMask(
-		m_bEnableColorWriteRed ? GL_TRUE : GL_FALSE,
-		m_bEnableColorWriteGreen ? GL_TRUE : GL_FALSE,
-		m_bEnableColorWriteBlue ? GL_TRUE : GL_FALSE,
-		m_bEnableColorWriteAlpha ? GL_TRUE : GL_FALSE);
+		m_state.bEnableColorWrite[0] ? GL_TRUE : GL_FALSE,
+		m_state.bEnableColorWrite[1] ? GL_TRUE : GL_FALSE,
+		m_state.bEnableColorWrite[2] ? GL_TRUE : GL_FALSE,
+		m_state.bEnableColorWrite[3] ? GL_TRUE : GL_FALSE);
 }
 
 void CGfxMaterial::BindUniforms(CGfxProgram *pProgram) const
@@ -296,7 +294,7 @@ bool CGfxMaterial::Load(const char *szFileName)
 	TiXmlDocument xmlDoc;
 	if (xmlDoc.LoadFile(szFullPath)) {
 		if (TiXmlNode *pMaterialNode = xmlDoc.FirstChild("Material")) {
-			if (LoadBase(pMaterialNode) == false) return false;
+			if (LoadState(pMaterialNode) == false) return false;
 			if (LoadProgram(pMaterialNode) == false) return false;
 			if (LoadTexture2D(pMaterialNode) == false) return false;
 			if (LoadTexture2DArray(pMaterialNode) == false) return false;
@@ -313,39 +311,39 @@ bool CGfxMaterial::Load(const char *szFileName)
 	return false;
 }
 
-bool CGfxMaterial::LoadBase(TiXmlNode *pMaterialNode)
+bool CGfxMaterial::LoadState(TiXmlNode *pMaterialNode)
 {
 	try {
-		printf("\tLoadBase ... ");
+		printf("\tLoadState ... ");
 		{
 			if (TiXmlNode *pCullNode = pMaterialNode->FirstChild("Cull")) {
-				m_bEnableCullFace = pCullNode->ToElement()->AttributeBool("enable");
-				m_frontFace = StringToFrontFace(pCullNode->ToElement()->AttributeString("front_face"));
+				m_state.bEnableCullFace = pCullNode->ToElement()->AttributeBool("enable");
+				m_state.frontFace = StringToFrontFace(pCullNode->ToElement()->AttributeString("front_face"));
 			}
 
 			if (TiXmlNode *pDepthNode = pMaterialNode->FirstChild("Depth")) {
-				m_bEnableDepthTest = pDepthNode->ToElement()->AttributeBool("enable_test");
-				m_bEnableDepthWrite = pDepthNode->ToElement()->AttributeBool("enable_write");
-				m_depthFunc = StringToDepthFunc(pDepthNode->ToElement()->AttributeString("depth_func"));
+				m_state.bEnableDepthTest = pDepthNode->ToElement()->AttributeBool("enable_test");
+				m_state.bEnableDepthWrite = pDepthNode->ToElement()->AttributeBool("enable_write");
+				m_state.depthFunc = StringToDepthFunc(pDepthNode->ToElement()->AttributeString("depth_func"));
 			}
 
 			if (TiXmlNode *pColorNode = pMaterialNode->FirstChild("Color")) {
-				m_bEnableColorWriteRed = pColorNode->ToElement()->AttributeBool("enable_write_red");
-				m_bEnableColorWriteGreen = pColorNode->ToElement()->AttributeBool("enable_write_green");
-				m_bEnableColorWriteBlue = pColorNode->ToElement()->AttributeBool("enable_write_blue");
-				m_bEnableColorWriteAlpha = pColorNode->ToElement()->AttributeBool("enable_write_alpha");
+				m_state.bEnableColorWrite[0] = pColorNode->ToElement()->AttributeBool("enable_write_red");
+				m_state.bEnableColorWrite[1] = pColorNode->ToElement()->AttributeBool("enable_write_green");
+				m_state.bEnableColorWrite[2] = pColorNode->ToElement()->AttributeBool("enable_write_blue");
+				m_state.bEnableColorWrite[3] = pColorNode->ToElement()->AttributeBool("enable_write_alpha");
 			}
 
 			if (TiXmlNode *pBlendNode = pMaterialNode->FirstChild("Blend")) {
-				m_bEnableBlend = pBlendNode->ToElement()->AttributeBool("enable");
-				m_srcBlendFactor = StringToBlendSrcFactor(pBlendNode->ToElement()->AttributeString("src_factor"));
-				m_dstBlendFactor = StringToBlendDstFactor(pBlendNode->ToElement()->AttributeString("dst_factor"));
+				m_state.bEnableBlend = pBlendNode->ToElement()->AttributeBool("enable");
+				m_state.srcBlendFactor = StringToBlendSrcFactor(pBlendNode->ToElement()->AttributeString("src_factor"));
+				m_state.dstBlendFactor = StringToBlendDstFactor(pBlendNode->ToElement()->AttributeString("dst_factor"));
 			}
 
 			if (TiXmlNode *pOffsetNode = pMaterialNode->FirstChild("Offset")) {
-				m_bEnablePolygonOffset = pOffsetNode->ToElement()->AttributeBool("enable");
-				m_polygonOffsetFactor = pOffsetNode->ToElement()->AttributeFloat1("factor");
-				m_polygonOffsetUnits = pOffsetNode->ToElement()->AttributeFloat1("units");
+				m_state.bEnablePolygonOffset = pOffsetNode->ToElement()->AttributeBool("enable");
+				m_state.polygonOffsetFactor = pOffsetNode->ToElement()->AttributeFloat1("factor");
+				m_state.polygonOffsetUnits = pOffsetNode->ToElement()->AttributeFloat1("units");
 			}
 		}
 		printf("OK\n");
@@ -698,46 +696,46 @@ void CGfxMaterial::Destroy(void)
 
 void CGfxMaterial::SetEnableCullFace(bool bEnable, GLenum frontFace)
 {
-	m_bEnableCullFace = bEnable;
-	m_frontFace = frontFace;
+	m_state.bEnableCullFace = bEnable;
+	m_state.frontFace = frontFace;
 }
 
 void CGfxMaterial::SetEnableDepthTest(bool bEnable, GLenum depthFunc)
 {
-	m_bEnableDepthTest = bEnable;
-	m_depthFunc = depthFunc;
+	m_state.bEnableDepthTest = bEnable;
+	m_state.depthFunc = depthFunc;
 }
 
 void CGfxMaterial::SetEnableDepthWrite(bool bEnable)
 {
-	m_bEnableDepthWrite = bEnable;
+	m_state.bEnableDepthWrite = bEnable;
 }
 
 void CGfxMaterial::SetEnableColorWrite(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha)
 {
-	m_bEnableColorWriteRed = bEnableRed;
-	m_bEnableColorWriteGreen = bEnableGreen;
-	m_bEnableColorWriteBlue = bEnableBlue;
-	m_bEnableColorWriteAlpha = bEnableAlpha;
+	m_state.bEnableColorWrite[0] = bEnableRed;
+	m_state.bEnableColorWrite[1] = bEnableGreen;
+	m_state.bEnableColorWrite[2] = bEnableBlue;
+	m_state.bEnableColorWrite[3] = bEnableAlpha;
 }
 
 void CGfxMaterial::SetEnableBlend(bool bEnable, GLenum srcFactor, GLenum dstFactor)
 {
-	m_bEnableBlend = bEnable;
-	m_srcBlendFactor = srcFactor;
-	m_dstBlendFactor = dstFactor;
+	m_state.bEnableBlend = bEnable;
+	m_state.srcBlendFactor = srcFactor;
+	m_state.dstBlendFactor = dstFactor;
 }
 
 void CGfxMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat units)
 {
-	m_bEnablePolygonOffset = bEnable;
-	m_polygonOffsetFactor = factor;
-	m_polygonOffsetUnits = units;
+	m_state.bEnablePolygonOffset = bEnable;
+	m_state.polygonOffsetFactor = factor;
+	m_state.polygonOffsetUnits = units;
 }
 
 bool CGfxMaterial::IsEnableBlend(void) const
 {
-	return m_bEnableBlend;
+	return m_state.bEnableBlend;
 }
 
 CGfxProgram* CGfxMaterial::GetProgram(void)

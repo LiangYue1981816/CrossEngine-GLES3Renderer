@@ -4,6 +4,22 @@
 #include "tinyxml/tinystr.h"
 
 
+typedef struct GL_STATE {
+	GLboolean bEnableCullFace;
+	GLboolean bEnableDepthTest;
+	GLboolean bEnableDepthWrite;
+	GLboolean bEnableColorWrite[4];
+	GLboolean bEnableBlend;
+	GLboolean bEnablePolygonOffset;
+	GLenum frontFace;
+	GLenum depthFunc;
+	GLenum srcBlendFactor;
+	GLenum dstBlendFactor;
+	GLfloat polygonOffsetFactor;
+	GLfloat polygonOffsetUnits;
+} GL_STATE;
+
+
 class CGfxProgram;
 class CGfxSampler;
 class CGfxTexture2D;
@@ -29,7 +45,7 @@ public:
 	void Bind(void) const;
 
 private:
-	void BindPipeline(void) const;
+	void BindState(void) const;
 	void BindUniforms(CGfxProgram *pProgram) const;
 	void BindTextures(CGfxProgram *pProgram, GLuint indexUnit) const;
 
@@ -39,7 +55,7 @@ public:
 
 private:
 	bool Load(const char *szFileName);
-	bool LoadBase(TiXmlNode *pMaterialNode);
+	bool LoadState(TiXmlNode *pMaterialNode);
 	bool LoadProgram(TiXmlNode *pMaterialNode);
 	bool LoadTexture2D(TiXmlNode *pMaterialNode);
 	bool LoadTexture2DArray(TiXmlNode *pMaterialNode);
@@ -77,21 +93,7 @@ public:
 
 
 private:
-	bool m_bEnableCullFace;
-	bool m_bEnableDepthTest;
-	bool m_bEnableDepthWrite;
-	bool m_bEnableColorWriteRed;
-	bool m_bEnableColorWriteGreen;
-	bool m_bEnableColorWriteBlue;
-	bool m_bEnableColorWriteAlpha;
-	bool m_bEnableBlend;
-	bool m_bEnablePolygonOffset;
-	GLenum m_frontFace;
-	GLenum m_depthFunc;
-	GLenum m_srcBlendFactor;
-	GLenum m_dstBlendFactor;
-	GLfloat m_polygonOffsetFactor;
-	GLfloat m_polygonOffsetUnits;
+	GL_STATE m_state;
 
 private:
 	std::map<GLuint, CGfxSampler*> m_pSamplers;
