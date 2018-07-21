@@ -16,23 +16,26 @@ CGfxTextureCubeMap::~CGfxTextureCubeMap(void)
 
 bool CGfxTextureCubeMap::Load(const char *szFileName)
 {
-	Free();
+	try {
+		Free();
 
-	char szFullPath[260];
-	CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
+		char szFullPath[260];
+		CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
 
-	gli::gl GL(gli::gl::PROFILE_ES30);
-	gli::texture_cube texture = (gli::texture_cube)gli::load(szFullPath);
-	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
+		gli::gl GL(gli::gl::PROFILE_ES30);
+		gli::texture_cube texture = (gli::texture_cube)gli::load(szFullPath);
+		gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
 
-	if (texture.target() != gli::TARGET_CUBE) {
+		if (texture.target() != gli::TARGET_CUBE) throw 0;
+		if (Create(format.External, format.Internal, texture.extent().x, texture.extent().y, texture.levels()) == false) throw 1;
+		if (TransferTextureCubeMap(texture) == false) throw 2;
+
+		return true;
+	}
+	catch (int) {
+		Free();
 		return false;
 	}
-
-	if (Create(format.External, format.Internal, texture.extent().x, texture.extent().y, texture.levels()) == false) return false;
-	if (TransferTextureCubeMap(texture) == false) return false;
-
-	return true;
 }
 
 bool CGfxTextureCubeMap::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels)

@@ -59,6 +59,11 @@ void CGfxTextureBase::Free(void)
 	m_arrayLayers = 0;
 }
 
+bool CGfxTextureBase::IsValid(void) const
+{
+	return m_texture != 0;
+}
+
 GLuint CGfxTextureBase::GetName(void) const
 {
 	return m_name;

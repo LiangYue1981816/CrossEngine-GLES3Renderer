@@ -388,6 +388,7 @@ bool CGfxMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsTextureValid(name)) {
 					m_pSamplers[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateSampler(minFilter, magFilter, addressMode);
 					m_pTexture2ds[name] = CGfxRenderer::GetInstance()->GetTextureManager()->LoadTexture2D(szFileName);
+					if (m_pTexture2ds[name]->IsValid() == false) throw 3;
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2D", pTextureNode));
 		}
@@ -426,6 +427,7 @@ bool CGfxMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsTextureValid(name)) {
 					m_pSamplers[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateSampler(minFilter, magFilter, addressMode);
 					m_pTexture2dArrays[name] = CGfxRenderer::GetInstance()->GetTextureManager()->LoadTexture2DArray(szFileName);
+					if (m_pTexture2dArrays[name]->IsValid() == false) throw 3;
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2DArray", pTextureNode));
 		}
@@ -464,6 +466,7 @@ bool CGfxMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsTextureValid(name)) {
 					m_pSamplers[name] = CGfxRenderer::GetInstance()->GetTextureManager()->CreateSampler(minFilter, magFilter, addressMode);
 					m_pTextureCubeMaps[name] = CGfxRenderer::GetInstance()->GetTextureManager()->LoadTextureCubeMap(szFileName);
+					if (m_pTextureCubeMaps[name]->IsValid() == false) throw 3;
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("TextureCubeMap", pTextureNode));
 		}

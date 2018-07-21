@@ -16,23 +16,26 @@ CGfxTexture2DArray::~CGfxTexture2DArray(void)
 
 bool CGfxTexture2DArray::Load(const char *szFileName)
 {
-	Free();
+	try {
+		Free();
 
-	char szFullPath[260];
-	CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
+		char szFullPath[260];
+		CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
 
-	gli::gl GL(gli::gl::PROFILE_ES30);
-	gli::texture2d_array texture = (gli::texture2d_array)gli::load(szFullPath);
-	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
+		gli::gl GL(gli::gl::PROFILE_ES30);
+		gli::texture2d_array texture = (gli::texture2d_array)gli::load(szFullPath);
+		gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
 
-	if (texture.target() != gli::TARGET_2D_ARRAY) {
+		if (texture.target() != gli::TARGET_2D_ARRAY) throw 0;
+		if (Create(format.External, format.Internal, texture.extent().x, texture.extent().y, texture.levels(), texture.layers()) == false) throw 1;
+		if (TransferTexture2DArray(texture) == false) throw 2;
+
+		return true;
+	}
+	catch (int) {
+		Free();
 		return false;
 	}
-
-	if (Create(format.External, format.Internal, texture.extent().x, texture.extent().y, texture.levels(), texture.layers()) == false) return false;
-	if (TransferTexture2DArray(texture) == false) return false;
-
-	return true;
 }
 
 bool CGfxTexture2DArray::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels, GLuint arrayLayers)

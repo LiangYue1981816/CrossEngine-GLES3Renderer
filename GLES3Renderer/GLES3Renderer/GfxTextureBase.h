@@ -18,6 +18,8 @@ public:
 	virtual void Free(void);
 
 public:
+	bool IsValid(void) const;
+
 	GLuint GetName(void) const;
 	GLuint GetTexture(void) const;
 

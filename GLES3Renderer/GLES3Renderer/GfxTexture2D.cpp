@@ -16,23 +16,26 @@ CGfxTexture2D::~CGfxTexture2D(void)
 
 bool CGfxTexture2D::Load(const char *szFileName)
 {
-	Free();
+	try {
+		Free();
 
-	char szFullPath[260];
-	CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
+		char szFullPath[260];
+		CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
 
-	gli::gl GL(gli::gl::PROFILE_ES30);
-	gli::texture2d texture = (gli::texture2d)gli::load(szFullPath);
-	gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
+		gli::gl GL(gli::gl::PROFILE_ES30);
+		gli::texture2d texture = (gli::texture2d)gli::load(szFullPath);
+		gli::gl::format format = GL.translate(texture.format(), texture.swizzles());
 
-	if (texture.target() != gli::TARGET_2D) {
+		if (texture.target() != gli::TARGET_2D) throw 0;
+		if (Create(format.External, format.Internal, texture.extent().x, texture.extent().y, texture.levels()) == false) throw 1;
+		if (TransferTexture2D(texture) == false) throw 2;
+
+		return true;
+	}
+	catch (int) {
+		Free();
 		return false;
 	}
-
-	if (Create(format.External, format.Internal, texture.extent().x, texture.extent().y, texture.levels()) == false) return false;
-	if (TransferTexture2D(texture) == false) return false;
-
-	return true;
 }
 
 bool CGfxTexture2D::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels)
