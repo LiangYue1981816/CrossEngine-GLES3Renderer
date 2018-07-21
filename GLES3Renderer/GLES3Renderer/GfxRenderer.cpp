@@ -57,7 +57,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	m_meshScreen.CreateVertexBuffer(sizeof(vertices), vertices, false, VERTEX_ATTRIBUTE_POSITION | VERTEX_ATTRIBUTE_TEXCOORD0);
 
 	m_material = -1;
-	m_pGlobalMaterial = new CGfxMaterial;
+	m_pGlobalMaterial = new CGfxMaterial(0);
 
 	m_pProgramManager = new CGfxProgramManager;
 	m_pTextureManager = new CGfxTextureManager;

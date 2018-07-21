@@ -37,7 +37,7 @@ class CGfxMaterial
 
 
 private:
-	CGfxMaterial(void);
+	CGfxMaterial(GLuint name);
 	virtual ~CGfxMaterial(void);
 
 
@@ -73,7 +73,9 @@ public:
 	bool IsEnableBlend(void) const;
 
 public:
-	CGfxProgram* GetProgram(void);
+	GLuint GetName(void) const;
+
+	CGfxProgram* GetProgram(void) const;
 
 	CGfxSampler* GetSampler(const char *szName, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	CGfxTexture2D* GetTexture2D(const char *szName);
@@ -90,9 +92,12 @@ public:
 
 
 private:
-	GL_STATE m_state;
+	GLuint m_name;
 
 private:
+	GL_STATE m_state;
+	CGfxProgram *m_pProgram;
+
 	std::map<GLuint, CGfxSampler*> m_pSamplers;
 	std::map<GLuint, CGfxTexture2D*> m_pTexture2ds;
 	std::map<GLuint, CGfxTexture2DArray*> m_pTexture2dArrays;
@@ -105,5 +110,5 @@ private:
 	std::map<GLuint, CGfxUniformMat4*> m_pUniformMat4s;
 
 private:
-	CGfxProgram *m_pProgram;
+	GLuint refCount;
 };

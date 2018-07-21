@@ -13,8 +13,10 @@ protected:
 
 
 public:
-	virtual bool Load(const char *szFileName) = 0;
 	virtual bool CreateExtern(GLuint texture);
+
+protected:
+	virtual bool Load(const char *szFileName) = 0;
 	virtual void Free(void);
 
 public:
@@ -33,6 +35,7 @@ public:
 protected:
 	GLuint m_name;
 
+protected:
 	GLuint m_texture;
 	GLboolean m_extern;
 

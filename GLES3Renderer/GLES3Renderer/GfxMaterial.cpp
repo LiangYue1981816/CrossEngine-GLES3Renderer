@@ -110,8 +110,11 @@ static GLenum StringToBlendDstFactor(const char *szString)
 }
 
 
-CGfxMaterial::CGfxMaterial(void)
-	: m_pProgram(NULL)
+CGfxMaterial::CGfxMaterial(GLuint name)
+	: m_name(name)
+	, m_pProgram(NULL)
+
+	, refCount(0)
 {
 	m_state.bEnableCullFace = GL_TRUE;
 	m_state.bEnableDepthTest = GL_TRUE;
@@ -709,7 +712,12 @@ bool CGfxMaterial::IsEnableBlend(void) const
 	return m_state.bEnableBlend;
 }
 
-CGfxProgram* CGfxMaterial::GetProgram(void)
+GLuint CGfxMaterial::GetName(void) const
+{
+	return m_name;
+}
+
+CGfxProgram* CGfxMaterial::GetProgram(void) const
 {
 	return m_pProgram;
 }

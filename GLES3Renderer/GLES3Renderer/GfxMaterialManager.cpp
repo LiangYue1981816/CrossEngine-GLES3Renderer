@@ -17,33 +17,34 @@ CGfxMaterialManager::~CGfxMaterialManager(void)
 	}
 }
 
-bool CGfxMaterialManager::LoadMaterial(const char *szFileName, GLuint material)
+bool CGfxMaterialManager::LoadMaterial(const char *szFileName)
 {
-	try {
-		if (m_pMaterials[material] == NULL) {
-			m_pMaterials[material] = new CGfxMaterial;
-		}
+	GLuint name = HashValue(szFileName);
 
-		if (m_pMaterials[material] == NULL) {
-			throw 0;
-		}
-
-		if (m_pMaterials[material]->Load(szFileName) == false) {
-			throw 1;
-		}
-
-		return true;
+	if (m_pMaterials[name] == NULL) {
+		m_pMaterials[name] = new CGfxMaterial(name);
+		m_pMaterials[name]->Load(szFileName);
 	}
-	catch (int) {
-		delete m_pMaterials[material];
-		m_pMaterials.erase(material);
 
-		return false;
+	m_pMaterials[name]->refCount++;
+
+	return m_pMaterials[name];
+}
+
+void CGfxMaterialManager::FreeMaterial(CGfxMaterial *pMaterial)
+{
+	if (pMaterial->refCount > 0) {
+		pMaterial->refCount--;
+	}
+
+	if (pMaterial->refCount == 0) {
+		m_pMaterials.erase(pMaterial->GetName());
+		delete pMaterial;
 	}
 }
 
-CGfxMaterial* CGfxMaterialManager::GetMaterial(GLuint material) const
+CGfxMaterial* CGfxMaterialManager::GetMaterial(GLuint name) const
 {
-	const auto &itMaterial = m_pMaterials.find(material);
+	const auto &itMaterial = m_pMaterials.find(name);
 	return itMaterial != m_pMaterials.end() ? itMaterial->second : NULL;
 }
