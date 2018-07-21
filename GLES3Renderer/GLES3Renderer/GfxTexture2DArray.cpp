@@ -16,7 +16,7 @@ CGfxTexture2DArray::~CGfxTexture2DArray(void)
 
 bool CGfxTexture2DArray::Load(const char *szFileName)
 {
-	Destroy();
+	Free();
 
 	char szFullPath[260];
 	CGfxRenderer::GetInstance()->GetTextureFullPath(szFileName, szFullPath);
@@ -37,7 +37,7 @@ bool CGfxTexture2DArray::Load(const char *szFileName)
 
 bool CGfxTexture2DArray::Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels, GLuint arrayLayers)
 {
-	Destroy();
+	Free();
 
 	m_format = format;
 	m_internalFormat = internalFormat;

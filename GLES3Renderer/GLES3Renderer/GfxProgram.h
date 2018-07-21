@@ -18,9 +18,9 @@ private:
 	virtual ~CGfxProgram(void);
 
 
-public:
+private:
 	bool Load(const char *szVertexFileName, const char *szFragmentFileName);
-	void Destroy(void);
+	void Free(void);
 
 private:
 	bool LoadShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler);
@@ -32,6 +32,7 @@ private:
 	bool SetTextureLocation(const char *szName);
 
 public:
+	bool IsValid(void) const;
 	void UseProgram(void) const;
 	
 	bool BindUniformBuffer(GLuint name, GLuint buffer, GLsizeiptr size, GLintptr offset = 0) const;

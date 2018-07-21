@@ -351,6 +351,7 @@ bool CGfxMaterial::LoadProgram(TiXmlNode *pMaterialNode)
 			if (szVertexFileName == NULL || szFragmentFileName == NULL) throw 1;
 
 			m_pProgram = CGfxRenderer::GetInstance()->GetProgramManager()->LoadProgram(szVertexFileName, szFragmentFileName);
+			if (m_pProgram->IsValid() == false) throw 2;
 		}
 		LogOutput("OK\n");
 		return true;

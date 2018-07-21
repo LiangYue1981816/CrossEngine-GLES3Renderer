@@ -25,12 +25,12 @@ CGfxTextureBase::CGfxTextureBase(GLuint name)
 
 CGfxTextureBase::~CGfxTextureBase(void)
 {
-	Destroy();
+	Free();
 }
 
 bool CGfxTextureBase::CreateExtern(GLuint texture)
 {
-	Destroy();
+	Free();
 
 	m_texture = texture;
 	m_extern = GL_TRUE;
@@ -38,7 +38,7 @@ bool CGfxTextureBase::CreateExtern(GLuint texture)
 	return true;
 }
 
-void CGfxTextureBase::Destroy(void)
+void CGfxTextureBase::Free(void)
 {
 	if (m_extern == GL_FALSE) {
 		if (m_texture) {

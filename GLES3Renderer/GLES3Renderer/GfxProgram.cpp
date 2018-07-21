@@ -60,19 +60,25 @@ CGfxProgram::CGfxProgram(void)
 
 CGfxProgram::~CGfxProgram(void)
 {
-	Destroy();
+	Free();
 }
 
 bool CGfxProgram::Load(const char *szVertexFileName, const char *szFragmentFileName)
 {
-	Destroy();
+	try {
+		Free();
 
-	if (LoadShader(szVertexFileName, GL_VERTEX_SHADER, m_vertexShader, m_pShaderCompilers[0]) == false) return false;
-	if (LoadShader(szFragmentFileName, GL_FRAGMENT_SHADER, m_fragmentShader, m_pShaderCompilers[1]) == false) return false;
-	if (CreateProgram() == false) return false;
-	if (CreateLocations() == false) return false;
+		if (LoadShader(szVertexFileName, GL_VERTEX_SHADER, m_vertexShader, m_pShaderCompilers[0]) == false) throw 0;
+		if (LoadShader(szFragmentFileName, GL_FRAGMENT_SHADER, m_fragmentShader, m_pShaderCompilers[1]) == false) throw 1;
+		if (CreateProgram() == false) throw 2;
+		if (CreateLocations() == false) throw 3;
 
-	return true;
+		return true;
+	}
+	catch (int) {
+		Free();
+		return false;
+	}
 }
 
 bool CGfxProgram::LoadShader(const char *szFileName, GLenum type, GLuint &shader, spirv_cross::CompilerGLSL *&pShaderCompiler)
@@ -162,7 +168,7 @@ bool CGfxProgram::CreateLocations(void)
 	return true;
 }
 
-void CGfxProgram::Destroy(void)
+void CGfxProgram::Free(void)
 {
 	if (m_program) {
 		glDeleteProgram(m_program);
@@ -228,6 +234,11 @@ bool CGfxProgram::SetTextureLocation(const char *szName)
 	}
 
 	return false;
+}
+
+bool CGfxProgram::IsValid(void) const
+{
+	return m_program != 0;
 }
 
 void CGfxProgram::UseProgram(void) const

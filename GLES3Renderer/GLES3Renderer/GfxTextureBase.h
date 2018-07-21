@@ -15,7 +15,7 @@ protected:
 public:
 	virtual bool Load(const char *szFileName) = 0;
 	virtual bool CreateExtern(GLuint texture);
-	virtual void Destroy(void);
+	virtual void Free(void);
 
 public:
 	GLuint GetName(void) const;
