@@ -6,6 +6,7 @@
 
 
 class CGfxMesh;
+class CGfxMaterial;
 class CGfxFrameBuffer;
 class CGfxCommandBuffer;
 class CGfxCamera
@@ -45,7 +46,7 @@ public:
 	bool IsVisible(const glm::sphere &sphere);
 
 public:
-	void AddQueue(GLuint material, CGfxMesh *pMesh, const glm::mat4 &mtxTransform);
+	void AddQueue(CGfxMaterial *pMaterial, CGfxMesh *pMesh, const glm::mat4 &mtxTransform);
 	void ClearQueue(void);
 
 public:
@@ -67,8 +68,8 @@ private:
 
 private:
 	std::map<CGfxMesh*, CGfxMesh*> m_meshs;
-	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueOpaque;
-	std::map<GLuint, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueTransparent;
+	std::map<CGfxMaterial*, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueOpaque;
+	std::map<CGfxMaterial*, std::map<GLuint, std::vector<CGfxMesh*>>> m_queueTransparent;
 
 private:
 	CGfxFrameBuffer *m_pFrameBuffer;

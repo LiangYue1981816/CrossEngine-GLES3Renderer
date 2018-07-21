@@ -17,7 +17,7 @@ CGfxMaterialManager::~CGfxMaterialManager(void)
 	}
 }
 
-bool CGfxMaterialManager::LoadMaterial(const char *szFileName)
+CGfxMaterial* CGfxMaterialManager::LoadMaterial(const char *szFileName)
 {
 	GLuint name = HashValue(szFileName);
 

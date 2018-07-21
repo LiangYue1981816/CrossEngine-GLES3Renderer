@@ -29,6 +29,8 @@ void CGfxRenderer::Destroy(void)
 
 CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
 	: m_pGlobalMaterial(NULL)
+	, m_pCurrentMaterial(NULL)
+
 	, m_pProgramManager(NULL)
 	, m_pTextureManager(NULL)
 	, m_pMaterialManager(NULL)
@@ -56,7 +58,6 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	m_meshScreen.CreateIndexBuffer(sizeof(indices), indices, false, GL_UNSIGNED_INT);
 	m_meshScreen.CreateVertexBuffer(sizeof(vertices), vertices, false, VERTEX_ATTRIBUTE_POSITION | VERTEX_ATTRIBUTE_TEXCOORD0);
 
-	m_material = -1;
 	m_pGlobalMaterial = new CGfxMaterial(0);
 
 	m_pProgramManager = new CGfxProgramManager;
@@ -107,14 +108,14 @@ CGfxMaterialManager* CGfxRenderer::GetMaterialManager(void) const
 	return m_pMaterialManager;
 }
 
-bool CGfxRenderer::LoadMaterial(const char *szFileName, GLuint material)
+CGfxMaterial* CGfxRenderer::LoadMaterial(const char *szFileName)
 {
-	return m_pMaterialManager->LoadMaterial(szFileName, material);
+	return m_pMaterialManager->LoadMaterial(szFileName);
 }
 
-CGfxMaterial* CGfxRenderer::GetMaterial(GLuint material) const
+CGfxMaterial* CGfxRenderer::GetMaterial(GLuint name) const
 {
-	CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(material);
+	CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(name);
 	return pMaterial != NULL ? pMaterial : m_pGlobalMaterial;
 }
 
@@ -257,9 +258,9 @@ bool CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int 
 	return pCommandBuffer->SetViewport(x, y, width, height);
 }
 
-bool CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material)
+bool CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial)
 {
-	return pCommandBuffer->BindMaterial(material);
+	return pCommandBuffer->BindMaterial(pMaterial);
 }
 
 bool CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
@@ -331,27 +332,25 @@ void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
 	pCommandBuffer->Execute();
 }
 
-void CGfxRenderer::BindMaterial(GLuint material)
+void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
 {
-	if (CGfxMaterial *pMaterial = m_pMaterialManager->GetMaterial(material)) {
-		if (m_material != material) {
-			m_material = material;
+	if (m_pCurrentMaterial != pMaterial) {
+		m_pCurrentMaterial = pMaterial;
 
-			pMaterial->Bind();
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_NAME), m_uniformShadow.GetBuffer(), m_uniformShadow.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
-			pMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
-
-			m_pGlobalMaterial->BindUniforms(pMaterial->GetProgram());
-			m_pGlobalMaterial->BindTextures(pMaterial->GetProgram(), pMaterial->GetTextureUnits());
-		}
+		m_pCurrentMaterial->Bind();
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_TIME_NAME), m_uniformTime.GetBuffer(), m_uniformTime.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_SHADOW_NAME), m_uniformShadow.GetBuffer(), m_uniformShadow.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_AMBIENT_LIGHT_NAME), m_uniformAmbientLight.GetBuffer(), m_uniformAmbientLight.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
 	}
+
+	m_pGlobalMaterial->BindUniforms(m_pCurrentMaterial->GetProgram());
+	m_pGlobalMaterial->BindTextures(m_pCurrentMaterial->GetProgram(), m_pCurrentMaterial->GetTextureUnits());
 }
 
 void CGfxRenderer::BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)

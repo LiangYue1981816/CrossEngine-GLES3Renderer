@@ -113,26 +113,24 @@ bool CGfxCamera::IsVisible(const glm::sphere &sphere)
 	return m_camera.visible(sphere);
 }
 
-void CGfxCamera::AddQueue(GLuint material, CGfxMesh *pMesh, const glm::mat4 &mtxTransform)
+void CGfxCamera::AddQueue(CGfxMaterial *pMaterial, CGfxMesh *pMesh, const glm::mat4 &mtxTransform)
 {
-	if (CGfxMaterial *pMaterial = CGfxRenderer::GetInstance()->GetMaterial(material)) {
-		if (m_meshs[pMesh] == NULL) {
-			m_meshs[pMesh] = pMesh;
+	if (m_meshs[pMesh] == NULL) {
+		m_meshs[pMesh] = pMesh;
 
-			glm::vec4 position = mtxTransform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-			glm::vec3 distance = glm::vec3(position.x - m_camera.position.x, position.y - m_camera.position.y, position.z - m_camera.position.z);
-			GLuint length = (GLuint)glm::length(distance);
+		glm::vec4 position = mtxTransform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+		glm::vec3 distance = glm::vec3(position.x - m_camera.position.x, position.y - m_camera.position.y, position.z - m_camera.position.z);
+		GLuint length = (GLuint)glm::length(distance);
 
-			if (pMaterial->IsEnableBlend()) {
-				m_queueTransparent[material][UINT_MAX - length].push_back(pMesh);
-			}
-			else {
-				m_queueOpaque[material][length].push_back(pMesh);
-			}
+		if (pMaterial->IsEnableBlend()) {
+			m_queueTransparent[pMaterial][UINT_MAX - length].push_back(pMesh);
 		}
-
-		pMesh->AddInstance(mtxTransform);
+		else {
+			m_queueOpaque[pMaterial][length].push_back(pMesh);
+		}
 	}
+
+	pMesh->AddInstance(mtxTransform);
 }
 
 void CGfxCamera::ClearQueue(void)

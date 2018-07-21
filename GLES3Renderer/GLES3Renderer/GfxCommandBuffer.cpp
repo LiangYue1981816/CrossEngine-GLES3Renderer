@@ -113,10 +113,10 @@ bool CGfxCommandBuffer::BindMesh(CGfxMesh *pMesh)
 	return false;
 }
 
-bool CGfxCommandBuffer::BindMaterial(GLuint material)
+bool CGfxCommandBuffer::BindMaterial(CGfxMaterial *pMaterial)
 {
 	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
-		m_commands.push_back(new CGfxCommandBindMaterial(material));
+		m_commands.push_back(new CGfxCommandBindMaterial(pMaterial));
 		return true;
 	}
 

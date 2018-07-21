@@ -7,8 +7,8 @@
 class CGfxCommandBindMaterial : public CGfxCommandBase
 {
 public:
-	CGfxCommandBindMaterial(GLuint material)
-		: m_material(material)
+	CGfxCommandBindMaterial(CGfxMaterial *pMaterial)
+		: m_pMaterial(pMaterial)
 	{
 
 	}
@@ -20,10 +20,10 @@ public:
 public:
 	virtual void Execute(void) const
 	{
-		CGfxRenderer::GetInstance()->BindMaterial(m_material);
+		CGfxRenderer::GetInstance()->BindMaterial(m_pMaterial);
 	}
 
 
 private:
-	GLuint m_material;
+	CGfxMaterial *m_pMaterial;
 };

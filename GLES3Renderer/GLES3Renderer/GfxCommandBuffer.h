@@ -45,7 +45,7 @@ public:
 	bool SetViewport(int x, int y, int width, int height);
 
 	bool BindMesh(CGfxMesh *pMesh);
-	bool BindMaterial(GLuint material);
+	bool BindMaterial(CGfxMaterial *pMaterial);
 	bool BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 	bool ClearDepth(float depth);

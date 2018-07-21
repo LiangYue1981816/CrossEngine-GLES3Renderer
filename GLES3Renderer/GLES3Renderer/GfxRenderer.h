@@ -4,6 +4,7 @@
 #include "gles3/gl3.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "GfxUtils.h"
 #include "GfxMesh.h"
 #include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
@@ -73,8 +74,8 @@ public:
 	CGfxMaterialManager* GetMaterialManager(void) const;
 
 public:
-	bool LoadMaterial(const char *szFileName, GLuint material);
-	CGfxMaterial* GetMaterial(GLuint material) const;
+	CGfxMaterial* LoadMaterial(const char *szFileName);
+	CGfxMaterial* GetMaterial(GLuint name) const;
 
 public:
 	void SetTime(float t, float dt);
@@ -118,7 +119,7 @@ public:
 	bool CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 	bool CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 
-	bool CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, GLuint material);
+	bool CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial);
 	bool CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 	bool CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);
@@ -134,7 +135,7 @@ public:
 	void Submit(const CGfxCommandBuffer *pCommandBuffer);
 
 private:
-	void BindMaterial(GLuint material);
+	void BindMaterial(CGfxMaterial *pMaterial);
 	void BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 
@@ -158,8 +159,8 @@ private:
 	CGfxUniformFog m_uniformFog;
 
 private:
-	GLuint m_material;
 	CGfxMaterial *m_pGlobalMaterial;
+	CGfxMaterial *m_pCurrentMaterial;
 
 private:
 	CGfxProgramManager *m_pProgramManager;
