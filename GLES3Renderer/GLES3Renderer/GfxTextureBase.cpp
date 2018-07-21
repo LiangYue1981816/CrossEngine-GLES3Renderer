@@ -28,6 +28,11 @@ CGfxTextureBase::~CGfxTextureBase(void)
 	Free();
 }
 
+bool CGfxTextureBase::IsValid(void) const
+{
+	return m_texture != 0;
+}
+
 bool CGfxTextureBase::CreateExtern(GLuint texture)
 {
 	Free();
@@ -57,11 +62,6 @@ void CGfxTextureBase::Free(void)
 
 	m_mipLevels = 0;
 	m_arrayLayers = 0;
-}
-
-bool CGfxTextureBase::IsValid(void) const
-{
-	return m_texture != 0;
 }
 
 GLuint CGfxTextureBase::GetName(void) const

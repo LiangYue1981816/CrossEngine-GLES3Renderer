@@ -10,6 +10,8 @@
 
 class CGfxProgram
 {
+	friend class CGfxRenderer;
+	friend class CGfxMaterial;
 	friend class CGfxProgramManager;
 
 
@@ -17,6 +19,9 @@ private:
 	CGfxProgram(void);
 	virtual ~CGfxProgram(void);
 
+
+public:
+	bool IsValid(void) const;
 
 private:
 	bool Load(const char *szVertexFileName, const char *szFragmentFileName);
@@ -31,8 +36,7 @@ private:
 	bool SetUniformLocation(const char *szName);
 	bool SetTextureLocation(const char *szName);
 
-public:
-	bool IsValid(void) const;
+private:
 	void UseProgram(void) const;
 	
 	bool BindUniformBuffer(GLuint name, GLuint buffer, GLsizeiptr size, GLintptr offset = 0) const;

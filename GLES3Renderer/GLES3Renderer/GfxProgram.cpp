@@ -63,6 +63,11 @@ CGfxProgram::~CGfxProgram(void)
 	Free();
 }
 
+bool CGfxProgram::IsValid(void) const
+{
+	return m_program != 0;
+}
+
 bool CGfxProgram::Load(const char *szVertexFileName, const char *szFragmentFileName)
 {
 	try {
@@ -234,11 +239,6 @@ bool CGfxProgram::SetTextureLocation(const char *szName)
 	}
 
 	return false;
-}
-
-bool CGfxProgram::IsValid(void) const
-{
-	return m_program != 0;
 }
 
 void CGfxProgram::UseProgram(void) const

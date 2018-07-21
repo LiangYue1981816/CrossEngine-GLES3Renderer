@@ -41,7 +41,7 @@ private:
 	virtual ~CGfxMaterial(void);
 
 
-public:
+private:
 	void Bind(void) const;
 
 private:

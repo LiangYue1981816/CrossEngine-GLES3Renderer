@@ -13,6 +13,9 @@ protected:
 
 
 public:
+	bool IsValid(void) const;
+
+public:
 	virtual bool CreateExtern(GLuint texture);
 
 protected:
@@ -20,8 +23,6 @@ protected:
 	virtual void Free(void);
 
 public:
-	bool IsValid(void) const;
-
 	GLuint GetName(void) const;
 	GLuint GetTexture(void) const;
 
