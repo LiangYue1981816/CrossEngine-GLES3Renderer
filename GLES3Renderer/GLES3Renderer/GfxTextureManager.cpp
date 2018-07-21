@@ -38,45 +38,6 @@ CGfxSampler* CGfxTextureManager::CreateSampler(GLenum minFilter, GLenum magFilte
 	return m_pSamplers[name];
 }
 
-CGfxTexture2D* CGfxTextureManager::CreateTexture2D(const char *szName)
-{
-	GLuint name = HashValue(szName);
-
-	if (m_pTextures[name] == NULL) {
-		m_pTextures[name] = new CGfxTexture2D(name);
-	}
-
-	m_pTextures[name]->refCount++;
-
-	return (CGfxTexture2D *)m_pTextures[name];
-}
-
-CGfxTexture2DArray* CGfxTextureManager::CreateTexture2DArray(const char *szName)
-{
-	GLuint name = HashValue(szName);
-
-	if (m_pTextures[name] == NULL) {
-		m_pTextures[name] = new CGfxTexture2DArray(name);
-	}
-
-	m_pTextures[name]->refCount++;
-
-	return (CGfxTexture2DArray *)m_pTextures[name];
-}
-
-CGfxTextureCubeMap* CGfxTextureManager::CreateTextureCubeMap(const char *szName)
-{
-	GLuint name = HashValue(szName);
-
-	if (m_pTextures[name] == NULL) {
-		m_pTextures[name] = new CGfxTextureCubeMap(name);
-	}
-
-	m_pTextures[name]->refCount++;
-
-	return (CGfxTextureCubeMap *)m_pTextures[name];
-}
-
 CGfxTexture2D* CGfxTextureManager::LoadTexture2D(const char *szFileName)
 {
 	GLuint name = HashValue(szFileName);
@@ -119,7 +80,7 @@ CGfxTextureCubeMap* CGfxTextureManager::LoadTextureCubeMap(const char *szFileNam
 	return (CGfxTextureCubeMap *)m_pTextures[name];
 }
 
-void CGfxTextureManager::DestroyTexture(CGfxTextureBase *pTexture)
+void CGfxTextureManager::FreeTexture(CGfxTextureBase *pTexture)
 {
 	if (pTexture->refCount > 0) {
 		pTexture->refCount--;

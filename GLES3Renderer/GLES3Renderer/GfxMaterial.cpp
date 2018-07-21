@@ -622,15 +622,15 @@ bool CGfxMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 void CGfxMaterial::Free(void)
 {
 	for (auto &itTexture : m_pTexture2ds) {
-		CGfxRenderer::GetInstance()->GetTextureManager()->DestroyTexture(itTexture.second);
+		CGfxRenderer::GetInstance()->GetTextureManager()->FreeTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTexture2dArrays) {
-		CGfxRenderer::GetInstance()->GetTextureManager()->DestroyTexture(itTexture.second);
+		CGfxRenderer::GetInstance()->GetTextureManager()->FreeTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTextureCubeMaps) {
-		CGfxRenderer::GetInstance()->GetTextureManager()->DestroyTexture(itTexture.second);
+		CGfxRenderer::GetInstance()->GetTextureManager()->FreeTexture(itTexture.second);
 	}
 
 	for (auto &itUniform : m_pUniformVec1s) {
