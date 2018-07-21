@@ -11,10 +11,10 @@ CGfxRenderer* CGfxRenderer::GetInstance(void)
 	return pInstance;
 }
 
-void CGfxRenderer::Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
+void CGfxRenderer::Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath, const char *szMeshPath)
 {
 	if (pInstance == NULL) {
-		pInstance = new CGfxRenderer(szShaderPath, szTexturePath, szMaterialPath);
+		pInstance = new CGfxRenderer(szShaderPath, szTexturePath, szMaterialPath, szMeshPath);
 	}
 }
 
@@ -27,8 +27,10 @@ void CGfxRenderer::Destroy(void)
 	pInstance = NULL;
 }
 
-CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath)
-	: m_pGlobalMaterial(NULL)
+CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath, const char *szMeshPath)
+	: m_meshScreen(0)
+
+	, m_pGlobalMaterial(NULL)
 	, m_pCurrentMaterial(NULL)
 
 	, m_pProgramManager(NULL)
@@ -38,6 +40,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
 	strcpy(m_szMaterialPath, szMaterialPath);
+	strcpy(m_szMeshPath, szMeshPath);
 
 	struct Vertex {
 		glm::vec3 position;
@@ -67,7 +70,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 
 CGfxRenderer::~CGfxRenderer(void)
 {
-	m_meshScreen.Destroy();
+	m_meshScreen.Free();
 
 	delete m_pGlobalMaterial;
 	delete m_pMaterialManager;
@@ -90,6 +93,12 @@ const char* CGfxRenderer::GetTextureFullPath(const char *szFileName, char *szFul
 const char* CGfxRenderer::GetMaterialFullPath(const char *szFileName, char *szFullPath) const
 {
 	sprintf(szFullPath, "%s/%s", m_szMaterialPath, szFileName);
+	return szFullPath;
+}
+
+const char* CGfxRenderer::GetMeshFullPath(const char *szFileName, char *szFullPath) const
+{
+	sprintf(szFullPath, "%s/%s", m_szMeshPath, szFileName);
 	return szFullPath;
 }
 

@@ -15,6 +15,8 @@ CGfxMaterialManager::~CGfxMaterialManager(void)
 	for (const auto &itMaterial : m_pMaterials) {
 		delete itMaterial.second;
 	}
+
+	m_pMaterials.clear();
 }
 
 CGfxMaterial* CGfxMaterialManager::LoadMaterial(const char *szFileName)

@@ -54,12 +54,12 @@ class CGfxRenderer
 
 public:
 	static CGfxRenderer* GetInstance(void);
-	static void Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath);
+	static void Create(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath, const char *szMeshPath);
 	static void Destroy(void);
 
 
 private:
-	CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath);
+	CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath, const char *szMeshPath);
 	virtual ~CGfxRenderer(void);
 
 
@@ -67,6 +67,7 @@ public:
 	const char* GetShaderFullPath(const char *szFileName, char *szFullPath) const;
 	const char* GetTextureFullPath(const char *szFileName, char *szFullPath) const;
 	const char* GetMaterialFullPath(const char *szFileName, char *szFullPath) const;
+	const char* GetMeshFullPath(const char *szFileName, char *szFullPath) const;
 
 public:
 	CGfxProgramManager* GetProgramManager(void) const;
@@ -146,6 +147,7 @@ private:
 	char m_szShaderPath[260];
 	char m_szTexturePath[260];
 	char m_szMaterialPath[260];
+	char m_szMeshPath[260];
 
 private:
 	CGfxMesh m_meshScreen;

@@ -12,10 +12,10 @@ private:
 
 
 public:
-	bool LoadMesh(const char *szFileName, GLuint mesh);
-	void DestroyMesh(CGfxMesh *pMesh);
+	CGfxMesh* LoadMesh(const char *szFileName);
+	void FreeMesh(CGfxMesh *pMesh);
 
-	CGfxMesh* GetMesh(GLuint mesh);
+	CGfxMesh* GetMesh(GLuint mesh) const;
 
 
 private:
