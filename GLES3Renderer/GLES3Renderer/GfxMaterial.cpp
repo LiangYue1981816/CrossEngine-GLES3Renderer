@@ -138,6 +138,11 @@ CGfxMaterial::~CGfxMaterial(void)
 	Free();
 }
 
+GLuint CGfxMaterial::GetName(void) const
+{
+	return m_name;
+}
+
 void CGfxMaterial::Bind(void) const
 {
 	if (m_pProgram) {
@@ -710,11 +715,6 @@ void CGfxMaterial::SetEnablePolygonOffset(bool bEnable, GLfloat factor, GLfloat 
 bool CGfxMaterial::IsEnableBlend(void) const
 {
 	return m_state.bEnableBlend;
-}
-
-GLuint CGfxMaterial::GetName(void) const
-{
-	return m_name;
 }
 
 CGfxProgram* CGfxMaterial::GetProgram(void) const

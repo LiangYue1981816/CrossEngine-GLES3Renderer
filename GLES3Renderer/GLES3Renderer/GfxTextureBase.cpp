@@ -28,9 +28,9 @@ CGfxTextureBase::~CGfxTextureBase(void)
 	Free();
 }
 
-bool CGfxTextureBase::IsValid(void) const
+GLuint CGfxTextureBase::GetName(void) const
 {
-	return m_texture != 0;
+	return m_name;
 }
 
 bool CGfxTextureBase::CreateExtern(GLuint texture)
@@ -64,14 +64,9 @@ void CGfxTextureBase::Free(void)
 	m_arrayLayers = 0;
 }
 
-GLuint CGfxTextureBase::GetName(void) const
+bool CGfxTextureBase::IsValid(void) const
 {
-	return m_name;
-}
-
-GLuint CGfxTextureBase::GetTexture(void) const
-{
-	return m_texture;
+	return m_texture != 0;
 }
 
 GLenum CGfxTextureBase::GetFormat(void) const
@@ -92,4 +87,9 @@ GLuint CGfxTextureBase::GetWidth(void) const
 GLuint CGfxTextureBase::GetHeight(void) const
 {
 	return m_height;
+}
+
+GLuint CGfxTextureBase::GetTexture(void) const
+{
+	return m_texture;
 }

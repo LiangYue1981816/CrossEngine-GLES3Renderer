@@ -20,9 +20,6 @@ private:
 	virtual ~CGfxProgram(void);
 
 
-public:
-	bool IsValid(void) const;
-
 private:
 	bool Load(const char *szVertexFileName, const char *szFragmentFileName);
 	void Free(void);
@@ -32,7 +29,6 @@ private:
 	bool CreateProgram(void);
 	bool CreateLocations(void);
 
-private:
 	bool SetUniformLocation(const char *szName);
 	bool SetTextureLocation(const char *szName);
 
@@ -45,6 +41,8 @@ private:
 	bool BindTextureCubeMap(GLuint name, GLuint texture, GLuint sampler, GLuint unit) const;
 
 public:
+	bool IsValid(void) const;
+
 	bool IsUniformValid(GLuint name) const;
 	bool IsTextureValid(GLuint name) const;
 

@@ -40,11 +40,12 @@ private:
 	CGfxMaterial(GLuint name);
 	virtual ~CGfxMaterial(void);
 
+	
+public:
+	GLuint GetName(void) const;
 
 private:
 	void Bind(void) const;
-
-private:
 	void BindState(void) const;
 	void BindUniforms(CGfxProgram *pProgram) const;
 	void BindTextures(CGfxProgram *pProgram, GLuint indexUnit) const;
@@ -73,8 +74,6 @@ public:
 	bool IsEnableBlend(void) const;
 
 public:
-	GLuint GetName(void) const;
-
 	CGfxProgram* GetProgram(void) const;
 
 	CGfxSampler* GetSampler(const char *szName, GLenum minFilter, GLenum magFilter, GLenum addressMode);

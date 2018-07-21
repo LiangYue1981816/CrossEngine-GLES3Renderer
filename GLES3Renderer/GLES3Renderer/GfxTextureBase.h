@@ -4,6 +4,8 @@
 
 class CGfxTextureBase
 {
+	friend class CGfxRenderer;
+	friend class CGfxMaterial;
 	friend class CGfxTextureManager;
 
 
@@ -13,24 +15,24 @@ protected:
 
 
 public:
-	bool IsValid(void) const;
-
-public:
-	virtual bool CreateExtern(GLuint texture);
+	GLuint GetName(void) const;
 
 protected:
+	virtual bool CreateExtern(GLuint texture);
 	virtual bool Load(const char *szFileName) = 0;
 	virtual void Free(void);
 
 public:
-	GLuint GetName(void) const;
-	GLuint GetTexture(void) const;
+	bool IsValid(void) const;
 
 	GLenum GetFormat(void) const;
 	GLenum GetInternalFormat(void) const;
 
 	GLuint GetWidth(void) const;
 	GLuint GetHeight(void) const;
+
+protected:
+	GLuint GetTexture(void) const;
 
 
 protected:

@@ -63,11 +63,6 @@ CGfxProgram::~CGfxProgram(void)
 	Free();
 }
 
-bool CGfxProgram::IsValid(void) const
-{
-	return m_program != 0;
-}
-
 bool CGfxProgram::Load(const char *szVertexFileName, const char *szFragmentFileName)
 {
 	try {
@@ -301,6 +296,11 @@ bool CGfxProgram::BindTextureCubeMap(GLuint name, GLuint texture, GLuint sampler
 	}
 
 	return false;
+}
+
+bool CGfxProgram::IsValid(void) const
+{
+	return m_program != 0;
 }
 
 bool CGfxProgram::IsUniformValid(GLuint name) const
