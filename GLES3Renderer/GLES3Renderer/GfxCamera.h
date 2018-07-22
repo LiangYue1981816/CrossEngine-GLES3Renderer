@@ -52,6 +52,7 @@ public:
 
 public:
 	void CmdDraw(void);
+	void Submit(void);
 
 
 private:

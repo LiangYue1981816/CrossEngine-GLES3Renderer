@@ -180,3 +180,12 @@ void CGfxCamera::CmdDraw(void)
 	}
 	CGfxRenderer::GetInstance()->CmdEndPass(m_pCommandBuffer);
 }
+
+void CGfxCamera::Submit(void)
+{
+	CGfxRenderer::GetInstance()->SetCameraProjectionMatrix((float *)&m_camera.mtxProjection);
+	CGfxRenderer::GetInstance()->SetCameraViewMatrix((float *)&m_camera.mtxView);
+
+	CGfxRenderer::GetInstance()->Update();
+	CGfxRenderer::GetInstance()->Submit(m_pCommandBuffer);
+}
