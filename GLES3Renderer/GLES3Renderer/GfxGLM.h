@@ -324,6 +324,14 @@ namespace glm {
 
 		}
 
+		void setScissor(float x, float y, float width, float height)
+		{
+			scissor.x = x;
+			scissor.y = y;
+			scissor.z = width;
+			scissor.w = height;
+		}
+
 		void setViewport(float x, float y, float width, float height)
 		{
 			viewport.x = x;
@@ -435,6 +443,7 @@ namespace glm {
 		}
 
 	public:
+		vec4 scissor;
 		vec4 viewport;
 
 		vec3 position;

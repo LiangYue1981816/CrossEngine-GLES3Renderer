@@ -58,6 +58,11 @@ void CGfxCamera::SetClearColor(float red, float green, float blue, float alpha)
 	m_clearColorAlpha = alpha;
 }
 
+void CGfxCamera::SetScissor(float x, float y, float width, float height)
+{
+	m_camera.setScissor(x, y, width, height);
+}
+
 void CGfxCamera::SetViewport(float x, float y, float width, float height)
 {
 	m_camera.setViewport(x, y, width, height);
@@ -152,8 +157,8 @@ void CGfxCamera::CmdDraw(void)
 
 	CGfxRenderer::GetInstance()->CmdBeginPass(m_pCommandBuffer, m_pFrameBuffer);
 	{
-		CGfxRenderer::GetInstance()->CmdSetScissor(m_pCommandBuffer, 0, 0, m_pFrameBuffer->GetWidth(), m_pFrameBuffer->GetHeight());
-		CGfxRenderer::GetInstance()->CmdSetViewport(m_pCommandBuffer, 0, 0, m_pFrameBuffer->GetWidth(), m_pFrameBuffer->GetHeight());
+		CGfxRenderer::GetInstance()->CmdSetScissor(m_pCommandBuffer, (int)m_camera.scissor.x, (int)m_camera.scissor.y, (int)m_camera.scissor.z, (int)m_camera.scissor.w);
+		CGfxRenderer::GetInstance()->CmdSetViewport(m_pCommandBuffer, (int)m_camera.viewport.x, (int)m_camera.viewport.y, (int)m_camera.viewport.z, (int)m_camera.viewport.w);
 
 		if (m_bEnableClearDepth) {
 			CGfxRenderer::GetInstance()->CmdClearDepth(m_pCommandBuffer, m_clearDepth);

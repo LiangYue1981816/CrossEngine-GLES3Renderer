@@ -28,6 +28,7 @@ public:
 	void SetClearColor(float red, float green, float blue, float alpha);
 
 public:
+	void SetScissor(float x, float y, float width, float height);
 	void SetViewport(float x, float y, float width, float height);
 	void SetPerspective(float fovy, float aspect, float zNear, float zFar);
 	void SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
