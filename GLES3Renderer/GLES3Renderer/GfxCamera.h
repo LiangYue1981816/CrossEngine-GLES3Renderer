@@ -31,7 +31,7 @@ public:
 	void SetViewport(float x, float y, float width, float height);
 	void SetPerspective(float fovy, float aspect, float zNear, float zFar);
 	void SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
-	void SetLookat(const glm::vec3 &position, const glm::vec3 &direction, const glm::vec3 &up);
+	void SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
 
 	const float* GetProjectionMatrix(void) const;
 	const float* GetViewMatrix(void) const;

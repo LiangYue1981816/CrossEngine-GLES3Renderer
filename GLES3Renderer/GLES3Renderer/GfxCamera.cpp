@@ -73,9 +73,9 @@ void CGfxCamera::SetOrtho(float left, float right, float bottom, float top, floa
 	m_camera.setOrtho(left, right, bottom, top, zNear, zFar);
 }
 
-void CGfxCamera::SetLookat(const glm::vec3 &position, const glm::vec3 &direction, const glm::vec3 &up)
+void CGfxCamera::SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
-	m_camera.setLookat(position, position + direction, up);
+	m_camera.setLookat(glm::vec3(eyex, eyey, eyez), glm::vec3(centerx, centery, centerz), glm::vec3(upx, upy, upz));
 }
 
 const float* CGfxCamera::GetProjectionMatrix(void) const
