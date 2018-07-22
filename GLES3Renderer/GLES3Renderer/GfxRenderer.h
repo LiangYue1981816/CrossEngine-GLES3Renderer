@@ -5,6 +5,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "GfxUtils.h"
+#include "GfxCamera.h"
 #include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
 #include "GfxProgramManager.h"

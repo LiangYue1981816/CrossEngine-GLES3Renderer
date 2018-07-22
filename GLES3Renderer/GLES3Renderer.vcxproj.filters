@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="GLES3Renderer\GfxFrameBuffer.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
@@ -191,7 +190,6 @@
     <ClCompile Include="GLES3Renderer\spirv-cross\spirv_msl.cpp">
       <Filter>spirv-cross</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="GLES3Renderer\GfxFrameBuffer.cpp">
       <Filter>GLES3Renderer\Source Files</Filter>
     </ClCompile>
