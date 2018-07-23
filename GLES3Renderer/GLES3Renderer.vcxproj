@@ -122,6 +122,7 @@
     <ClInclude Include="GLES3Renderer\GfxProgramManager.h" />
     <ClInclude Include="GLES3Renderer\GfxRenderer.h" />
     <ClInclude Include="GLES3Renderer\GfxSampler.h" />
+    <ClInclude Include="GLES3Renderer\GfxSamplerManager.h" />
     <ClInclude Include="GLES3Renderer\GfxTexture2D.h" />
     <ClInclude Include="GLES3Renderer\GfxTexture2DArray.h" />
     <ClInclude Include="GLES3Renderer\GfxTextureBase.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="GLES3Renderer\GfxProgramManager.cpp" />
     <ClCompile Include="GLES3Renderer\GfxRenderer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxSampler.cpp" />
+    <ClCompile Include="GLES3Renderer\GfxSamplerManager.cpp" />
     <ClCompile Include="GLES3Renderer\GfxTexture2D.cpp" />
     <ClCompile Include="GLES3Renderer\GfxTexture2DArray.cpp" />
     <ClCompile Include="GLES3Renderer\GfxTextureBase.cpp" />
