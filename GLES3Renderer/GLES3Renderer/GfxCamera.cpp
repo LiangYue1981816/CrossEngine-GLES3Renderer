@@ -7,6 +7,7 @@
 CGfxCamera::CGfxCamera(void)
 	: m_pFrameBuffer(NULL)
 	, m_pCommandBuffer(NULL)
+	, m_pUniformCamera(NULL)
 
 	, m_bEnableClearDepth(true)
 	, m_bEnableClearColor(true)
@@ -16,13 +17,16 @@ CGfxCamera::CGfxCamera(void)
 	, m_clearColorBlue(0.0f)
 	, m_clearColorAlpha(0.0f)
 {
+	m_pUniformCamera = new CGfxUniformCamera;
 	m_pCommandBuffer = new CGfxCommandBuffer(true);
 }
 
 CGfxCamera::~CGfxCamera(void)
 {
 	ClearQueue();
+
 	delete m_pCommandBuffer;
+	delete m_pUniformCamera;
 }
 
 void CGfxCamera::SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer)

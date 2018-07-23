@@ -9,6 +9,7 @@ class CGfxMesh;
 class CGfxMaterial;
 class CGfxFrameBuffer;
 class CGfxCommandBuffer;
+class CGfxUniformCamera;
 class CGfxCamera
 {
 public:
@@ -76,4 +77,5 @@ private:
 private:
 	CGfxFrameBuffer *m_pFrameBuffer;
 	CGfxCommandBuffer *m_pCommandBuffer;
+	CGfxUniformCamera *m_pUniformCamera;
 };
