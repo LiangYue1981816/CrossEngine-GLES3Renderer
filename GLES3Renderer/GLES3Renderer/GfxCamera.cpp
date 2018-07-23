@@ -207,3 +207,18 @@ void CGfxCamera::Submit(void)
 	CGfxRenderer::GetInstance()->Update();
 	CGfxRenderer::GetInstance()->Submit(m_pCommandBuffer);
 }
+
+const CGfxUniformCamera* CGfxCamera::GetUniformCamera(void) const
+{
+	return m_pUniformCamera;
+}
+
+const CGfxUniformZBuffer* CGfxCamera::GetUniformZBuffer(void) const
+{
+	return m_pUniformZBuffer;
+}
+
+const CGfxUniformProjection* CGfxCamera::GetUniformProjection(void) const
+{
+	return m_pUniformProjection;
+}
