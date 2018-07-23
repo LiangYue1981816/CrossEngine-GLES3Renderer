@@ -7,7 +7,10 @@
 CGfxCamera::CGfxCamera(void)
 	: m_pFrameBuffer(NULL)
 	, m_pCommandBuffer(NULL)
+
 	, m_pUniformCamera(NULL)
+	, m_pUniformZBuffer(NULL)
+	, m_pUniformProjection(NULL)
 
 	, m_bEnableClearDepth(true)
 	, m_bEnableClearColor(true)
@@ -17,8 +20,10 @@ CGfxCamera::CGfxCamera(void)
 	, m_clearColorBlue(0.0f)
 	, m_clearColorAlpha(0.0f)
 {
-	m_pUniformCamera = new CGfxUniformCamera;
 	m_pCommandBuffer = new CGfxCommandBuffer(true);
+	m_pUniformCamera = new CGfxUniformCamera;
+	m_pUniformZBuffer = new CGfxUniformZBuffer;
+	m_pUniformProjection = new CGfxUniformProjection;
 }
 
 CGfxCamera::~CGfxCamera(void)
@@ -27,6 +32,8 @@ CGfxCamera::~CGfxCamera(void)
 
 	delete m_pCommandBuffer;
 	delete m_pUniformCamera;
+	delete m_pUniformZBuffer;
+	delete m_pUniformProjection;
 }
 
 void CGfxCamera::SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
@@ -75,16 +82,23 @@ void CGfxCamera::SetViewport(float x, float y, float width, float height)
 void CGfxCamera::SetPerspective(float fovy, float aspect, float zNear, float zFar)
 {
 	m_camera.setPerspective(fovy, aspect, zNear, zFar);
+	m_pUniformCamera->SetPerspective(fovy, aspect, zNear, zFar);
+	m_pUniformZBuffer->SetZBuffer(zNear, zFar);
+	m_pUniformProjection->SetProjection(zNear, zFar);
 }
 
 void CGfxCamera::SetOrtho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	m_camera.setOrtho(left, right, bottom, top, zNear, zFar);
+	m_pUniformCamera->SetOrtho(left, right, bottom, top, zNear, zFar);
+	m_pUniformZBuffer->SetZBuffer(zNear, zFar);
+	m_pUniformProjection->SetProjection(zNear, zFar);
 }
 
 void CGfxCamera::SetLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz)
 {
 	m_camera.setLookat(glm::vec3(eyex, eyey, eyez), glm::vec3(centerx, centery, centerz), glm::vec3(upx, upy, upz));
+	m_pUniformCamera->SetLookat(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
 }
 
 const float* CGfxCamera::GetProjectionMatrix(void) const

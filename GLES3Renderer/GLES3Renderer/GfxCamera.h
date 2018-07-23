@@ -10,6 +10,8 @@ class CGfxMaterial;
 class CGfxFrameBuffer;
 class CGfxCommandBuffer;
 class CGfxUniformCamera;
+class CGfxUniformZBuffer;
+class CGfxUniformProjection;
 class CGfxCamera
 {
 public:
@@ -77,5 +79,9 @@ private:
 private:
 	CGfxFrameBuffer *m_pFrameBuffer;
 	CGfxCommandBuffer *m_pCommandBuffer;
+
+private:
 	CGfxUniformCamera *m_pUniformCamera;
+	CGfxUniformZBuffer *m_pUniformZBuffer;
+	CGfxUniformProjection *m_pUniformProjection;
 };
