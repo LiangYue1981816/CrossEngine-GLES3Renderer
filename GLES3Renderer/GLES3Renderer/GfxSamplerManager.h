@@ -14,7 +14,7 @@ private:
 	virtual ~CGfxSamplerManager(void);
 
 
-public:
+private:
 	CGfxSampler* CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 

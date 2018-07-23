@@ -1,7 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "GfxUtils.h"
-#include "GfxSampler.h"
 #include "GfxTexture2D.h"
 #include "GfxTexture2DArray.h"
 #include "GfxTextureCubeMap.h"
@@ -15,27 +14,11 @@ CGfxTextureManager::CGfxTextureManager(void)
 
 CGfxTextureManager::~CGfxTextureManager(void)
 {
-	for (const auto &itSampler : m_pSamplers) {
-		delete itSampler.second;
-	}
-
 	for (const auto &itTexture : m_pTextures) {
 		delete itTexture.second;
 	}
 
-	m_pSamplers.clear();
 	m_pTextures.clear();
-}
-
-CGfxSampler* CGfxTextureManager::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
-{
-	GLuint64 name = (((GLuint64)minFilter) << 32) | (((GLuint64)magFilter) << 16) | ((GLuint64)addressMode);
-
-	if (m_pSamplers[name] == NULL) {
-		m_pSamplers[name] = new CGfxSampler(minFilter, magFilter, addressMode);
-	}
-
-	return m_pSamplers[name];
 }
 
 CGfxTexture2D* CGfxTextureManager::LoadTexture2D(const char *szFileName)

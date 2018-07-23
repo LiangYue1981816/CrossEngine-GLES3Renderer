@@ -33,10 +33,11 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	, m_pGlobalMaterial(NULL)
 	, m_pCurrentMaterial(NULL)
 
+	, m_pMeshManager(NULL)
 	, m_pProgramManager(NULL)
+	, m_pSamplerManager(NULL)
 	, m_pTextureManager(NULL)
 	, m_pMaterialManager(NULL)
-	, m_pMeshManager(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -64,10 +65,11 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 
 	m_pGlobalMaterial = new CGfxMaterial(0);
 
+	m_pMeshManager = new CGfxMeshManager;
 	m_pProgramManager = new CGfxProgramManager;
+	m_pSamplerManager = new CGfxSamplerManager;
 	m_pTextureManager = new CGfxTextureManager;
 	m_pMaterialManager = new CGfxMaterialManager;
-	m_pMeshManager = new CGfxMeshManager;
 }
 
 CGfxRenderer::~CGfxRenderer(void)
@@ -75,10 +77,12 @@ CGfxRenderer::~CGfxRenderer(void)
 	m_meshScreen.Free();
 
 	delete m_pGlobalMaterial;
+
+	delete m_pMeshManager;
 	delete m_pMaterialManager;
 	delete m_pProgramManager;
+	delete m_pSamplerManager;
 	delete m_pTextureManager;
-	delete m_pMeshManager;
 }
 
 const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -105,39 +109,34 @@ const char* CGfxRenderer::GetMeshFullPath(const char *szFileName, char *szFullPa
 	return szFullPath;
 }
 
-CGfxProgramManager* CGfxRenderer::GetProgramManager(void) const
+CGfxProgram* CGfxRenderer::CreateProgram(const char *szVertexFileName, const char *szFragmentFileName)
 {
-	return m_pProgramManager;
+	return m_pProgramManager->CreateProgram(szVertexFileName, szFragmentFileName);
 }
 
-CGfxTextureManager* CGfxRenderer::GetTextureManager(void) const
+CGfxSampler* CGfxRenderer::CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
-	return m_pTextureManager;
+	return m_pSamplerManager->CreateSampler(minFilter, magFilter, addressMode);
 }
 
-CGfxMaterialManager* CGfxRenderer::GetMaterialManager(void) const
+CGfxTexture2D* CGfxRenderer::LoadTexture2D(const char *szFileName)
 {
-	return m_pMaterialManager;
+	return m_pTextureManager->LoadTexture2D(szFileName);
 }
 
-CGfxMeshManager* CGfxRenderer::GetMeshManager(void) const
+CGfxTexture2DArray* CGfxRenderer::LoadTexture2DArray(const char *szFileName)
 {
-	return m_pMeshManager;
+	return m_pTextureManager->LoadTexture2DArray(szFileName);
 }
 
-CGfxMesh* CGfxRenderer::LoadMesh(const char *szFileName)
+CGfxTextureCubeMap* CGfxRenderer::LoadTextureCubeMap(const char *szFileName)
 {
-	return m_pMeshManager->LoadMesh(szFileName);
+	return m_pTextureManager->LoadTextureCubeMap(szFileName);
 }
 
-void CGfxRenderer::FreeMesh(CGfxMesh *pMesh)
+void CGfxRenderer::FreeTexture(CGfxTextureBase *pTexture)
 {
-	m_pMeshManager->FreeMesh(pMesh);
-}
-
-CGfxMesh* CGfxRenderer::GetMesh(GLuint name) const
-{
-	return m_pMeshManager->GetMesh(name);
+	m_pTextureManager->FreeTexture(pTexture);
 }
 
 CGfxMaterial* CGfxRenderer::LoadMaterial(const char *szFileName)
@@ -150,14 +149,14 @@ void CGfxRenderer::FreeMaterial(CGfxMaterial *pMaterial)
 	m_pMaterialManager->FreeMaterial(pMaterial);
 }
 
-CGfxMaterial* CGfxRenderer::GetMaterial(GLuint name) const
+CGfxMesh* CGfxRenderer::LoadMesh(const char *szFileName)
 {
-	return m_pMaterialManager->GetMaterial(name);
+	return m_pMeshManager->LoadMesh(szFileName);
 }
 
-CGfxMaterial* CGfxRenderer::GetGlobalMaterial(void) const
+void CGfxRenderer::FreeMesh(CGfxMesh *pMesh)
 {
-	return m_pGlobalMaterial;
+	m_pMeshManager->FreeMesh(pMesh);
 }
 
 void CGfxRenderer::SetTime(float t, float dt)

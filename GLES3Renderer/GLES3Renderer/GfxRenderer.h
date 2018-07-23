@@ -8,10 +8,11 @@
 #include "GfxCamera.h"
 #include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
+#include "GfxMeshManager.h"
 #include "GfxProgramManager.h"
+#include "GfxSamplerManager.h"
 #include "GfxTextureManager.h"
 #include "GfxMaterialManager.h"
-#include "GfxMeshManager.h"
 #include "GfxMesh.h"
 #include "GfxMaterial.h"
 #include "GfxProgram.h"
@@ -73,23 +74,19 @@ public:
 	const char* GetMeshFullPath(const char *szFileName, char *szFullPath) const;
 
 public:
-	CGfxProgramManager* GetProgramManager(void) const;
-	CGfxTextureManager* GetTextureManager(void) const;
-	CGfxMaterialManager* GetMaterialManager(void) const;
-	CGfxMeshManager* GetMeshManager(void) const;
+	CGfxProgram* CreateProgram(const char *szVertexFileName, const char *szFragmentFileName);
+	CGfxSampler* CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
-public:
-	CGfxMesh* LoadMesh(const char *szFileName);
-	void FreeMesh(CGfxMesh *pMesh);
+	CGfxTexture2D* LoadTexture2D(const char *szFileName);
+	CGfxTexture2DArray* LoadTexture2DArray(const char *szFileName);
+	CGfxTextureCubeMap* LoadTextureCubeMap(const char *szFileName);
+	void FreeTexture(CGfxTextureBase *pTexture);
 
-	CGfxMesh* GetMesh(GLuint name) const;
-
-public:
 	CGfxMaterial* LoadMaterial(const char *szFileName);
 	void FreeMaterial(CGfxMaterial *pMaterial);
 
-	CGfxMaterial* GetMaterial(GLuint name) const;
-	CGfxMaterial* GetGlobalMaterial(void) const;
+	CGfxMesh* LoadMesh(const char *szFileName);
+	void FreeMesh(CGfxMesh *pMesh);
 
 public:
 	void SetTime(float t, float dt);
@@ -179,10 +176,11 @@ private:
 	CGfxMaterial *m_pCurrentMaterial;
 
 private:
+	CGfxMeshManager *m_pMeshManager;
 	CGfxProgramManager *m_pProgramManager;
+	CGfxSamplerManager *m_pSamplerManager;
 	CGfxTextureManager *m_pTextureManager;
 	CGfxMaterialManager *m_pMaterialManager;
-	CGfxMeshManager *m_pMeshManager;
 
 private:
 	static CGfxRenderer *pInstance;
