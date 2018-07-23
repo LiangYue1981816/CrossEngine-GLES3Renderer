@@ -299,17 +299,17 @@ bool CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int 
 	return pCommandBuffer->SetViewport(x, y, width, height);
 }
 
-bool CGfxRenderer::CmdSetCamera(CGfxCommandBuffer *pCommandBuffer, CGfxCamera *pCamera)
+bool CGfxRenderer::CmdBindCamera(CGfxCommandBuffer *pCommandBuffer, CGfxCamera *pCamera)
 {
 	return pCommandBuffer->BindCamera(pCamera);
 }
 
-bool CGfxRenderer::CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial)
+bool CGfxRenderer::CmdBindMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial)
 {
 	return pCommandBuffer->BindMaterial(pMaterial);
 }
 
-bool CGfxRenderer::CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
+bool CGfxRenderer::CmdBindInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
 	return pCommandBuffer->BindInputTexture(szName, texture, minFilter, magFilter, addressMode);
 }

@@ -186,10 +186,10 @@ void CGfxCamera::CmdDraw(void)
 			CGfxRenderer::GetInstance()->CmdClearColor(m_pCommandBuffer, m_clearColorRed, m_clearColorGreen, m_clearColorBlue, m_clearColorAlpha);
 		}
 
-		CGfxRenderer::GetInstance()->CmdSetCamera(m_pCommandBuffer, this);
+		CGfxRenderer::GetInstance()->CmdBindCamera(m_pCommandBuffer, this);
 		{
 			for (const auto &itMaterialQueue : m_queueOpaque) {
-				CGfxRenderer::GetInstance()->CmdSetMaterial(m_pCommandBuffer, itMaterialQueue.first);
+				CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first);
 
 				for (const auto &itDistanceQueue : itMaterialQueue.second) {
 					for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
@@ -199,7 +199,7 @@ void CGfxCamera::CmdDraw(void)
 			}
 
 			for (const auto &itMaterialQueue : m_queueTransparent) {
-				CGfxRenderer::GetInstance()->CmdSetMaterial(m_pCommandBuffer, itMaterialQueue.first);
+				CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first);
 
 				for (const auto &itDistanceQueue : itMaterialQueue.second) {
 					for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
@@ -208,7 +208,7 @@ void CGfxCamera::CmdDraw(void)
 				}
 			}
 		}
-		CGfxRenderer::GetInstance()->CmdSetCamera(m_pCommandBuffer, NULL);
+		CGfxRenderer::GetInstance()->CmdBindCamera(m_pCommandBuffer, NULL);
 	}
 	CGfxRenderer::GetInstance()->CmdEndPass(m_pCommandBuffer);
 }
