@@ -10,7 +10,6 @@ class CGfxVertexArrayObject;
 class CGfxMesh
 {
 	friend class CGfxRenderer;
-	friend class CGfxCamera;
 	friend class CGfxMeshManager;
 
 
@@ -32,7 +31,7 @@ private:
 	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
 	bool CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format);
 
-private:
+public:
 	void ClearInstance(void);
 	void SetInstance(const glm::mat4 &mtxTransform);
 	void AddInstance(const glm::mat4 &mtxTransform);
