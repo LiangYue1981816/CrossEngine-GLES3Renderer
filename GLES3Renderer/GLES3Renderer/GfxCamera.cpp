@@ -197,6 +197,16 @@ void CGfxCamera::CmdDraw(void)
 					}
 				}
 			}
+
+			for (const auto &itMaterialQueue : m_queueTransparent) {
+				CGfxRenderer::GetInstance()->CmdSetMaterial(m_pCommandBuffer, itMaterialQueue.first);
+
+				for (const auto &itDistanceQueue : itMaterialQueue.second) {
+					for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
+						CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index], itDistanceQueue.second[index]->GetIndexCount(), 0);
+					}
+				}
+			}
 		}
 		CGfxRenderer::GetInstance()->CmdSetCamera(m_pCommandBuffer, NULL);
 	}
