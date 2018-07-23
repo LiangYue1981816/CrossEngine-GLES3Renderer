@@ -135,7 +135,6 @@ public:
 
 	bool CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);
 	bool CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha);
-	bool CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh);
 	bool CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset);
 	bool CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer);
 

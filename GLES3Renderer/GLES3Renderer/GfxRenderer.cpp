@@ -318,11 +318,6 @@ bool CGfxRenderer::CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, f
 	return pCommandBuffer->ClearColor(red, green, blue, alpha);
 }
 
-bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh)
-{
-	return CmdDrawInstance(pCommandBuffer, pMesh, pMesh->GetIndexCount(), 0);
-}
-
 bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset)
 {
 	if (pCommandBuffer->BindMesh(pMesh) == false) {
