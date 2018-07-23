@@ -7,6 +7,7 @@
 #include "GfxCommandBeginPass.h"
 #include "GfxCommandEndPass.h"
 #include "GfxCommandBindMesh.h"
+#include "GfxCommandBindCamera.h"
 #include "GfxCommandBindMaterial.h"
 #include "GfxCommandBindInputTexture.h"
 #include "GfxCommandSetScissor.h"
@@ -107,6 +108,16 @@ bool CGfxCommandBuffer::BindMesh(CGfxMesh *pMesh)
 {
 	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
 		m_commands.push_back(new CGfxCommandBindMesh(pMesh));
+		return true;
+	}
+
+	return false;
+}
+
+bool CGfxCommandBuffer::BindCamera(CGfxCamera *pCamera)
+{
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandBindCamera(pCamera));
 		return true;
 	}
 

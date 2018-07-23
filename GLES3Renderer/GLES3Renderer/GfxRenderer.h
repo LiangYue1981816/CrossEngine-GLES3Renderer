@@ -52,6 +52,7 @@
 class CGfxRenderer
 {
 	friend class CGfxCommandBindMesh;
+	friend class CGfxCommandBindCamera;
 	friend class CGfxCommandBindMaterial;
 	friend class CGfxCommandBindInputTexture;
 
@@ -130,6 +131,7 @@ public:
 	bool CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 	bool CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 
+	bool CmdSetCamera(CGfxCommandBuffer *pCommandBuffer, CGfxCamera *pCamera);
 	bool CmdSetMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial);
 	bool CmdSetInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
@@ -146,6 +148,7 @@ public:
 
 private:
 	void BindMesh(CGfxMesh *pMesh);
+	void BindCamera(CGfxCamera *pCamera);
 	void BindMaterial(CGfxMaterial *pMaterial);
 	void BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
@@ -171,8 +174,11 @@ private:
 	CGfxUniformFog m_uniformFog;
 
 private:
-	CGfxMaterial *m_pGlobalMaterial;
+	CGfxCamera *m_pCurrentCamera;
 	CGfxMaterial *m_pCurrentMaterial;
+
+private:
+	CGfxMaterial *m_pGlobalMaterial;
 
 private:
 	CGfxMeshManager *m_pMeshManager;

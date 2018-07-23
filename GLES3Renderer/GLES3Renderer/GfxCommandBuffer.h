@@ -4,9 +4,9 @@
 
 
 class CGfxMesh;
+class CGfxCamera;
 class CGfxMaterial;
 class CGfxFrameBuffer;
-
 class CGfxCommandBase
 {
 public:
@@ -45,6 +45,7 @@ public:
 	bool SetViewport(int x, int y, int width, int height);
 
 	bool BindMesh(CGfxMesh *pMesh);
+	bool BindCamera(CGfxCamera *pCamera);
 	bool BindMaterial(CGfxMaterial *pMaterial);
 	bool BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
