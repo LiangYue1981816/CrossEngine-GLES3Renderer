@@ -47,6 +47,7 @@ private:
 	bool CmdSetViewport(int x, int y, int width, int height);
 
 	bool CmdBindMesh(CGfxMesh *pMesh);
+	bool CmdBindMesh(CGfxMesh *pMesh, std::vector<glm::mat4> &mtxTransforms);
 	bool CmdBindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection);
 	bool CmdBindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 

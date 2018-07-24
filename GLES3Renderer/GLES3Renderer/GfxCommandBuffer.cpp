@@ -108,6 +108,16 @@ bool CGfxCommandBuffer::CmdBindMesh(CGfxMesh *pMesh)
 	return false;
 }
 
+bool CGfxCommandBuffer::CmdBindMesh(CGfxMesh *pMesh, std::vector<glm::mat4> &mtxTransforms)
+{
+	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {
+		m_commands.push_back(new CGfxCommandBindMesh(pMesh, mtxTransforms));
+		return true;
+	}
+
+	return false;
+}
+
 bool CGfxCommandBuffer::CmdBindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection)
 {
 	if ((m_bMainCommandBuffer == false) || (m_bMainCommandBuffer == true && m_bInPassScope == true)) {

@@ -331,6 +331,19 @@ bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *
 	return true;
 }
 
+bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset, std::vector<glm::mat4> &mtxTransforms)
+{
+	if (pCommandBuffer->CmdBindMesh(pMesh, mtxTransforms) == false) {
+		return false;
+	}
+
+	if (pCommandBuffer->CmdDrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, mtxTransforms.size()) == false) {
+		return false;
+	}
+
+	return true;
+}
+
 bool CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer)
 {
 	if (pCommandBuffer->CmdBindMesh(&m_meshScreen) == false) {
