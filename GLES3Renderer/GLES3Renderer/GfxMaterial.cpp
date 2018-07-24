@@ -4,6 +4,17 @@
 #include "GfxRenderer.h"
 
 
+static GLenum StringToCullFace(const char *szString)
+{
+	if (szString) {
+		if (!stricmp(szString, "GL_FRONT")) return GL_FRONT;
+		if (!stricmp(szString, "GL_BACK")) return GL_BACK;
+		if (!stricmp(szString, "GL_FRONT_AND_BACK ")) return GL_FRONT_AND_BACK;
+	}
+
+	return GL_BACK;
+}
+
 static GLenum StringToFrontFace(const char *szString)
 {
 	if (szString) {
@@ -125,6 +136,7 @@ CGfxMaterial::CGfxMaterial(GLuint name)
 	m_state.bEnableColorWrite[3] = GL_TRUE;
 	m_state.bEnableBlend = GL_FALSE;
 	m_state.bEnablePolygonOffset = GL_FALSE;
+	m_state.cullFace = GL_BACK;
 	m_state.frontFace = GL_CCW;
 	m_state.depthFunc = GL_LESS;
 	m_state.srcBlendFactor = GL_SRC_ALPHA;
@@ -202,7 +214,7 @@ void CGfxMaterial::BindState(void) const
 		glDisable(GL_POLYGON_OFFSET_FILL);
 	}
 
-	glCullFace(GL_BACK);
+	glCullFace(m_state.cullFace);
 	glFrontFace(m_state.frontFace);
 	glDepthFunc(m_state.depthFunc);
 	glBlendFunc(m_state.srcBlendFactor, m_state.dstBlendFactor);
@@ -263,7 +275,7 @@ bool CGfxMaterial::Load(const char *szFileName)
 {
 	/*
 	<Material>
-		<Cull enable="" front_face="" />
+		<Cull enable="" cull_face="" front_face="" />
 		<Depth enable_test="" enable_write="" depth_func="" />
 		<Color enable_write_red="" enable_write_green="" enable_write_blue="" enable_write_alpha="" />
 		<Blend enable="" src_factor="" dst_factor="" />
@@ -321,6 +333,7 @@ bool CGfxMaterial::LoadState(TiXmlNode *pMaterialNode)
 		{
 			if (TiXmlNode *pCullNode = pMaterialNode->FirstChild("Cull")) {
 				m_state.bEnableCullFace = pCullNode->ToElement()->AttributeBool("enable");
+				m_state.cullFace = StringToCullFace(pCullNode->ToElement()->AttributeString("cull_face"));
 				m_state.frontFace = StringToFrontFace(pCullNode->ToElement()->AttributeString("front_face"));
 			}
 
@@ -685,9 +698,10 @@ void CGfxMaterial::Free(void)
 	m_pUniformMat4s.clear();
 }
 
-void CGfxMaterial::SetEnableCullFace(bool bEnable, GLenum frontFace)
+void CGfxMaterial::SetEnableCullFace(bool bEnable, GLenum cullFace, GLenum frontFace)
 {
 	m_state.bEnableCullFace = bEnable;
+	m_state.cullFace = cullFace;
 	m_state.frontFace = frontFace;
 }
 

@@ -11,6 +11,7 @@ typedef struct GL_STATE {
 	GLboolean bEnableColorWrite[4];
 	GLboolean bEnableBlend;
 	GLboolean bEnablePolygonOffset;
+	GLenum cullFace;
 	GLenum frontFace;
 	GLenum depthFunc;
 	GLenum srcBlendFactor;
@@ -68,7 +69,7 @@ private:
 	void Free(void);
 
 public:
-	void SetEnableCullFace(bool bEnable, GLenum frontFace);
+	void SetEnableCullFace(bool bEnable, GLenum cullFace, GLenum frontFace);
 	void SetEnableDepthTest(bool bEnable, GLenum depthFunc);
 	void SetEnableDepthWrite(bool bEnable);
 	void SetEnableColorWrite(bool bEnableRed, bool bEnableGreen, bool bEnableBlue, bool bEnableAlpha);
