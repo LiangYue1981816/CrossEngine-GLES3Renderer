@@ -15,6 +15,7 @@ CGfxUniformVec2::CGfxUniformVec2(void)
 CGfxUniformVec2::~CGfxUniformVec2(void)
 {
 	m_pUniformBuffer->Destroy();
+	delete m_pUniformBuffer;
 }
 
 void CGfxUniformVec2::SetValue(float x, float y)

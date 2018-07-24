@@ -138,6 +138,7 @@ CGfxUniformAmbientLight::CGfxUniformAmbientLight(void)
 
 CGfxUniformAmbientLight::~CGfxUniformAmbientLight(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

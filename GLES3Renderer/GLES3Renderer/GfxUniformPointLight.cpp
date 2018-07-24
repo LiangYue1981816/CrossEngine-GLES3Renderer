@@ -14,6 +14,7 @@ CGfxUniformPointLight::CGfxUniformPointLight(void)
 
 CGfxUniformPointLight::~CGfxUniformPointLight(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

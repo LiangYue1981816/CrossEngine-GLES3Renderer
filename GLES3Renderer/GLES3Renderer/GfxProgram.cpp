@@ -93,8 +93,9 @@ bool CGfxProgram::LoadShader(const char *szFileName, GLenum type, GLuint &shader
 	pShaderCompiler = new spirv_cross::CompilerGLSL(words.data(), words.size());
 
 	spirv_cross::CompilerGLSL::Options options;
-	options.version = 300;
+	options.version = 310;
 	options.es = true;
+	options.vertex.fixup_clipspace = false;
 	pShaderCompiler->set_options(options);
 
 	const std::string strSource = pShaderCompiler->compile();

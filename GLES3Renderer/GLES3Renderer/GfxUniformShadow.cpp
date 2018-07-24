@@ -15,6 +15,7 @@ CGfxUniformShadow::CGfxUniformShadow(void)
 
 CGfxUniformShadow::~CGfxUniformShadow(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

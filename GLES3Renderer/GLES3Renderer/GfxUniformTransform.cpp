@@ -17,6 +17,7 @@ CGfxUniformTransform::CGfxUniformTransform(void)
 
 CGfxUniformTransform::~CGfxUniformTransform(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

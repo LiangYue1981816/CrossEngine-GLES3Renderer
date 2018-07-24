@@ -14,6 +14,7 @@ CGfxUniformMat4::CGfxUniformMat4(void)
 
 CGfxUniformMat4::~CGfxUniformMat4(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

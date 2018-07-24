@@ -14,6 +14,7 @@ CGfxUniformFog::CGfxUniformFog(void)
 
 CGfxUniformFog::~CGfxUniformFog(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

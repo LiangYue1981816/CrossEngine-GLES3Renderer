@@ -14,6 +14,7 @@ CGfxUniformVec4::CGfxUniformVec4(void)
 
 CGfxUniformVec4::~CGfxUniformVec4(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

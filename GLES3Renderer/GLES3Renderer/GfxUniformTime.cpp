@@ -14,6 +14,7 @@ CGfxUniformTime::CGfxUniformTime(void)
 
 CGfxUniformTime::~CGfxUniformTime(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

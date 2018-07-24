@@ -14,6 +14,7 @@ CGfxUniformProjection::CGfxUniformProjection(void)
 
 CGfxUniformProjection::~CGfxUniformProjection(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

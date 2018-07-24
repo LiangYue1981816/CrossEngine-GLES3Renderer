@@ -15,6 +15,7 @@ CGfxUniformCamera::CGfxUniformCamera(void)
 
 CGfxUniformCamera::~CGfxUniformCamera(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 

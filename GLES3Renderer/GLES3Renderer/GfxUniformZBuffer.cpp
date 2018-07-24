@@ -14,6 +14,7 @@ CGfxUniformZBuffer::CGfxUniformZBuffer(void)
 
 CGfxUniformZBuffer::~CGfxUniformZBuffer(void)
 {
+	m_pUniformBuffer->Destroy();
 	delete m_pUniformBuffer;
 }
 
