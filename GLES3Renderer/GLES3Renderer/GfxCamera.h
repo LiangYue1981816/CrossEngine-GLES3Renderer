@@ -71,15 +71,16 @@ private:
 	glm::camera m_camera;
 
 private:
-	std::map<CGfxMaterial*, std::map<CGfxMesh*, std::vector<glm::mat4>>> m_queueOpaque;
-	std::map<CGfxMaterial*, std::map<CGfxMesh*, std::vector<glm::mat4>>> m_queueTransparent;
-
-private:
-	CGfxFrameBuffer *m_pFrameBuffer;
-	CGfxCommandBuffer *m_pCommandBuffer;
+	GLuint m_index;
+	std::map<CGfxMaterial*, std::map<CGfxMesh*, std::vector<glm::mat4>>> m_queueOpaque[2];
+	std::map<CGfxMaterial*, std::map<CGfxMesh*, std::vector<glm::mat4>>> m_queueTransparent[2];
+	CGfxCommandBuffer *m_pCommandBuffer[2];
 
 private:
 	CGfxUniformCamera *m_pUniformCamera;
 	CGfxUniformZBuffer *m_pUniformZBuffer;
 	CGfxUniformProjection *m_pUniformProjection;
+
+private:
+	CGfxFrameBuffer *m_pFrameBuffer;
 };
