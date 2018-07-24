@@ -33,6 +33,18 @@ CGfxMesh::~CGfxMesh(void)
 	delete m_pVertexArrayObject;
 }
 
+void CGfxMesh::Lock(void)
+{
+	refCount++;
+}
+
+void CGfxMesh::Unlock(void)
+{
+	if (refCount > 0) {
+		refCount--;
+	}
+}
+
 GLuint CGfxMesh::GetName(void) const
 {
 	return m_name;

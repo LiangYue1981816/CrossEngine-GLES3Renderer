@@ -13,11 +13,11 @@ public:
 		, m_pUniformZBuffer(pUniformZBuffer)
 		, m_pUniformProjection(pUniformProjection)
 	{
-
+		m_pMaterial->Lock();
 	}
 	virtual ~CGfxCommandBindMaterial(void)
 	{
-
+		m_pMaterial->Unlock();
 	}
 
 public:

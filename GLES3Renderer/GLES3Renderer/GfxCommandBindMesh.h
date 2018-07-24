@@ -10,11 +10,11 @@ public:
 	CGfxCommandBindMesh(CGfxMesh *pMesh)
 		: m_pMesh(pMesh)
 	{
-
+		m_pMesh->Lock();
 	}
 	virtual ~CGfxCommandBindMesh(void)
 	{
-
+		m_pMesh->Unlock();
 	}
 
 public:

@@ -15,6 +15,10 @@ protected:
 
 
 public:
+	void Lock(void);
+	void Unlock(void);
+
+public:
 	GLuint GetName(void) const;
 
 protected:

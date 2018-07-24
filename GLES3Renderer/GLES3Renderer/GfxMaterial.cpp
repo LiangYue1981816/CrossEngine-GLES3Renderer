@@ -138,6 +138,18 @@ CGfxMaterial::~CGfxMaterial(void)
 	Free();
 }
 
+void CGfxMaterial::Lock(void)
+{
+	refCount++;
+}
+
+void CGfxMaterial::Unlock(void)
+{
+	if (refCount > 0) {
+		refCount--;
+	}
+}
+
 GLuint CGfxMaterial::GetName(void) const
 {
 	return m_name;

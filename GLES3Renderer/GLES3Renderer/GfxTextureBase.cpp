@@ -28,6 +28,18 @@ CGfxTextureBase::~CGfxTextureBase(void)
 	Free();
 }
 
+void CGfxTextureBase::Lock(void)
+{
+	refCount++;
+}
+
+void CGfxTextureBase::Unlock(void)
+{
+	if (refCount > 0) {
+		refCount--;
+	}
+}
+
 GLuint CGfxTextureBase::GetName(void) const
 {
 	return m_name;

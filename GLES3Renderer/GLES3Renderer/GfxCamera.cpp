@@ -146,6 +146,9 @@ void CGfxCamera::AddQueue(CGfxMaterial *pMaterial, CGfxMesh *pMesh, const glm::m
 		else {
 			m_queueOpaque[pMaterial][length].push_back(pMesh);
 		}
+
+		pMesh->Lock();
+		pMaterial->Lock();
 	}
 
 	pMesh->AddInstance(mtxTransform);
@@ -155,6 +158,18 @@ void CGfxCamera::ClearQueue(void)
 {
 	for (const auto &itMesh : m_meshs) {
 		itMesh.second->ClearInstance();
+	}
+
+	for (const auto &itMesh : m_meshs) {
+		itMesh.second->Unlock();
+	}
+
+	for (const auto &itMaterial : m_queueOpaque) {
+		itMaterial.first->Unlock();
+	}
+
+	for (const auto &itMaterial : m_queueTransparent) {
+		itMaterial.first->Unlock();
 	}
 
 	m_meshs.clear();
