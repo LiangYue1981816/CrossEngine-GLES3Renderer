@@ -136,15 +136,11 @@ void CGfxCamera::AddQueue(CGfxMaterial *pMaterial, CGfxMesh *pMesh, const glm::m
 	if (m_meshs[pMesh] == NULL) {
 		m_meshs[pMesh] = pMesh;
 
-		glm::vec4 position = mtxTransform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		glm::vec3 distance = glm::vec3(position.x - m_camera.position.x, position.y - m_camera.position.y, position.z - m_camera.position.z);
-		GLuint length = (GLuint)glm::length(distance);
-
 		if (pMaterial->IsEnableBlend()) {
-			m_queueTransparent[pMaterial][UINT_MAX - length].push_back(pMesh);
+			m_queueTransparent[pMaterial].push_back(pMesh);
 		}
 		else {
-			m_queueOpaque[pMaterial][length].push_back(pMesh);
+			m_queueOpaque[pMaterial].push_back(pMesh);
 		}
 
 		pMesh->Lock();
@@ -199,20 +195,16 @@ void CGfxCamera::CmdDraw(void)
 		for (const auto &itMaterialQueue : m_queueOpaque) {
 			CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
 
-			for (const auto &itDistanceQueue : itMaterialQueue.second) {
-				for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
-					CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index], itDistanceQueue.second[index]->GetIndexCount(), 0);
-				}
+			for (size_t index = 0; index < itMaterialQueue.second.size(); index++) {
+				CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itMaterialQueue.second[index], itMaterialQueue.second[index]->GetIndexCount(), 0);
 			}
 		}
 
 		for (const auto &itMaterialQueue : m_queueTransparent) {
 			CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
 
-			for (const auto &itDistanceQueue : itMaterialQueue.second) {
-				for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
-					CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index], itDistanceQueue.second[index]->GetIndexCount(), 0);
-				}
+			for (size_t index = 0; index < itMaterialQueue.second.size(); index++) {
+				CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itMaterialQueue.second[index], itMaterialQueue.second[index]->GetIndexCount(), 0);
 			}
 		}
 	}
