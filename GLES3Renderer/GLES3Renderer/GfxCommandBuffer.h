@@ -3,10 +3,6 @@
 #include "gles3/gl3.h"
 
 
-class CGfxMesh;
-class CGfxCamera;
-class CGfxMaterial;
-class CGfxFrameBuffer;
 class CGfxCommandBase
 {
 public:
@@ -23,38 +19,43 @@ public:
 	virtual void Execute(void) const = 0;
 };
 
+class CGfxMesh;
+class CGfxMaterial;
+class CGfxFrameBuffer;
+class CGfxUniformCamera;
+class CGfxUniformZBuffer;
+class CGfxUniformProjection;
 class CGfxCommandBuffer
 {
+	friend class CGfxRenderer;
+
+
 public:
 	CGfxCommandBuffer(bool bMainCommandBuffer);
 	virtual ~CGfxCommandBuffer(void);
 
 
 public:
-	bool IsMainCommandBuffer(void) const;
-
-public:
 	void Clearup(void);
 	bool Execute(void) const;
 
-public:
-	bool BeginPass(CGfxFrameBuffer *pFrameBuffer);
-	bool EndPass(void);
+private:
+	bool CmdBeginPass(CGfxFrameBuffer *pFrameBuffer);
+	bool CmdEndPass(void);
 
-	bool SetScissor(int x, int y, int width, int height);
-	bool SetViewport(int x, int y, int width, int height);
+	bool CmdSetScissor(int x, int y, int width, int height);
+	bool CmdSetViewport(int x, int y, int width, int height);
 
-	bool BindMesh(CGfxMesh *pMesh);
-	bool BindCamera(CGfxCamera *pCamera);
-	bool BindMaterial(CGfxMaterial *pMaterial);
-	bool BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
+	bool CmdBindMesh(CGfxMesh *pMesh);
+	bool CmdBindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection);
+	bool CmdBindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
-	bool ClearDepth(float depth);
-	bool ClearColor(float red, float green, float blue, float alpha);
-	bool DrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
-	bool DrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
+	bool CmdClearDepth(float depth);
+	bool CmdClearColor(float red, float green, float blue, float alpha);
+	bool CmdDrawInstance(GLenum mode, GLsizei count, GLenum type, void *indices, GLsizei primcount);
+	bool CmdDrawElements(GLenum mode, GLsizei count, GLenum type, void *indices);
 
-	bool Execute(CGfxCommandBuffer *pCommandBuffer);
+	bool CmdExecute(CGfxCommandBuffer *pCommandBuffer);
 
 
 private:

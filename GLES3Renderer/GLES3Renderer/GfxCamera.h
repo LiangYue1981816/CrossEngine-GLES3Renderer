@@ -21,7 +21,6 @@ public:
 
 public:
 	void SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
-	const CGfxFrameBuffer* GetFrameBuffer(void) const;
 
 public:
 	void SetEnableClearDepth(bool bEnable);
@@ -56,11 +55,6 @@ public:
 public:
 	void CmdDraw(void);
 	void Submit(void);
-
-public:
-	const CGfxUniformCamera* GetUniformCamera(void) const;
-	const CGfxUniformZBuffer* GetUniformZBuffer(void) const;
-	const CGfxUniformProjection* GetUniformProjection(void) const;
 
 
 private:

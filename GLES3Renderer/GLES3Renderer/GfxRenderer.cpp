@@ -30,15 +30,14 @@ void CGfxRenderer::Destroy(void)
 CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, const char *szMaterialPath, const char *szMeshPath)
 	: m_meshScreen(0)
 
-	, m_pCurrentCamera(NULL)
-	, m_pCurrentMaterial(NULL)
 	, m_pGlobalMaterial(NULL)
+	, m_pCurrentMaterial(NULL)
 
-	, m_pMeshManager(NULL)
 	, m_pProgramManager(NULL)
 	, m_pSamplerManager(NULL)
 	, m_pTextureManager(NULL)
 	, m_pMaterialManager(NULL)
+	, m_pMeshManager(NULL)
 {
 	strcpy(m_szShaderPath, szShaderPath);
 	strcpy(m_szTexturePath, szTexturePath);
@@ -66,11 +65,11 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 
 	m_pGlobalMaterial = new CGfxMaterial(0);
 
-	m_pMeshManager = new CGfxMeshManager;
 	m_pProgramManager = new CGfxProgramManager;
 	m_pSamplerManager = new CGfxSamplerManager;
 	m_pTextureManager = new CGfxTextureManager;
 	m_pMaterialManager = new CGfxMaterialManager;
+	m_pMeshManager = new CGfxMeshManager;
 }
 
 CGfxRenderer::~CGfxRenderer(void)
@@ -81,9 +80,9 @@ CGfxRenderer::~CGfxRenderer(void)
 
 	delete m_pMeshManager;
 	delete m_pMaterialManager;
-	delete m_pProgramManager;
-	delete m_pSamplerManager;
 	delete m_pTextureManager;
+	delete m_pSamplerManager;
+	delete m_pProgramManager;
 }
 
 const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -281,56 +280,51 @@ void CGfxRenderer::SetFogDistanceDensity(float startDistance, float endDistance,
 
 bool CGfxRenderer::CmdBeginPass(CGfxCommandBuffer *pCommandBuffer, CGfxFrameBuffer *pFrameBuffer)
 {
-	return pCommandBuffer->BeginPass(pFrameBuffer);
+	return pCommandBuffer->CmdBeginPass(pFrameBuffer);
 }
 
 bool CGfxRenderer::CmdEndPass(CGfxCommandBuffer *pCommandBuffer)
 {
-	return pCommandBuffer->EndPass();
+	return pCommandBuffer->CmdEndPass();
 }
 
 bool CGfxRenderer::CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
 {
-	return pCommandBuffer->SetScissor(x, y, width, height);
+	return pCommandBuffer->CmdSetScissor(x, y, width, height);
 }
 
 bool CGfxRenderer::CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height)
 {
-	return pCommandBuffer->SetViewport(x, y, width, height);
+	return pCommandBuffer->CmdSetViewport(x, y, width, height);
 }
 
-bool CGfxRenderer::CmdBindCamera(CGfxCommandBuffer *pCommandBuffer, CGfxCamera *pCamera)
+bool CGfxRenderer::CmdBindMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection)
 {
-	return pCommandBuffer->BindCamera(pCamera);
-}
-
-bool CGfxRenderer::CmdBindMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial)
-{
-	return pCommandBuffer->BindMaterial(pMaterial);
+	return pCommandBuffer->CmdBindMaterial(pMaterial, pUniformCamera, pUniformZBuffer, pUniformProjection);
 }
 
 bool CGfxRenderer::CmdBindInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode)
 {
-	return pCommandBuffer->BindInputTexture(szName, texture, minFilter, magFilter, addressMode);
+	return pCommandBuffer->CmdBindInputTexture(szName, texture, minFilter, magFilter, addressMode);
 }
 
 bool CGfxRenderer::CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth)
 {
-	return pCommandBuffer->ClearDepth(depth);
+	return pCommandBuffer->CmdClearDepth(depth);
 }
 
 bool CGfxRenderer::CmdClearColor(CGfxCommandBuffer *pCommandBuffer, float red, float green, float blue, float alpha)
 {
-	return pCommandBuffer->ClearColor(red, green, blue, alpha);
+	return pCommandBuffer->CmdClearColor(red, green, blue, alpha);
 }
 
 bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *pMesh, int indexCount, int indexOffset)
 {
-	if (pCommandBuffer->BindMesh(pMesh) == false) {
+	if (pCommandBuffer->CmdBindMesh(pMesh) == false) {
 		return false;
 	}
 
-	if (pCommandBuffer->DrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount()) == false) {
+	if (pCommandBuffer->CmdDrawInstance(GL_TRIANGLES, indexCount, pMesh->GetIndexType(), (void *)indexOffset, pMesh->GetInstanceCount()) == false) {
 		return false;
 	}
 
@@ -339,11 +333,11 @@ bool CGfxRenderer::CmdDrawInstance(CGfxCommandBuffer *pCommandBuffer, CGfxMesh *
 
 bool CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer)
 {
-	if (pCommandBuffer->BindMesh(&m_meshScreen) == false) {
+	if (pCommandBuffer->CmdBindMesh(&m_meshScreen) == false) {
 		return false;
 	}
 
-	if (pCommandBuffer->DrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL) == false) {
+	if (pCommandBuffer->CmdDrawElements(GL_TRIANGLES, m_meshScreen.GetIndexCount(), m_meshScreen.GetIndexType(), NULL) == false) {
 		return false;
 	}
 
@@ -352,15 +346,15 @@ bool CGfxRenderer::CmdDrawScreen(CGfxCommandBuffer *pCommandBuffer)
 
 bool CGfxRenderer::CmdExecute(CGfxCommandBuffer *pCommandBuffer, CGfxCommandBuffer *pSecondaryCommandBuffer)
 {
-	return pCommandBuffer->Execute(pSecondaryCommandBuffer);
+	return pCommandBuffer->CmdExecute(pSecondaryCommandBuffer);
 }
 
 void CGfxRenderer::Update(void)
 {
 	m_uniformTime.Apply();
+	m_uniformCamera.Apply();
 	m_uniformZBuffer.Apply();
 	m_uniformProjection.Apply();
-	m_uniformCamera.Apply();
 	m_uniformShadow.Apply();
 	m_uniformAmbientLight.Apply();
 	m_uniformPointLight.Apply();
@@ -378,14 +372,7 @@ void CGfxRenderer::BindMesh(CGfxMesh *pMesh)
 	pMesh->Bind();
 }
 
-void CGfxRenderer::BindCamera(CGfxCamera *pCamera)
-{
-	if (m_pCurrentCamera != pCamera) {
-		m_pCurrentCamera = pCamera;
-	}
-}
-
-void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
+void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection)
 {
 	if (m_pCurrentMaterial != pMaterial) {
 		m_pCurrentMaterial = pMaterial;
@@ -398,21 +385,18 @@ void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial)
 			m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_POINT_LIGHT_NAME), m_uniformPointLight.GetBuffer(), m_uniformPointLight.GetSize());
 			m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_DIRECT_LIGHT_NAME), m_uniformDirectLight.GetBuffer(), m_uniformDirectLight.GetSize());
 			m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_FOG_NAME), m_uniformFog.GetBuffer(), m_uniformFog.GetSize());
-
-			if (m_pCurrentCamera) {
-				m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_pCurrentCamera->GetUniformCamera()->GetBuffer(), m_pCurrentCamera->GetUniformCamera()->GetSize());
-				m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_pCurrentCamera->GetUniformZBuffer()->GetBuffer(), m_pCurrentCamera->GetUniformZBuffer()->GetSize());
-				m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_pCurrentCamera->GetUniformProjection()->GetBuffer(), m_pCurrentCamera->GetUniformProjection()->GetSize());
-			}
-			else {
-				m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), m_uniformCamera.GetBuffer(), m_uniformCamera.GetSize());
-				m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), m_uniformZBuffer.GetBuffer(), m_uniformZBuffer.GetSize());
-				m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), m_uniformProjection.GetBuffer(), m_uniformProjection.GetSize());
-			}
 		}
 	}
 
 	if (m_pCurrentMaterial) {
+		pUniformCamera = pUniformCamera != NULL ? pUniformCamera : &m_uniformCamera;
+		pUniformZBuffer = pUniformZBuffer != NULL ? pUniformZBuffer : &m_uniformZBuffer;
+		pUniformProjection = pUniformProjection != NULL ? pUniformProjection : &m_uniformProjection;
+
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_CAMERA_NAME), pUniformCamera->GetBuffer(), pUniformCamera->GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_ZBUFFER_NAME), pUniformZBuffer->GetBuffer(), pUniformZBuffer->GetSize());
+		m_pCurrentMaterial->GetProgram()->BindUniformBuffer(HashValue(ENGINE_PROJECTION_NAME), pUniformProjection->GetBuffer(), pUniformProjection->GetSize());
+
 		m_pGlobalMaterial->BindUniforms(m_pCurrentMaterial->GetProgram());
 		m_pGlobalMaterial->BindTextures(m_pCurrentMaterial->GetProgram(), m_pCurrentMaterial->GetTextureUnits());
 	}

@@ -7,8 +7,11 @@
 class CGfxCommandBindMaterial : public CGfxCommandBase
 {
 public:
-	CGfxCommandBindMaterial(CGfxMaterial *pMaterial)
+	CGfxCommandBindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection)
 		: m_pMaterial(pMaterial)
+		, m_pUniformCamera(pUniformCamera)
+		, m_pUniformZBuffer(pUniformZBuffer)
+		, m_pUniformProjection(pUniformProjection)
 	{
 
 	}
@@ -20,10 +23,13 @@ public:
 public:
 	virtual void Execute(void) const
 	{
-		CGfxRenderer::GetInstance()->BindMaterial(m_pMaterial);
+		CGfxRenderer::GetInstance()->BindMaterial(m_pMaterial, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
 	}
 
 
 private:
 	CGfxMaterial *m_pMaterial;
+	CGfxUniformCamera *m_pUniformCamera;
+	CGfxUniformZBuffer *m_pUniformZBuffer;
+	CGfxUniformProjection *m_pUniformProjection;
 };

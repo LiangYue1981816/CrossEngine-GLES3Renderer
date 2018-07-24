@@ -159,9 +159,6 @@
     <ClInclude Include="GLES3Renderer\GfxSamplerManager.h">
       <Filter>GLES3Renderer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GLES3Renderer\GfxCommandBindCamera.h">
-      <Filter>GLES3Renderer\Source Files\Commands</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

@@ -21,9 +21,9 @@
 #include "GfxTexture2DArray.h"
 #include "GfxTextureCubeMap.h"
 #include "GfxUniformTime.h"
+#include "GfxUniformCamera.h"
 #include "GfxUniformZBuffer.h"
 #include "GfxUniformProjection.h"
-#include "GfxUniformCamera.h"
 #include "GfxUniformShadow.h"
 #include "GfxUniformTransform.h"
 #include "GfxUniformAmbientLight.h"
@@ -38,9 +38,9 @@
 
 
 #define ENGINE_TIME_NAME                "Time"
+#define ENGINE_CAMERA_NAME              "Camera"
 #define ENGINE_ZBUFFER_NAME             "ZBuffer"
 #define ENGINE_PROJECTION_NAME          "Projection"
-#define ENGINE_CAMERA_NAME              "Camera"
 #define ENGINE_SHADOW_NAME              "Shadow"
 #define ENGINE_TRANSFORM_NAME           "Transform"
 #define ENGINE_AMBIENT_LIGHT_NAME       "AmbientLight"
@@ -92,14 +92,12 @@ public:
 public:
 	void SetTime(float t, float dt);
 
-public:
 	void SetCameraPerspective(float fovy, float aspect, float zNear, float zFar);
 	void SetCameraOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetCameraLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
 	void SetCameraProjectionMatrix(const float *mtxProjection);
 	void SetCameraViewMatrix(const float *mtxView);
 
-public:
 	void SetShadowOrtho(float left, float right, float bottom, float top, float zNear, float zFar);
 	void SetShadowLookat(float eyex, float eyey, float eyez, float centerx, float centery, float centerz, float upx, float upy, float upz);
 	void SetShadowProjectionMatrix(const float *mtxProjection);
@@ -108,7 +106,6 @@ public:
 	void SetShadowDistance(float distance);
 	void SetShadowResolution(float resolution);
 
-public:
 	void SetAmbientLightSH(float shRed[9], float shGreen[9], float shBlue[9]);
 	void SetAmbientLightRotation(float angle, float axisx, float axisy, float axisz);
 
@@ -119,7 +116,6 @@ public:
 	void SetDirectLightColor(float red, float green, float blue);
 	void SetDirectLightDirection(float dirx, float diry, float dirz);
 
-public:
 	void SetFogColor(float red, float green, float blue);
 	void SetFogHeightDensity(float startHeight, float endHeight, float density);
 	void SetFogDistanceDensity(float startDistance, float endDistance, float density);
@@ -131,8 +127,7 @@ public:
 	bool CmdSetScissor(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 	bool CmdSetViewport(CGfxCommandBuffer *pCommandBuffer, int x, int y, int width, int height);
 
-	bool CmdBindCamera(CGfxCommandBuffer *pCommandBuffer, CGfxCamera *pCamera);
-	bool CmdBindMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial);
+	bool CmdBindMaterial(CGfxCommandBuffer *pCommandBuffer, CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera = NULL, CGfxUniformZBuffer *pUniformZBuffer = NULL, CGfxUniformProjection *pUniformProjection = NULL);
 	bool CmdBindInputTexture(CGfxCommandBuffer *pCommandBuffer, const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 	bool CmdClearDepth(CGfxCommandBuffer *pCommandBuffer, float depth);
@@ -148,8 +143,7 @@ public:
 
 private:
 	void BindMesh(CGfxMesh *pMesh);
-	void BindCamera(CGfxCamera *pCamera);
-	void BindMaterial(CGfxMaterial *pMaterial);
+	void BindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection);
 	void BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
 
@@ -163,29 +157,26 @@ private:
 	CGfxMesh m_meshScreen;
 
 private:
+	CGfxMaterial *m_pGlobalMaterial;
+	CGfxMaterial *m_pCurrentMaterial;
+
+private:
+	CGfxProgramManager *m_pProgramManager;
+	CGfxSamplerManager *m_pSamplerManager;
+	CGfxTextureManager *m_pTextureManager;
+	CGfxMaterialManager *m_pMaterialManager;
+	CGfxMeshManager *m_pMeshManager;
+
+private:
 	CGfxUniformTime m_uniformTime;
+	CGfxUniformCamera m_uniformCamera;
 	CGfxUniformZBuffer m_uniformZBuffer;
 	CGfxUniformProjection m_uniformProjection;
-	CGfxUniformCamera m_uniformCamera;
 	CGfxUniformShadow m_uniformShadow;
 	CGfxUniformAmbientLight m_uniformAmbientLight;
 	CGfxUniformPointLight m_uniformPointLight;
 	CGfxUniformDirectLight m_uniformDirectLight;
 	CGfxUniformFog m_uniformFog;
-
-private:
-	CGfxCamera *m_pCurrentCamera;
-	CGfxMaterial *m_pCurrentMaterial;
-
-private:
-	CGfxMaterial *m_pGlobalMaterial;
-
-private:
-	CGfxMeshManager *m_pMeshManager;
-	CGfxProgramManager *m_pProgramManager;
-	CGfxSamplerManager *m_pSamplerManager;
-	CGfxTextureManager *m_pTextureManager;
-	CGfxMaterialManager *m_pMaterialManager;
 
 private:
 	static CGfxRenderer *pInstance;

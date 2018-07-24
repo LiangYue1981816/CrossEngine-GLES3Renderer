@@ -98,7 +98,6 @@
   <ItemGroup>
     <ClInclude Include="GLES3Renderer\GfxCamera.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBeginPass.h" />
-    <ClInclude Include="GLES3Renderer\GfxCommandBindCamera.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindInputTexture.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindMaterial.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandBindMesh.h" />

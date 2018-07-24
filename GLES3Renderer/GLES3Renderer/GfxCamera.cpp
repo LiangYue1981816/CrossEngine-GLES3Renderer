@@ -41,11 +41,6 @@ void CGfxCamera::SetFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
 	m_pFrameBuffer = pFrameBuffer;
 }
 
-const CGfxFrameBuffer* CGfxCamera::GetFrameBuffer(void) const
-{
-	return m_pFrameBuffer;
-}
-
 void CGfxCamera::SetEnableClearDepth(bool bEnable)
 {
 	m_bEnableClearDepth = bEnable;
@@ -186,29 +181,25 @@ void CGfxCamera::CmdDraw(void)
 			CGfxRenderer::GetInstance()->CmdClearColor(m_pCommandBuffer, m_clearColorRed, m_clearColorGreen, m_clearColorBlue, m_clearColorAlpha);
 		}
 
-		CGfxRenderer::GetInstance()->CmdBindCamera(m_pCommandBuffer, this);
-		{
-			for (const auto &itMaterialQueue : m_queueOpaque) {
-				CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first);
+		for (const auto &itMaterialQueue : m_queueOpaque) {
+			CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
 
-				for (const auto &itDistanceQueue : itMaterialQueue.second) {
-					for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
-						CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index], itDistanceQueue.second[index]->GetIndexCount(), 0);
-					}
-				}
-			}
-
-			for (const auto &itMaterialQueue : m_queueTransparent) {
-				CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first);
-
-				for (const auto &itDistanceQueue : itMaterialQueue.second) {
-					for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
-						CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index], itDistanceQueue.second[index]->GetIndexCount(), 0);
-					}
+			for (const auto &itDistanceQueue : itMaterialQueue.second) {
+				for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
+					CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index], itDistanceQueue.second[index]->GetIndexCount(), 0);
 				}
 			}
 		}
-		CGfxRenderer::GetInstance()->CmdBindCamera(m_pCommandBuffer, NULL);
+
+		for (const auto &itMaterialQueue : m_queueTransparent) {
+			CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
+
+			for (const auto &itDistanceQueue : itMaterialQueue.second) {
+				for (size_t index = 0; index < itDistanceQueue.second.size(); index++) {
+					CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itDistanceQueue.second[index], itDistanceQueue.second[index]->GetIndexCount(), 0);
+				}
+			}
+		}
 	}
 	CGfxRenderer::GetInstance()->CmdEndPass(m_pCommandBuffer);
 }
@@ -221,19 +212,4 @@ void CGfxCamera::Submit(void)
 
 	CGfxRenderer::GetInstance()->Update();
 	CGfxRenderer::GetInstance()->Submit(m_pCommandBuffer);
-}
-
-const CGfxUniformCamera* CGfxCamera::GetUniformCamera(void) const
-{
-	return m_pUniformCamera;
-}
-
-const CGfxUniformZBuffer* CGfxCamera::GetUniformZBuffer(void) const
-{
-	return m_pUniformZBuffer;
-}
-
-const CGfxUniformProjection* CGfxCamera::GetUniformProjection(void) const
-{
-	return m_pUniformProjection;
 }
