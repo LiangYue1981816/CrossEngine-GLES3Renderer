@@ -133,45 +133,50 @@ bool CGfxCamera::IsVisible(const glm::sphere &sphere)
 
 void CGfxCamera::AddQueue(CGfxMaterial *pMaterial, CGfxMesh *pMesh, const glm::mat4 &mtxTransform)
 {
-	if (m_meshs[pMesh] == NULL) {
-		m_meshs[pMesh] = pMesh;
-
-		if (pMaterial->IsEnableBlend()) {
-			m_queueTransparent[pMaterial].push_back(pMesh);
-		}
-		else {
-			m_queueOpaque[pMaterial].push_back(pMesh);
+	if (pMaterial->IsEnableBlend()) {
+		if (m_queueTransparent.find(pMaterial) == m_queueTransparent.end()) {
+			pMaterial->Lock();
 		}
 
-		pMesh->Lock();
-		pMaterial->Lock();
+		if (m_queueTransparent[pMaterial].find(pMesh) == m_queueTransparent[pMaterial].end()) {
+			pMesh->Lock();
+		}
+
+		m_queueTransparent[pMaterial][pMesh].push_back(mtxTransform);
 	}
+	else {
+		if (m_queueOpaque.find(pMaterial) == m_queueOpaque.end()) {
+			pMaterial->Lock();
+		}
 
-	pMesh->AddInstance(mtxTransform);
+		if (m_queueOpaque[pMaterial].find(pMesh) == m_queueOpaque[pMaterial].end()) {
+			pMesh->Lock();
+		}
+
+		m_queueOpaque[pMaterial][pMesh].push_back(mtxTransform);
+	}
 }
 
 void CGfxCamera::ClearQueue(void)
 {
-	for (const auto &itMesh : m_meshs) {
-		itMesh.second->ClearInstance();
+	for (const auto &itMaterialQueue : m_queueOpaque) {
+		for (const auto itMeshQueue : itMaterialQueue.second) {
+			itMeshQueue.first->Unlock();
+		}
+
+		itMaterialQueue.first->Unlock();
 	}
 
-	for (const auto &itMesh : m_meshs) {
-		itMesh.second->Unlock();
+	for (const auto &itMaterialQueue : m_queueTransparent) {
+		for (const auto itMeshQueue : itMaterialQueue.second) {
+			itMeshQueue.first->Unlock();
+		}
+
+		itMaterialQueue.first->Unlock();
 	}
 
-	for (const auto &itMaterial : m_queueOpaque) {
-		itMaterial.first->Unlock();
-	}
-
-	for (const auto &itMaterial : m_queueTransparent) {
-		itMaterial.first->Unlock();
-	}
-
-	m_meshs.clear();
 	m_queueOpaque.clear();
 	m_queueTransparent.clear();
-
 	m_pCommandBuffer->Clearup();
 }
 
@@ -191,20 +196,12 @@ void CGfxCamera::CmdDraw(void)
 		if (m_bEnableClearColor) {
 			CGfxRenderer::GetInstance()->CmdClearColor(m_pCommandBuffer, m_clearColorRed, m_clearColorGreen, m_clearColorBlue, m_clearColorAlpha);
 		}
-
+		
 		for (const auto &itMaterialQueue : m_queueOpaque) {
 			CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
 
-			for (size_t index = 0; index < itMaterialQueue.second.size(); index++) {
-				CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itMaterialQueue.second[index], itMaterialQueue.second[index]->GetIndexCount(), 0);
-			}
-		}
-
-		for (const auto &itMaterialQueue : m_queueTransparent) {
-			CGfxRenderer::GetInstance()->CmdBindMaterial(m_pCommandBuffer, itMaterialQueue.first, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
-
-			for (size_t index = 0; index < itMaterialQueue.second.size(); index++) {
-				CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itMaterialQueue.second[index], itMaterialQueue.second[index]->GetIndexCount(), 0);
+			for (const auto &itMeshQueue : itMaterialQueue.second) {
+//				CGfxRenderer::GetInstance()->CmdDrawInstance(m_pCommandBuffer, itMeshQueue.first, itMeshQueue.first->GetIndexCount(), 0, itMeshQueue.second);
 			}
 		}
 	}
