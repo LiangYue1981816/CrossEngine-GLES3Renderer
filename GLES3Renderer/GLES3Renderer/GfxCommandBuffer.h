@@ -39,7 +39,7 @@ public:
 	void Clearup(void);
 	bool Execute(void) const;
 
-private:
+public:
 	bool CmdBeginPass(CGfxFrameBuffer *pFrameBuffer);
 	bool CmdEndPass(void);
 

@@ -52,7 +52,6 @@
 class CGfxRenderer
 {
 	friend class CGfxCommandBindMesh;
-	friend class CGfxCommandBindCamera;
 	friend class CGfxCommandBindMaterial;
 	friend class CGfxCommandBindInputTexture;
 
