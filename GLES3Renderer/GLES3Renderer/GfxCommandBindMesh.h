@@ -20,7 +20,7 @@ public:
 	}
 	virtual ~CGfxCommandBindMesh(void)
 	{
-		m_pMesh->Unlock();
+		m_pMesh->Unlock(true);
 	}
 
 public:

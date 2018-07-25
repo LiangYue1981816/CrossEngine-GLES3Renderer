@@ -155,10 +155,14 @@ void CGfxMaterial::Lock(void)
 	refCount++;
 }
 
-void CGfxMaterial::Unlock(void)
+void CGfxMaterial::Unlock(bool bFree)
 {
 	if (refCount > 0) {
 		refCount--;
+	}
+
+	if (bFree && refCount == 0) {
+		CGfxRenderer::GetInstance()->FreeMaterial(this);
 	}
 }
 
@@ -655,17 +659,17 @@ bool CGfxMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 void CGfxMaterial::Free(void)
 {
 	for (auto &itTexture : m_pTexture2ds) {
-		itTexture.second->Unlock();
+		itTexture.second->Unlock(false);
 		CGfxRenderer::GetInstance()->FreeTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTexture2dArrays) {
-		itTexture.second->Unlock();
+		itTexture.second->Unlock(false);
 		CGfxRenderer::GetInstance()->FreeTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTextureCubeMaps) {
-		itTexture.second->Unlock();
+		itTexture.second->Unlock(false);
 		CGfxRenderer::GetInstance()->FreeTexture(itTexture.second);
 	}
 

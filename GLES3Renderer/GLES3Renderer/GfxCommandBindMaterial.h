@@ -17,7 +17,7 @@ public:
 	}
 	virtual ~CGfxCommandBindMaterial(void)
 	{
-		m_pMaterial->Unlock();
+		m_pMaterial->Unlock(true);
 	}
 
 public:

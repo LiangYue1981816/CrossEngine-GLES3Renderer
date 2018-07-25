@@ -38,10 +38,14 @@ void CGfxMesh::Lock(void)
 	refCount++;
 }
 
-void CGfxMesh::Unlock(void)
+void CGfxMesh::Unlock(bool bFree)
 {
 	if (refCount > 0) {
 		refCount--;
+	}
+
+	if (bFree && refCount == 0) {
+		CGfxRenderer::GetInstance()->FreeMesh(this);
 	}
 }
 

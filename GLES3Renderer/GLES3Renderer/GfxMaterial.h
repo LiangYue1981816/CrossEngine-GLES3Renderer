@@ -44,7 +44,7 @@ private:
 	
 public:
 	void Lock(void);
-	void Unlock(void);
+	void Unlock(bool bFree);
 
 public:
 	GLuint GetName(void) const;

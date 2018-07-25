@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "GfxTextureBase.h"
+#include "GfxRenderer.h"
 
 
 CGfxTextureBase::CGfxTextureBase(GLuint name)
@@ -33,10 +34,14 @@ void CGfxTextureBase::Lock(void)
 	refCount++;
 }
 
-void CGfxTextureBase::Unlock(void)
+void CGfxTextureBase::Unlock(bool bFree)
 {
 	if (refCount > 0) {
 		refCount--;
+	}
+
+	if (bFree && refCount == 0) {
+		CGfxRenderer::GetInstance()->FreeTexture(this);
 	}
 }
 

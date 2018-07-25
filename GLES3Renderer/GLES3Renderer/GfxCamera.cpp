@@ -171,18 +171,18 @@ void CGfxCamera::ClearQueue(void)
 {
 	for (const auto &itMaterialQueue : m_queueOpaque[m_index]) {
 		for (const auto itMeshQueue : itMaterialQueue.second) {
-			itMeshQueue.first->Unlock();
+			itMeshQueue.first->Unlock(true);
 		}
 
-		itMaterialQueue.first->Unlock();
+		itMaterialQueue.first->Unlock(true);
 	}
 
 	for (const auto &itMaterialQueue : m_queueTransparent[m_index]) {
 		for (const auto itMeshQueue : itMaterialQueue.second) {
-			itMeshQueue.first->Unlock();
+			itMeshQueue.first->Unlock(true);
 		}
 
-		itMaterialQueue.first->Unlock();
+		itMaterialQueue.first->Unlock(true);
 	}
 
 	m_queueOpaque[m_index].clear();
