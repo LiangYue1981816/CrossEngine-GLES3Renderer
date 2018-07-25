@@ -28,22 +28,14 @@ CGfxMesh* CGfxMeshManager::LoadMesh(const char *szFileName)
 		m_pMeshs[name]->Load(szFileName);
 	}
 
-	m_pMeshs[name]->refCount++;
-
 	return m_pMeshs[name];
 }
 
 void CGfxMeshManager::FreeMesh(CGfxMesh *pMesh)
 {
-	if (pMesh) {
-		if (pMesh->refCount > 0) {
-			pMesh->refCount--;
-		}
-
-		if (pMesh->refCount == 0) {
-			m_pMeshs.erase(pMesh->GetName());
-			delete pMesh;
-		}
+	if (pMesh && pMesh->refCount == 0) {
+		m_pMeshs.erase(pMesh->GetName());
+		delete pMesh;
 	}
 }
 

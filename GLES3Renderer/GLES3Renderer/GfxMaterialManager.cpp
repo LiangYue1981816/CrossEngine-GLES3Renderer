@@ -28,22 +28,14 @@ CGfxMaterial* CGfxMaterialManager::LoadMaterial(const char *szFileName)
 		m_pMaterials[name]->Load(szFileName);
 	}
 
-	m_pMaterials[name]->refCount++;
-
 	return m_pMaterials[name];
 }
 
 void CGfxMaterialManager::FreeMaterial(CGfxMaterial *pMaterial)
 {
-	if (pMaterial) {
-		if (pMaterial->refCount > 0) {
-			pMaterial->refCount--;
-		}
-
-		if (pMaterial->refCount == 0) {
-			m_pMaterials.erase(pMaterial->GetName());
-			delete pMaterial;
-		}
+	if (pMaterial && pMaterial->refCount == 0) {
+		m_pMaterials.erase(pMaterial->GetName());
+		delete pMaterial;
 	}
 }
 

@@ -421,7 +421,7 @@ bool CGfxMaterial::LoadTexture2D(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsTextureValid(name)) {
 					m_pSamplers[name] = CGfxRenderer::GetInstance()->CreateSampler(minFilter, magFilter, addressMode);
 					m_pTexture2ds[name] = CGfxRenderer::GetInstance()->LoadTexture2D(szFileName);
-					if (m_pTexture2ds[name]->IsValid() == false) throw 3;
+					m_pTexture2ds[name]->Lock();
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2D", pTextureNode));
 		}
@@ -460,7 +460,7 @@ bool CGfxMaterial::LoadTexture2DArray(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsTextureValid(name)) {
 					m_pSamplers[name] = CGfxRenderer::GetInstance()->CreateSampler(minFilter, magFilter, addressMode);
 					m_pTexture2dArrays[name] = CGfxRenderer::GetInstance()->LoadTexture2DArray(szFileName);
-					if (m_pTexture2dArrays[name]->IsValid() == false) throw 3;
+					m_pTexture2dArrays[name]->Lock();
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("Texture2DArray", pTextureNode));
 		}
@@ -499,7 +499,7 @@ bool CGfxMaterial::LoadTextureCubeMap(TiXmlNode *pMaterialNode)
 				if (m_pProgram->IsTextureValid(name)) {
 					m_pSamplers[name] = CGfxRenderer::GetInstance()->CreateSampler(minFilter, magFilter, addressMode);
 					m_pTextureCubeMaps[name] = CGfxRenderer::GetInstance()->LoadTextureCubeMap(szFileName);
-					if (m_pTextureCubeMaps[name]->IsValid() == false) throw 3;
+					m_pTextureCubeMaps[name]->Lock();
 				}
 			} while (pTextureNode = pMaterialNode->IterateChildren("TextureCubeMap", pTextureNode));
 		}
@@ -655,14 +655,17 @@ bool CGfxMaterial::LoadUniformVec4(TiXmlNode *pMaterialNode)
 void CGfxMaterial::Free(void)
 {
 	for (auto &itTexture : m_pTexture2ds) {
+		itTexture.second->Unlock();
 		CGfxRenderer::GetInstance()->FreeTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTexture2dArrays) {
+		itTexture.second->Unlock();
 		CGfxRenderer::GetInstance()->FreeTexture(itTexture.second);
 	}
 
 	for (auto &itTexture : m_pTextureCubeMaps) {
+		itTexture.second->Unlock();
 		CGfxRenderer::GetInstance()->FreeTexture(itTexture.second);
 	}
 

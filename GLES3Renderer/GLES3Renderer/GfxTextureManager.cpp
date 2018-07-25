@@ -30,8 +30,6 @@ CGfxTexture2D* CGfxTextureManager::LoadTexture2D(const char *szFileName)
 		m_pTextures[name]->Load(szFileName);
 	}
 
-	m_pTextures[name]->refCount++;
-
 	return (CGfxTexture2D *)m_pTextures[name];
 }
 
@@ -43,8 +41,6 @@ CGfxTexture2DArray* CGfxTextureManager::LoadTexture2DArray(const char *szFileNam
 		m_pTextures[name] = new CGfxTexture2DArray(name);
 		m_pTextures[name]->Load(szFileName);
 	}
-
-	m_pTextures[name]->refCount++;
 
 	return (CGfxTexture2DArray *)m_pTextures[name];
 }
@@ -58,21 +54,13 @@ CGfxTextureCubeMap* CGfxTextureManager::LoadTextureCubeMap(const char *szFileNam
 		m_pTextures[name]->Load(szFileName);
 	}
 
-	m_pTextures[name]->refCount++;
-
 	return (CGfxTextureCubeMap *)m_pTextures[name];
 }
 
 void CGfxTextureManager::FreeTexture(CGfxTextureBase *pTexture)
 {
-	if (pTexture) {
-		if (pTexture->refCount > 0) {
-			pTexture->refCount--;
-		}
-
-		if (pTexture->refCount == 0) {
-			m_pTextures.erase(pTexture->GetName());
-			delete pTexture;
-		}
+	if (pTexture && pTexture->refCount == 0) {
+		m_pTextures.erase(pTexture->GetName());
+		delete pTexture;
 	}
 }
