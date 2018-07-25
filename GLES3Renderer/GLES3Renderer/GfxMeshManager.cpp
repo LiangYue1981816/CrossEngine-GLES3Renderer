@@ -35,13 +35,15 @@ CGfxMesh* CGfxMeshManager::LoadMesh(const char *szFileName)
 
 void CGfxMeshManager::FreeMesh(CGfxMesh *pMesh)
 {
-	if (pMesh->refCount > 0) {
-		pMesh->refCount--;
-	}
+	if (pMesh) {
+		if (pMesh->refCount > 0) {
+			pMesh->refCount--;
+		}
 
-	if (pMesh->refCount == 0) {
-		m_pMeshs.erase(pMesh->GetName());
-		delete pMesh;
+		if (pMesh->refCount == 0) {
+			m_pMeshs.erase(pMesh->GetName());
+			delete pMesh;
+		}
 	}
 }
 

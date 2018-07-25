@@ -65,12 +65,14 @@ CGfxTextureCubeMap* CGfxTextureManager::LoadTextureCubeMap(const char *szFileNam
 
 void CGfxTextureManager::FreeTexture(CGfxTextureBase *pTexture)
 {
-	if (pTexture->refCount > 0) {
-		pTexture->refCount--;
-	}
+	if (pTexture) {
+		if (pTexture->refCount > 0) {
+			pTexture->refCount--;
+		}
 
-	if (pTexture->refCount == 0) {
-		m_pTextures.erase(pTexture->GetName());
-		delete pTexture;
+		if (pTexture->refCount == 0) {
+			m_pTextures.erase(pTexture->GetName());
+			delete pTexture;
+		}
 	}
 }

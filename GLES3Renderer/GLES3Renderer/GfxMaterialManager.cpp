@@ -35,13 +35,15 @@ CGfxMaterial* CGfxMaterialManager::LoadMaterial(const char *szFileName)
 
 void CGfxMaterialManager::FreeMaterial(CGfxMaterial *pMaterial)
 {
-	if (pMaterial->refCount > 0) {
-		pMaterial->refCount--;
-	}
+	if (pMaterial) {
+		if (pMaterial->refCount > 0) {
+			pMaterial->refCount--;
+		}
 
-	if (pMaterial->refCount == 0) {
-		m_pMaterials.erase(pMaterial->GetName());
-		delete pMaterial;
+		if (pMaterial->refCount == 0) {
+			m_pMaterials.erase(pMaterial->GetName());
+			delete pMaterial;
+		}
 	}
 }
 
