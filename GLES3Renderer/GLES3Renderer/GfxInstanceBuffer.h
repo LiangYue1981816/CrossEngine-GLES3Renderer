@@ -6,26 +6,28 @@
 
 class CGfxInstanceBuffer
 {
-public:
+	friend class CGfxMesh;
+	friend class CGfxVertexArrayObject;
+
+
+private:
 	CGfxInstanceBuffer(void);
 	virtual ~CGfxInstanceBuffer(void);
 
 
-public:
-	void Bind(void);
+private:
+	void Bind(void) const;
+	void SetupFormat(void) const;
+
+private:
+	bool CreateInstanceBuffer(GLuint format);
+	void Destroy(void);
 
 public:
 	void Clear(void);
 	void SetInstance(const glm::mat4 &mtxTransform);
 	void AddInstance(const glm::mat4 &mtxTransform);
 	void UpdateInstance(void);
-
-public:
-	bool CreateInstanceBuffer(GLuint format);
-	void Destroy(void);
-
-public:
-	void SetupFormat(void) const;
 
 public:
 	GLuint GetInstanceCount(void) const;

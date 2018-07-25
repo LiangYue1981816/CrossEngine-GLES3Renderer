@@ -25,13 +25,9 @@ bool CGfxVertexArrayObject::CreateVertexArrayObject(const CGfxIndexBuffer *pInde
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(m_vao);
 	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pIndexBuffer->GetIndexBuffer());
-
-		glBindBuffer(GL_ARRAY_BUFFER, pVertexBuffer->GetVertexBuffer());
-		pVertexBuffer->SetupFormat();
-
-		glBindBuffer(GL_ARRAY_BUFFER, pInstanceBuffer->GetInstanceBuffer());
-		pInstanceBuffer->SetupFormat();
+		pIndexBuffer->Bind();
+		pVertexBuffer->Bind();
+		pInstanceBuffer->Bind();
 	}
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

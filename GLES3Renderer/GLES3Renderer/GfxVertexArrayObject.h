@@ -7,16 +7,19 @@ class CGfxVertexBuffer;
 class CGfxInstanceBuffer;
 class CGfxVertexArrayObject
 {
-public:
+	friend class CGfxMesh;
+
+
+private:
 	CGfxVertexArrayObject(void);
 	virtual ~CGfxVertexArrayObject(void);
 
 
-public:
+private:
 	bool CreateVertexArrayObject(const CGfxIndexBuffer *pIndexBuffer, const CGfxVertexBuffer *pVertexBuffer, const CGfxInstanceBuffer *pInstanceBuffer);
 	void Destroy(void);
 
-public:
+private:
 	GLuint GetVertexArrayObject(void) const;
 
 

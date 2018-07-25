@@ -4,20 +4,22 @@
 
 class CGfxVertexBuffer
 {
-public:
+	friend class CGfxMesh;
+	friend class CGfxVertexArrayObject;
+
+
+private:
 	CGfxVertexBuffer(void);
 	virtual ~CGfxVertexBuffer(void);
 
 
-public:
-	void Bind(void);
+private:
+	void Bind(void) const;
+	void SetupFormat(void) const;
 
-public:
+private:
 	bool CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format);
 	void Destroy(void);
-
-public:
-	void SetupFormat(void) const;
 
 public:
 	GLuint GetVertexCount(void) const;

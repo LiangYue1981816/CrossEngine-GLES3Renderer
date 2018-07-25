@@ -4,15 +4,19 @@
 
 class CGfxIndexBuffer
 {
-public:
+	friend class CGfxMesh;
+	friend class CGfxVertexArrayObject;
+
+
+private:
 	CGfxIndexBuffer(void);
 	virtual ~CGfxIndexBuffer(void);
 
 
-public:
-	void Bind(void);
+private:
+	void Bind(void) const;
 
-public:
+private:
 	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
 	void Destroy(void);
 

@@ -21,12 +21,53 @@ CGfxInstanceBuffer::~CGfxInstanceBuffer(void)
 	Destroy();
 }
 
-void CGfxInstanceBuffer::Bind(void)
+void CGfxInstanceBuffer::Bind(void) const
 {
-	UpdateInstance();
-
 	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
 	SetupFormat();
+}
+
+void CGfxInstanceBuffer::SetupFormat(void) const
+{
+	GLuint instanceStride = GetInstanceStride(m_instanceFormat);
+
+	for (GLuint indexAttribute = 0; indexAttribute < INSTANCE_ATTRIBUTE_COUNT; indexAttribute++) {
+		GLuint attribute = (1 << indexAttribute);
+
+		if (m_instanceFormat & attribute) {
+			GLuint location = GetInstanceAttributeLocation(attribute);
+			GLuint components = GetInstanceAttributeComponents(attribute);
+			GLuint offset = GetInstanceAttributeOffset(m_instanceFormat, attribute);
+
+			glEnableVertexAttribArray(location);
+			glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, instanceStride, (const void *)offset);
+			glVertexAttribDivisor(location, 1);
+		}
+	}
+}
+
+bool CGfxInstanceBuffer::CreateInstanceBuffer(GLuint format)
+{
+	m_instanceFormat = format;
+	m_instanceBufferSize = INSTANCE_BUFFER_SIZE;
+
+	glGenBuffers(1, &m_instanceBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
+	glBufferData(GL_ARRAY_BUFFER, m_instanceBufferSize, NULL, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	return true;
+}
+
+void CGfxInstanceBuffer::Destroy(void)
+{
+	if (m_instanceBuffer) {
+		glDeleteBuffers(1, &m_instanceBuffer);
+	}
+
+	m_instanceFormat = 0;
+	m_instanceBuffer = 0;
+	m_instanceBufferSize = 0;
 }
 
 void CGfxInstanceBuffer::Clear(void)
@@ -73,49 +114,6 @@ void CGfxInstanceBuffer::UpdateInstance(void)
 		glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, m_instanceDatas.data());
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-}
-
-bool CGfxInstanceBuffer::CreateInstanceBuffer(GLuint format)
-{
-	m_instanceFormat = format;
-	m_instanceBufferSize = INSTANCE_BUFFER_SIZE;
-
-	glGenBuffers(1, &m_instanceBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
-	glBufferData(GL_ARRAY_BUFFER, m_instanceBufferSize, NULL, GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	return true;
-}
-
-void CGfxInstanceBuffer::Destroy(void)
-{
-	if (m_instanceBuffer) {
-		glDeleteBuffers(1, &m_instanceBuffer);
-	}
-
-	m_instanceFormat = 0;
-	m_instanceBuffer = 0;
-	m_instanceBufferSize = 0;
-}
-
-void CGfxInstanceBuffer::SetupFormat(void) const
-{
-	GLuint instanceStride = GetInstanceStride(m_instanceFormat);
-
-	for (GLuint indexAttribute = 0; indexAttribute < INSTANCE_ATTRIBUTE_COUNT; indexAttribute++) {
-		GLuint attribute = (1 << indexAttribute);
-
-		if (m_instanceFormat & attribute) {
-			GLuint location = GetInstanceAttributeLocation(attribute);
-			GLuint components = GetInstanceAttributeComponents(attribute);
-			GLuint offset = GetInstanceAttributeOffset(m_instanceFormat, attribute);
-
-			glEnableVertexAttribArray(location);
-			glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, instanceStride, (const void *)offset);
-			glVertexAttribDivisor(location, 1);
-		}
 	}
 }
 

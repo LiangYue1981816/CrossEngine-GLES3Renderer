@@ -16,7 +16,7 @@ CGfxIndexBuffer::~CGfxIndexBuffer(void)
 	Destroy();
 }
 
-void CGfxIndexBuffer::Bind(void)
+void CGfxIndexBuffer::Bind(void) const
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 }
