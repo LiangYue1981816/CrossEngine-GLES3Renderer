@@ -19,18 +19,12 @@ CGfxMesh::CGfxMesh(GLuint name)
 
 	, refCount(0)
 {
-	m_pIndexBuffer = new CGfxIndexBuffer;
-	m_pVertexBuffer = new CGfxVertexBuffer;
-	m_pInstanceBuffer = new CGfxInstanceBuffer;
-	m_pVertexArrayObject = new CGfxVertexArrayObject;
+
 }
 
 CGfxMesh::~CGfxMesh(void)
 {
-	delete m_pIndexBuffer;
-	delete m_pVertexBuffer;
-	delete m_pInstanceBuffer;
-	delete m_pVertexArrayObject;
+	Free();
 }
 
 void CGfxMesh::Lock(void)
@@ -56,23 +50,26 @@ GLuint CGfxMesh::GetName(void) const
 
 void CGfxMesh::Bind(void) const
 {
-	if (m_pIndexBuffer->GetIndexBuffer() == 0 || m_pVertexBuffer->GetVertexBuffer() == 0) {
-		return;
-	}
-
-	glBindVertexArray(0);
-	{
-		if (m_pInstanceBuffer->GetInstanceBuffer() == 0) {
-			m_pInstanceBuffer->CreateInstanceBuffer(INSTANCE_ATTRIBUTE_TRANSFORM);
-		}
-
-		if (m_pVertexArrayObject->GetVertexArrayObject() == 0) {
-			m_pVertexArrayObject->CreateVertexArrayObject(m_pIndexBuffer, m_pVertexBuffer, m_pInstanceBuffer);
-		}
-
+	if (m_pInstanceBuffer) {
 		m_pInstanceBuffer->UpdateInstance();
 	}
-	glBindVertexArray(m_pVertexArrayObject->GetVertexArrayObject());
+
+	if (m_pVertexArrayObject) {
+		m_pVertexArrayObject->Bind();
+	}
+	else {
+		if (m_pIndexBuffer) {
+			m_pIndexBuffer->Bind();
+		}
+
+		if (m_pVertexBuffer) {
+			m_pVertexBuffer->Bind();
+		}
+
+		if (m_pInstanceBuffer) {
+			m_pInstanceBuffer->Bind();
+		}
+	}
 }
 
 bool CGfxMesh::Load(const char *szFileName)
@@ -125,8 +122,13 @@ bool CGfxMesh::Load(const char *szFileName)
 		fseek(pFile, header.vertexBufferOffset, SEEK_SET);
 		fread(pVertexBuffer, header.vertexBufferSize, 1, pFile);
 
-		if (CreateIndexBuffer(header.indexBufferSize, pIndexBuffer, false, GL_UNSIGNED_INT) == false) throw 1;
-		if (CreateVertexBuffer(header.vertexBufferSize, pVertexBuffer, false, format) == false) throw 2;
+		m_pIndexBuffer = new CGfxIndexBuffer(GL_UNSIGNED_INT);
+		m_pVertexBuffer = new CGfxVertexBuffer(format);
+		m_pInstanceBuffer = new CGfxInstanceBuffer(INSTANCE_ATTRIBUTE_TRANSFORM);
+		m_pVertexArrayObject = new CGfxVertexArrayObject(m_pIndexBuffer, m_pVertexBuffer, m_pInstanceBuffer);
+
+		m_pIndexBuffer->BufferData(header.indexBufferSize, pIndexBuffer, false);
+		m_pVertexBuffer->BufferData(header.vertexBufferSize, pVertexBuffer, false);
 
 		free(pVertexBuffer);
 		free(pIndexBuffer);
@@ -147,58 +149,120 @@ bool CGfxMesh::Load(const char *szFileName)
 
 void CGfxMesh::Free(void)
 {
-	m_pIndexBuffer->Destroy();
-	m_pVertexBuffer->Destroy();
-	m_pInstanceBuffer->Destroy();
-	m_pVertexArrayObject->Destroy();
+	if (m_pIndexBuffer) {
+		delete m_pIndexBuffer;
+	}
+
+	if (m_pVertexBuffer) {
+		delete m_pVertexBuffer;
+	}
+
+	if (m_pInstanceBuffer) {
+		delete m_pInstanceBuffer;
+	}
+
+	if (m_pVertexArrayObject) {
+		delete m_pVertexArrayObject;
+	}
+
+	m_pIndexBuffer = NULL;
+	m_pVertexBuffer = NULL;
+	m_pInstanceBuffer = NULL;
+	m_pVertexArrayObject = NULL;
 }
 
-bool CGfxMesh::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
+void CGfxMesh::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
 {
-	return m_pIndexBuffer->CreateIndexBuffer(size, pBuffer, bDynamic, type);
+	if (m_pIndexBuffer) {
+		delete m_pIndexBuffer;
+	}
+
+	if (m_pVertexArrayObject) {
+		delete m_pVertexArrayObject;
+	}
+
+	m_pIndexBuffer = NULL;
+	m_pVertexArrayObject = NULL;
+
+	m_pIndexBuffer = new CGfxIndexBuffer(type);
+	m_pIndexBuffer->BufferData(size, pBuffer, bDynamic);
 }
 
-bool CGfxMesh::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format)
+void CGfxMesh::CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format)
 {
-	return m_pVertexBuffer->CreateVertexBuffer(size, pBuffer, bDynamic, format);
+	if (m_pVertexBuffer) {
+		delete m_pVertexBuffer;
+	}
+
+	if (m_pVertexArrayObject) {
+		delete m_pVertexArrayObject;
+	}
+
+	m_pVertexBuffer = NULL;
+	m_pVertexArrayObject = NULL;
+
+	m_pVertexBuffer = new CGfxVertexBuffer(format);
+	m_pVertexBuffer->BufferData(size, pBuffer, bDynamic);
+}
+
+void CGfxMesh::CreateInstanceBuffer(GLuint format)
+{
+	if (m_pInstanceBuffer) {
+		delete m_pInstanceBuffer;
+	}
+
+	if (m_pVertexArrayObject) {
+		delete m_pVertexArrayObject;
+	}
+
+	m_pInstanceBuffer = NULL;
+	m_pVertexArrayObject = NULL;
+
+	m_pInstanceBuffer = new CGfxInstanceBuffer(format);
 }
 
 void CGfxMesh::ClearInstance(void)
 {
-	m_pInstanceBuffer->Clear();
+	if (m_pInstanceBuffer) {
+		m_pInstanceBuffer->Clear();
+	}
 }
 
 void CGfxMesh::SetInstance(const glm::mat4 &mtxTransform)
 {
-	m_pInstanceBuffer->SetInstance(mtxTransform);
+	if (m_pInstanceBuffer) {
+		m_pInstanceBuffer->SetInstance(mtxTransform);
+	}
 }
 
 void CGfxMesh::AddInstance(const glm::mat4 &mtxTransform)
 {
-	m_pInstanceBuffer->AddInstance(mtxTransform);
+	if (m_pInstanceBuffer) {
+		m_pInstanceBuffer->AddInstance(mtxTransform);
+	}
 }
 
 GLenum CGfxMesh::GetIndexType(void) const
 {
-	return m_pIndexBuffer->GetIndexType();
+	return m_pIndexBuffer ? m_pIndexBuffer->GetIndexType() : GL_INVALID_ENUM;
 }
 
 GLuint CGfxMesh::GetIndexCount(void) const
 {
-	return m_pIndexBuffer->GetIndexCount();
+	return m_pIndexBuffer ? m_pIndexBuffer->GetIndexCount() : 0;
 }
 
 GLuint CGfxMesh::GetVertexFormat(void) const
 {
-	return m_pVertexBuffer->GetVertexFormat();
+	return m_pVertexBuffer ? m_pVertexBuffer->GetVertexFormat() : 0;
 }
 
 GLuint CGfxMesh::GetVertexCount(void) const
 {
-	return m_pVertexBuffer->GetVertexCount();
+	return m_pVertexBuffer ? m_pVertexBuffer->GetVertexCount() : 0;
 }
 
 GLuint CGfxMesh::GetInstanceCount(void) const
 {
-	return m_pInstanceBuffer->GetInstanceCount();
+	return m_pInstanceBuffer ? m_pInstanceBuffer->GetInstanceCount() : 0;
 }

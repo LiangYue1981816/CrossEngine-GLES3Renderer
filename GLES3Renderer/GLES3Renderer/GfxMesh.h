@@ -25,15 +25,16 @@ public:
 public:
 	GLuint GetName(void) const;
 
-private:
+public:
 	void Bind(void) const;
 
-private:
+public:
 	bool Load(const char *szFileName);
 	void Free(void);
 
-	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
-	bool CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format);
+	void CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
+	void CreateVertexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLuint format);
+	void CreateInstanceBuffer(GLuint format);
 
 public:
 	void ClearInstance(void);
