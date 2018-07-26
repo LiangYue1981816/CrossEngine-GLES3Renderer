@@ -43,11 +43,11 @@ private:
 
 	
 public:
-	void Lock(void);
-	void Unlock(bool bFree);
+	GLuint GetName(void) const;
 
 public:
-	GLuint GetName(void) const;
+	void Lock(void);
+	void Unlock(bool bFree);
 
 private:
 	void Bind(void) const;
@@ -78,21 +78,21 @@ public:
 
 	bool IsEnableBlend(void) const;
 
-public:
-	CGfxProgram* GetProgram(void) const;
-
+private:
+	CGfxProgram* GetProgram(void);
 	CGfxSampler* GetSampler(const char *szName, GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	CGfxTexture2D* GetTexture2D(const char *szName);
 	CGfxTexture2DArray* GetTexture2DArray(const char *szName);
 	CGfxTextureCubeMap* GetTextureCubeMap(const char *szName);
 
+public:
 	CGfxUniformVec1* GetUniformVec1(const char *szName);
 	CGfxUniformVec2* GetUniformVec2(const char *szName);
 	CGfxUniformVec3* GetUniformVec3(const char *szName);
 	CGfxUniformVec4* GetUniformVec4(const char *szName);
 	CGfxUniformMat4* GetUniformMat4(const char *szName);
 
-public:
+private:
 	GLuint GetTextureUnits(void) const;
 
 

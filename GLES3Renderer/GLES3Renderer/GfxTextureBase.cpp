@@ -29,6 +29,11 @@ CGfxTextureBase::~CGfxTextureBase(void)
 	Free();
 }
 
+GLuint CGfxTextureBase::GetName(void) const
+{
+	return m_name;
+}
+
 void CGfxTextureBase::Lock(void)
 {
 	refCount++;
@@ -43,11 +48,6 @@ void CGfxTextureBase::Unlock(bool bFree)
 	if (bFree && refCount == 0) {
 		CGfxRenderer::GetInstance()->FreeTexture(this);
 	}
-}
-
-GLuint CGfxTextureBase::GetName(void) const
-{
-	return m_name;
 }
 
 bool CGfxTextureBase::CreateExtern(GLuint texture)

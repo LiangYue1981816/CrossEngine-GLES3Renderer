@@ -5,6 +5,7 @@
 class CGfxIndexBuffer
 {
 	friend class CGfxMesh;
+	friend class CGfxVertexArrayObject;
 
 
 private:
@@ -12,11 +13,11 @@ private:
 	virtual ~CGfxIndexBuffer(void);
 
 
-public:
+private:
 	void Bind(void) const;
 	bool BufferData(size_t size, const void *pBuffer, bool bDynamic);
 
-public:
+private:
 	GLenum GetIndexType(void) const;
 	GLuint GetIndexCount(void) const;
 	GLuint GetIndexBuffer(void) const;

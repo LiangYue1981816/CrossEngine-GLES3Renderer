@@ -5,6 +5,7 @@
 class CGfxVertexBuffer
 {
 	friend class CGfxMesh;
+	friend class CGfxVertexArrayObject;
 
 
 private:
@@ -12,11 +13,11 @@ private:
 	virtual ~CGfxVertexBuffer(void);
 
 
-public:
+private:
 	void Bind(void) const;
 	bool BufferData(size_t size, const void *pBuffer, bool bDynamic);
 
-public:
+private:
 	GLuint GetVertexCount(void) const;
 	GLuint GetVertexFormat(void) const;
 	GLuint GetVertexBuffer(void) const;

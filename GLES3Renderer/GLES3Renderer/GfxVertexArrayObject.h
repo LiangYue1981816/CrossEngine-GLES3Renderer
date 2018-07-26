@@ -15,7 +15,7 @@ private:
 	virtual ~CGfxVertexArrayObject(void);
 
 
-public:
+private:
 	void Bind(void) const;
 
 

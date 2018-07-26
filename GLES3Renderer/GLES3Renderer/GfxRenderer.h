@@ -51,6 +51,8 @@
 
 class CGfxRenderer
 {
+	friend class CGfxMaterial;
+	friend class CGfxTextureBase;
 	friend class CGfxCommandBindMesh;
 	friend class CGfxCommandBindMaterial;
 	friend class CGfxCommandBindInputTexture;
@@ -73,7 +75,7 @@ public:
 	const char* GetMaterialFullPath(const char *szFileName, char *szFullPath) const;
 	const char* GetMeshFullPath(const char *szFileName, char *szFullPath) const;
 
-public:
+private:
 	CGfxProgram* CreateProgram(const char *szVertexFileName, const char *szFragmentFileName);
 	CGfxSampler* CreateSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 
@@ -82,11 +84,12 @@ public:
 	CGfxTextureCubeMap* LoadTextureCubeMap(const char *szFileName);
 	void FreeTexture(CGfxTextureBase *pTexture);
 
-	CGfxMaterial* LoadMaterial(const char *szFileName);
-	void FreeMaterial(CGfxMaterial *pMaterial);
-
+public:
 	CGfxMesh* LoadMesh(const char *szFileName);
 	void FreeMesh(CGfxMesh *pMesh);
+
+	CGfxMaterial* LoadMaterial(const char *szFileName);
+	void FreeMaterial(CGfxMaterial *pMaterial);
 
 public:
 	void SetTime(float t, float dt);

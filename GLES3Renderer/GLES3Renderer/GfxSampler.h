@@ -4,12 +4,16 @@
 
 class CGfxSampler
 {
-public:
+	friend class CGfxMaterial;
+	friend class CGfxSamplerManager;
+
+
+private:
 	CGfxSampler(GLenum minFilter, GLenum magFilter, GLenum addressMode);
 	virtual ~CGfxSampler(void);
 
 
-public:
+private:
 	GLuint GetSampler(void) const;
 
 

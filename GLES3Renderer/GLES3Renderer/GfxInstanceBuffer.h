@@ -7,6 +7,7 @@
 class CGfxInstanceBuffer
 {
 	friend class CGfxMesh;
+	friend class CGfxVertexArrayObject;
 
 
 private:
@@ -14,16 +15,16 @@ private:
 	virtual ~CGfxInstanceBuffer(void);
 
 
-public:
+private:
 	void Bind(void) const;
 
-public:
-	void Clear(void);
+private:
 	void SetInstance(const glm::mat4 &mtxTransform);
 	void AddInstance(const glm::mat4 &mtxTransform);
+	void ClearInstance(void);
 	void UpdateInstance(void);
 
-public:
+private:
 	GLuint GetInstanceCount(void) const;
 	GLuint GetInstanceFormat(void) const;
 	GLuint GetInstanceBuffer(void) const;

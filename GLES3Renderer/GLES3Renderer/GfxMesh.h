@@ -19,16 +19,16 @@ private:
 
 
 public:
-	void Lock(void);
-	void Unlock(bool bFree);
-
-public:
 	GLuint GetName(void) const;
 
 public:
+	void Lock(void);
+	void Unlock(bool bFree);
+
+private:
 	void Bind(void) const;
 
-public:
+private:
 	bool Load(const char *szFileName);
 	void Free(void);
 
@@ -37,9 +37,9 @@ public:
 	void CreateInstanceBuffer(GLuint format);
 
 public:
-	void ClearInstance(void);
 	void SetInstance(const glm::mat4 &mtxTransform);
 	void AddInstance(const glm::mat4 &mtxTransform);
+	void ClearInstance(void);
 
 public:
 	GLenum GetIndexType(void) const;

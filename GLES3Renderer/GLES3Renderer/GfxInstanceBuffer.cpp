@@ -43,12 +43,6 @@ void CGfxInstanceBuffer::Bind(void) const
 	}
 }
 
-void CGfxInstanceBuffer::Clear(void)
-{
-	m_bDirty = true;
-	m_instanceDatas.clear();
-}
-
 void CGfxInstanceBuffer::SetInstance(const glm::mat4 &mtxTransform)
 {
 	m_bDirty = true;
@@ -60,6 +54,12 @@ void CGfxInstanceBuffer::AddInstance(const glm::mat4 &mtxTransform)
 {
 	m_bDirty = true;
 	m_instanceDatas.push_back(mtxTransform);
+}
+
+void CGfxInstanceBuffer::ClearInstance(void)
+{
+	m_bDirty = true;
+	m_instanceDatas.clear();
 }
 
 void CGfxInstanceBuffer::UpdateInstance(void)

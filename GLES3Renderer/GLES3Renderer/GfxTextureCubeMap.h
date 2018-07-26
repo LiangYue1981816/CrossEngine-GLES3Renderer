@@ -15,11 +15,11 @@ private:
 	virtual ~CGfxTextureCubeMap(void);
 
 
-public:
+private:
 	bool Load(const char *szFileName);
 	bool Create(GLenum format, GLenum internalFormat, GLsizei width, GLsizei height, GLuint mipLevels);
 
-public:
+private:
 	bool TransferTextureCubeMap(const gli::texture_cube &texture);
 	bool TransferTexture2D(GLuint face, const gli::texture2d &texture);
 	bool TransferTexture2D(GLuint face, GLuint level, GLenum format, GLsizei width, GLsizei height, GLenum type, const GLvoid *data);

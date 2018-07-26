@@ -139,16 +139,6 @@ void CGfxRenderer::FreeTexture(CGfxTextureBase *pTexture)
 	m_pTextureManager->FreeTexture(pTexture);
 }
 
-CGfxMaterial* CGfxRenderer::LoadMaterial(const char *szFileName)
-{
-	return m_pMaterialManager->LoadMaterial(szFileName);
-}
-
-void CGfxRenderer::FreeMaterial(CGfxMaterial *pMaterial)
-{
-	m_pMaterialManager->FreeMaterial(pMaterial);
-}
-
 CGfxMesh* CGfxRenderer::LoadMesh(const char *szFileName)
 {
 	return m_pMeshManager->LoadMesh(szFileName);
@@ -157,6 +147,16 @@ CGfxMesh* CGfxRenderer::LoadMesh(const char *szFileName)
 void CGfxRenderer::FreeMesh(CGfxMesh *pMesh)
 {
 	m_pMeshManager->FreeMesh(pMesh);
+}
+
+CGfxMaterial* CGfxRenderer::LoadMaterial(const char *szFileName)
+{
+	return m_pMaterialManager->LoadMaterial(szFileName);
+}
+
+void CGfxRenderer::FreeMaterial(CGfxMaterial *pMaterial)
+{
+	m_pMaterialManager->FreeMaterial(pMaterial);
 }
 
 void CGfxRenderer::SetTime(float t, float dt)

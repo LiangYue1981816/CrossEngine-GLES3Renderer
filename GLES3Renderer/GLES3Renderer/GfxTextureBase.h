@@ -15,11 +15,11 @@ protected:
 
 
 public:
-	void Lock(void);
-	void Unlock(bool bFree);
+	GLuint GetName(void) const;
 
 public:
-	GLuint GetName(void) const;
+	void Lock(void);
+	void Unlock(bool bFree);
 
 protected:
 	virtual bool CreateExtern(GLuint texture);

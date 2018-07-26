@@ -150,6 +150,11 @@ CGfxMaterial::~CGfxMaterial(void)
 	Free();
 }
 
+GLuint CGfxMaterial::GetName(void) const
+{
+	return m_name;
+}
+
 void CGfxMaterial::Lock(void)
 {
 	refCount++;
@@ -164,11 +169,6 @@ void CGfxMaterial::Unlock(bool bFree)
 	if (bFree && refCount == 0) {
 		CGfxRenderer::GetInstance()->FreeMaterial(this);
 	}
-}
-
-GLuint CGfxMaterial::GetName(void) const
-{
-	return m_name;
 }
 
 void CGfxMaterial::Bind(void) const
@@ -750,7 +750,7 @@ bool CGfxMaterial::IsEnableBlend(void) const
 	return m_state.bEnableBlend;
 }
 
-CGfxProgram* CGfxMaterial::GetProgram(void) const
+CGfxProgram* CGfxMaterial::GetProgram(void)
 {
 	return m_pProgram;
 }

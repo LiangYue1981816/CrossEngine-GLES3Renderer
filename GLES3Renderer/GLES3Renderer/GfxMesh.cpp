@@ -27,6 +27,11 @@ CGfxMesh::~CGfxMesh(void)
 	Free();
 }
 
+GLuint CGfxMesh::GetName(void) const
+{
+	return m_name;
+}
+
 void CGfxMesh::Lock(void)
 {
 	refCount++;
@@ -41,11 +46,6 @@ void CGfxMesh::Unlock(bool bFree)
 	if (bFree && refCount == 0) {
 		CGfxRenderer::GetInstance()->FreeMesh(this);
 	}
-}
-
-GLuint CGfxMesh::GetName(void) const
-{
-	return m_name;
 }
 
 void CGfxMesh::Bind(void) const
@@ -221,13 +221,6 @@ void CGfxMesh::CreateInstanceBuffer(GLuint format)
 	m_pInstanceBuffer = new CGfxInstanceBuffer(format);
 }
 
-void CGfxMesh::ClearInstance(void)
-{
-	if (m_pInstanceBuffer) {
-		m_pInstanceBuffer->Clear();
-	}
-}
-
 void CGfxMesh::SetInstance(const glm::mat4 &mtxTransform)
 {
 	if (m_pInstanceBuffer) {
@@ -239,6 +232,13 @@ void CGfxMesh::AddInstance(const glm::mat4 &mtxTransform)
 {
 	if (m_pInstanceBuffer) {
 		m_pInstanceBuffer->AddInstance(mtxTransform);
+	}
+}
+
+void CGfxMesh::ClearInstance(void)
+{
+	if (m_pInstanceBuffer) {
+		m_pInstanceBuffer->ClearInstance();
 	}
 }
 
