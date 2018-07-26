@@ -6,108 +6,75 @@
 
 static const int INSTANCE_BUFFER_SIZE = 1 * 1024;
 
-CGfxInstanceBuffer::CGfxInstanceBuffer(void)
-	: m_instanceFormat(0)
+CGfxInstanceBuffer::CGfxInstanceBuffer(GLuint format)
+	: m_instanceFormat(format)
 	, m_instanceBuffer(0)
-	, m_instanceBufferSize(0)
+	, m_size(0)
 
 	, m_bDirty(false)
 {
-
+	glGenBuffers(1, &m_instanceBuffer);
 }
 
 CGfxInstanceBuffer::~CGfxInstanceBuffer(void)
 {
-	Destroy();
+	glDeleteBuffers(1, &m_instanceBuffer);
 }
 
 void CGfxInstanceBuffer::Bind(void) const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
-	SetupFormat();
-}
+	{
+		GLuint instanceStride = GetInstanceStride(m_instanceFormat);
 
-void CGfxInstanceBuffer::SetupFormat(void) const
-{
-	GLuint instanceStride = GetInstanceStride(m_instanceFormat);
+		for (GLuint indexAttribute = 0; indexAttribute < INSTANCE_ATTRIBUTE_COUNT; indexAttribute++) {
+			GLuint attribute = (1 << indexAttribute);
 
-	for (GLuint indexAttribute = 0; indexAttribute < INSTANCE_ATTRIBUTE_COUNT; indexAttribute++) {
-		GLuint attribute = (1 << indexAttribute);
+			if (m_instanceFormat & attribute) {
+				GLuint location = GetInstanceAttributeLocation(attribute);
+				GLuint components = GetInstanceAttributeComponents(attribute);
+				GLuint offset = GetInstanceAttributeOffset(m_instanceFormat, attribute);
 
-		if (m_instanceFormat & attribute) {
-			GLuint location = GetInstanceAttributeLocation(attribute);
-			GLuint components = GetInstanceAttributeComponents(attribute);
-			GLuint offset = GetInstanceAttributeOffset(m_instanceFormat, attribute);
-
-			glEnableVertexAttribArray(location);
-			glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, instanceStride, (const void *)offset);
-			glVertexAttribDivisor(location, 1);
+				glEnableVertexAttribArray(location);
+				glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, instanceStride, (const void *)offset);
+				glVertexAttribDivisor(location, 1);
+			}
 		}
 	}
 }
 
-bool CGfxInstanceBuffer::CreateInstanceBuffer(GLuint format)
-{
-	m_instanceFormat = format;
-	m_instanceBufferSize = INSTANCE_BUFFER_SIZE;
-
-	glGenBuffers(1, &m_instanceBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
-	glBufferData(GL_ARRAY_BUFFER, m_instanceBufferSize, NULL, GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	return true;
-}
-
-void CGfxInstanceBuffer::Destroy(void)
-{
-	if (m_instanceBuffer) {
-		glDeleteBuffers(1, &m_instanceBuffer);
-	}
-
-	m_instanceFormat = 0;
-	m_instanceBuffer = 0;
-	m_instanceBufferSize = 0;
-}
-
 void CGfxInstanceBuffer::Clear(void)
 {
-	if (m_instanceBuffer) {
-		m_bDirty = true;
-		m_instanceDatas.clear();
-	}
+	m_bDirty = true;
+	m_instanceDatas.clear();
 }
 
 void CGfxInstanceBuffer::SetInstance(const glm::mat4 &mtxTransform)
 {
-	if (m_instanceBuffer) {
-		m_bDirty = true;
-		m_instanceDatas.clear();
-		m_instanceDatas.push_back(mtxTransform);
-	}
+	m_bDirty = true;
+	m_instanceDatas.clear();
+	m_instanceDatas.push_back(mtxTransform);
 }
 
 void CGfxInstanceBuffer::AddInstance(const glm::mat4 &mtxTransform)
 {
-	if (m_instanceBuffer) {
-		m_bDirty = true;
-		m_instanceDatas.push_back(mtxTransform);
-	}
+	m_bDirty = true;
+	m_instanceDatas.push_back(mtxTransform);
 }
 
 void CGfxInstanceBuffer::UpdateInstance(void)
 {
-	if (m_bDirty && m_instanceBuffer) {
+	if (m_bDirty) {
 		m_bDirty = false;
 
 		GLuint size = m_instanceDatas.size() * sizeof(glm::mat4);
 
-		if (m_instanceBufferSize < size) {
-			m_instanceBufferSize = INSTANCE_BUFFER_SIZE;
-			while (m_instanceBufferSize < size) m_instanceBufferSize <<= 1;
+		if (m_size < size) {
+			m_size = INSTANCE_BUFFER_SIZE;
+			while (m_size < size) m_size <<= 1;
 
 			glBindBuffer(GL_ARRAY_BUFFER, m_instanceBuffer);
-			glBufferData(GL_ARRAY_BUFFER, m_instanceBufferSize, NULL, GL_DYNAMIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, m_size, NULL, GL_DYNAMIC_DRAW);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 
@@ -130,4 +97,9 @@ GLuint CGfxInstanceBuffer::GetInstanceFormat(void) const
 GLuint CGfxInstanceBuffer::GetInstanceBuffer(void) const
 {
 	return m_instanceBuffer;
+}
+
+GLuint CGfxInstanceBuffer::GetSize(void) const
+{
+	return m_size;
 }

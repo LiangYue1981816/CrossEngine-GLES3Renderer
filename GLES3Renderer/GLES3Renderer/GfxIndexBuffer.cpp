@@ -3,17 +3,17 @@
 #include "GfxIndexBuffer.h"
 
 
-CGfxIndexBuffer::CGfxIndexBuffer(void)
-	: m_indexType(GL_UNSIGNED_SHORT)
-	, m_indexCount(0)
+CGfxIndexBuffer::CGfxIndexBuffer(GLenum type)
+	: m_indexType(type)
 	, m_indexBuffer(0)
+	, m_size(0)
 {
-
+	glGenBuffers(1, &m_indexBuffer);
 }
 
 CGfxIndexBuffer::~CGfxIndexBuffer(void)
 {
-	Destroy();
+	glDeleteBuffers(1, &m_indexBuffer);
 }
 
 void CGfxIndexBuffer::Bind(void) const
@@ -21,26 +21,15 @@ void CGfxIndexBuffer::Bind(void) const
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 }
 
-bool CGfxIndexBuffer::CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type)
+bool CGfxIndexBuffer::BufferData(size_t size, const void *pBuffer, bool bDynamic)
 {
-	m_indexType = type;
-	m_indexCount = size / (m_indexType == GL_UNSIGNED_SHORT ? 2 : 4);
+	m_size = size;
 
-	glGenBuffers(1, &m_indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, pBuffer, bDynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	return true;
-}
-
-void CGfxIndexBuffer::Destroy(void)
-{
-	if (m_indexBuffer) {
-		glDeleteBuffers(1, &m_indexBuffer);
-	}
-
-	m_indexBuffer = 0;
 }
 
 GLenum CGfxIndexBuffer::GetIndexType(void) const
@@ -50,10 +39,15 @@ GLenum CGfxIndexBuffer::GetIndexType(void) const
 
 GLuint CGfxIndexBuffer::GetIndexCount(void) const
 {
-	return m_indexCount;
+	return m_size / (m_indexType == GL_UNSIGNED_SHORT ? 2 : 4);
 }
 
 GLuint CGfxIndexBuffer::GetIndexBuffer(void) const
 {
 	return m_indexBuffer;
+}
+
+GLuint CGfxIndexBuffer::GetSize(void) const
+{
+	return m_size;
 }

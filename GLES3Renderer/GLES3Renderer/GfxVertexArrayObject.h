@@ -11,16 +11,12 @@ class CGfxVertexArrayObject
 
 
 private:
-	CGfxVertexArrayObject(void);
+	CGfxVertexArrayObject(const CGfxIndexBuffer *pIndexBuffer, const CGfxVertexBuffer *pVertexBuffer, const CGfxInstanceBuffer *pInstanceBuffer);
 	virtual ~CGfxVertexArrayObject(void);
 
 
-private:
-	bool CreateVertexArrayObject(const CGfxIndexBuffer *pIndexBuffer, const CGfxVertexBuffer *pVertexBuffer, const CGfxInstanceBuffer *pInstanceBuffer);
-	void Destroy(void);
-
-private:
-	GLuint GetVertexArrayObject(void) const;
+public:
+	void Bind(void) const;
 
 
 private:

@@ -5,29 +5,26 @@
 class CGfxIndexBuffer
 {
 	friend class CGfxMesh;
-	friend class CGfxVertexArrayObject;
 
 
 private:
-	CGfxIndexBuffer(void);
+	CGfxIndexBuffer(GLenum type);
 	virtual ~CGfxIndexBuffer(void);
 
 
-private:
+public:
 	void Bind(void) const;
-
-private:
-	bool CreateIndexBuffer(size_t size, const void *pBuffer, bool bDynamic, GLenum type);
-	void Destroy(void);
+	bool BufferData(size_t size, const void *pBuffer, bool bDynamic);
 
 public:
 	GLenum GetIndexType(void) const;
 	GLuint GetIndexCount(void) const;
 	GLuint GetIndexBuffer(void) const;
+	GLuint GetSize(void) const;
 
 
 private:
 	GLenum m_indexType;
-	GLuint m_indexCount;
 	GLuint m_indexBuffer;
+	GLuint m_size;
 };

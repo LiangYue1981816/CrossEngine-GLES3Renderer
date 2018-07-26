@@ -7,21 +7,15 @@
 class CGfxInstanceBuffer
 {
 	friend class CGfxMesh;
-	friend class CGfxVertexArrayObject;
 
 
 private:
-	CGfxInstanceBuffer(void);
+	CGfxInstanceBuffer(GLuint format);
 	virtual ~CGfxInstanceBuffer(void);
 
 
-private:
+public:
 	void Bind(void) const;
-	void SetupFormat(void) const;
-
-private:
-	bool CreateInstanceBuffer(GLuint format);
-	void Destroy(void);
 
 public:
 	void Clear(void);
@@ -33,12 +27,13 @@ public:
 	GLuint GetInstanceCount(void) const;
 	GLuint GetInstanceFormat(void) const;
 	GLuint GetInstanceBuffer(void) const;
+	GLuint GetSize(void) const;
 
 
 private:
 	GLuint m_instanceFormat;
 	GLuint m_instanceBuffer;
-	GLuint m_instanceBufferSize;
+	GLuint m_size;
 
 private:
 	bool m_bDirty;
