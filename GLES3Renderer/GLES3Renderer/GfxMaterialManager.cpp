@@ -38,9 +38,3 @@ void CGfxMaterialManager::FreeMaterial(CGfxMaterial *pMaterial)
 		delete pMaterial;
 	}
 }
-
-CGfxMaterial* CGfxMaterialManager::GetMaterial(GLuint name) const
-{
-	const auto &itMaterial = m_pMaterials.find(name);
-	return itMaterial != m_pMaterials.end() ? itMaterial->second : NULL;
-}

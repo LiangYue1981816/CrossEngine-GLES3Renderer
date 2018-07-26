@@ -13,17 +13,26 @@ public:
 		, m_pUniformZBuffer(pUniformZBuffer)
 		, m_pUniformProjection(pUniformProjection)
 	{
-		m_pMaterial->Lock();
+		if (m_pMaterial) {
+			m_pMaterial->Lock();
+		}
 	}
 	virtual ~CGfxCommandBindMaterial(void)
 	{
-		m_pMaterial->Unlock(true);
+		if (m_pMaterial) {
+			m_pMaterial->Unlock(true);
+		}
 	}
 
 public:
 	virtual void Execute(void) const
 	{
-		CGfxRenderer::GetInstance()->BindMaterial(m_pMaterial, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
+		if (m_pMaterial) {
+			CGfxRenderer::GetInstance()->BindMaterial(m_pMaterial, m_pUniformCamera, m_pUniformZBuffer, m_pUniformProjection);
+		}
+		else {
+			glUseProgram(0);
+		}
 	}
 
 

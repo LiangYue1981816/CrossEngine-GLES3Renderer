@@ -111,6 +111,7 @@
     <ClInclude Include="GLES3Renderer\GfxCommandSetScissor.h" />
     <ClInclude Include="GLES3Renderer\GfxCommandSetViewport.h" />
     <ClInclude Include="GLES3Renderer\GfxFrameBuffer.h" />
+    <ClInclude Include="GLES3Renderer\GfxFrameBufferManager.h" />
     <ClInclude Include="GLES3Renderer\GfxGLM.h" />
     <ClInclude Include="GLES3Renderer\GfxIndexBuffer.h" />
     <ClInclude Include="GLES3Renderer\GfxInstanceBuffer.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="GLES3Renderer\GfxCamera.cpp" />
     <ClCompile Include="GLES3Renderer\GfxCommandBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxFrameBuffer.cpp" />
+    <ClCompile Include="GLES3Renderer\GfxFrameBufferManager.cpp" />
     <ClCompile Include="GLES3Renderer\GfxIndexBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxInstanceBuffer.cpp" />
     <ClCompile Include="GLES3Renderer\GfxMaterial.cpp" />

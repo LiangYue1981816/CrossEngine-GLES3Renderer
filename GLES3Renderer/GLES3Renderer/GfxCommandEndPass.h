@@ -9,18 +9,22 @@ public:
 	CGfxCommandEndPass(CGfxFrameBuffer *pFrameBuffer)
 		: m_pFrameBuffer(pFrameBuffer)
 	{
-
+		if (m_pFrameBuffer) {
+			m_pFrameBuffer->Lock();
+		}
 	}
 	virtual ~CGfxCommandEndPass(void)
 	{
-
+		if (m_pFrameBuffer) {
+			m_pFrameBuffer->Unlock(true);
+		}
 	}
 
 public:
 	virtual void Execute(void) const
 	{
 		if (m_pFrameBuffer) {
-			m_pFrameBuffer->InvalidateFramebuffer();
+			CGfxRenderer::GetInstance()->InvalidateFramebuffer(m_pFrameBuffer);
 		}
 	}
 

@@ -14,12 +14,9 @@ private:
 	virtual ~CGfxMeshManager(void);
 
 
-public:
+private:
 	CGfxMesh* LoadMesh(const char *szFileName);
 	void FreeMesh(CGfxMesh *pMesh);
-
-public:
-	CGfxMesh* GetMesh(GLuint name) const;
 
 
 private:

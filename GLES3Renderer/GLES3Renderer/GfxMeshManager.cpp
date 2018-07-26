@@ -38,9 +38,3 @@ void CGfxMeshManager::FreeMesh(CGfxMesh *pMesh)
 		delete pMesh;
 	}
 }
-
-CGfxMesh* CGfxMeshManager::GetMesh(GLuint name) const
-{
-	const auto &itMesh = m_pMeshs.find(name);
-	return itMesh != m_pMeshs.end() ? itMesh->second : NULL;
-}

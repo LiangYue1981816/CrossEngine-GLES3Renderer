@@ -14,12 +14,9 @@ private:
 	virtual ~CGfxMaterialManager(void);
 
 
-public:
+private:
 	CGfxMaterial* LoadMaterial(const char *szFileName);
 	void FreeMaterial(CGfxMaterial *pMaterial);
-
-public:
-	CGfxMaterial* GetMaterial(GLuint name) const;
 
 
 private:

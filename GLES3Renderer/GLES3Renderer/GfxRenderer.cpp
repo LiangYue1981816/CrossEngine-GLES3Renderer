@@ -33,6 +33,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 	, m_pGlobalMaterial(NULL)
 	, m_pCurrentMaterial(NULL)
 
+	, m_pFrameBufferManager(NULL)
 	, m_pProgramManager(NULL)
 	, m_pSamplerManager(NULL)
 	, m_pTextureManager(NULL)
@@ -65,6 +66,7 @@ CGfxRenderer::CGfxRenderer(const char *szShaderPath, const char *szTexturePath, 
 
 	m_pGlobalMaterial = new CGfxMaterial(0);
 
+	m_pFrameBufferManager = new CGfxFrameBufferManager;
 	m_pProgramManager = new CGfxProgramManager;
 	m_pSamplerManager = new CGfxSamplerManager;
 	m_pTextureManager = new CGfxTextureManager;
@@ -83,6 +85,7 @@ CGfxRenderer::~CGfxRenderer(void)
 	delete m_pTextureManager;
 	delete m_pSamplerManager;
 	delete m_pProgramManager;
+	delete m_pFrameBufferManager;
 }
 
 const char* CGfxRenderer::GetShaderFullPath(const char *szFileName, char *szFullPath) const
@@ -137,6 +140,16 @@ CGfxTextureCubeMap* CGfxRenderer::LoadTextureCubeMap(const char *szFileName)
 void CGfxRenderer::FreeTexture(CGfxTextureBase *pTexture)
 {
 	m_pTextureManager->FreeTexture(pTexture);
+}
+
+CGfxFrameBuffer* CGfxRenderer::CreateFrameBuffer(GLuint width, GLuint height)
+{
+	return m_pFrameBufferManager->CreateFrameBuffer(width, height);
+}
+
+void CGfxRenderer::DestroyFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
+{
+	m_pFrameBufferManager->DestroyFrameBuffer(pFrameBuffer);
 }
 
 CGfxMesh* CGfxRenderer::LoadMesh(const char *szFileName)
@@ -380,9 +393,25 @@ void CGfxRenderer::Submit(const CGfxCommandBuffer *pCommandBuffer)
 	pCommandBuffer->Execute();
 }
 
+void CGfxRenderer::InvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer)
+{
+	if (pFrameBuffer) {
+		pFrameBuffer->InvalidateFramebuffer();
+	}
+}
+
+void CGfxRenderer::BindFrameBuffer(CGfxFrameBuffer *pFrameBuffer)
+{
+	if (pFrameBuffer) {
+		pFrameBuffer->Bind();
+	}
+}
+
 void CGfxRenderer::BindMesh(CGfxMesh *pMesh)
 {
-	pMesh->Bind();
+	if (pMesh) {
+		pMesh->Bind();
+	}
 }
 
 void CGfxRenderer::BindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection)

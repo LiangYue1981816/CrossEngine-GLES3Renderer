@@ -43,7 +43,7 @@ void CGfxMesh::Unlock(bool bFree)
 		refCount--;
 	}
 
-	if (bFree && refCount == 0) {
+	if (refCount == 0 && bFree) {
 		CGfxRenderer::GetInstance()->FreeMesh(this);
 	}
 }

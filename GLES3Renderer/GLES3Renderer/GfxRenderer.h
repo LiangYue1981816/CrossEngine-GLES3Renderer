@@ -6,17 +6,18 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "GfxUtils.h"
 #include "GfxCamera.h"
-#include "GfxFrameBuffer.h"
 #include "GfxCommandBuffer.h"
 #include "GfxMeshManager.h"
 #include "GfxProgramManager.h"
 #include "GfxSamplerManager.h"
 #include "GfxTextureManager.h"
 #include "GfxMaterialManager.h"
+#include "GfxFrameBufferManager.h"
 #include "GfxMesh.h"
 #include "GfxMaterial.h"
 #include "GfxProgram.h"
 #include "GfxSampler.h"
+#include "GfxFrameBuffer.h"
 #include "GfxTexture2D.h"
 #include "GfxTexture2DArray.h"
 #include "GfxTextureCubeMap.h"
@@ -53,6 +54,8 @@ class CGfxRenderer
 {
 	friend class CGfxMaterial;
 	friend class CGfxTextureBase;
+	friend class CGfxCommandBeginPass;
+	friend class CGfxCommandEndPass;
 	friend class CGfxCommandBindMesh;
 	friend class CGfxCommandBindMaterial;
 	friend class CGfxCommandBindInputTexture;
@@ -85,6 +88,9 @@ private:
 	void FreeTexture(CGfxTextureBase *pTexture);
 
 public:
+	CGfxFrameBuffer* CreateFrameBuffer(GLuint width, GLuint height);
+	void DestroyFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
+
 	CGfxMesh* LoadMesh(const char *szFileName);
 	void FreeMesh(CGfxMesh *pMesh);
 
@@ -145,6 +151,8 @@ public:
 	void Submit(const CGfxCommandBuffer *pCommandBuffer);
 
 private:
+	void InvalidateFramebuffer(CGfxFrameBuffer *pFrameBuffer);
+	void BindFrameBuffer(CGfxFrameBuffer *pFrameBuffer);
 	void BindMesh(CGfxMesh *pMesh);
 	void BindMaterial(CGfxMaterial *pMaterial, CGfxUniformCamera *pUniformCamera, CGfxUniformZBuffer *pUniformZBuffer, CGfxUniformProjection *pUniformProjection);
 	void BindInputTexture(const char *szName, GLuint texture, GLenum minFilter, GLenum magFilter, GLenum addressMode);
@@ -164,6 +172,7 @@ private:
 	CGfxMaterial *m_pCurrentMaterial;
 
 private:
+	CGfxFrameBufferManager *m_pFrameBufferManager;
 	CGfxProgramManager *m_pProgramManager;
 	CGfxSamplerManager *m_pSamplerManager;
 	CGfxTextureManager *m_pTextureManager;

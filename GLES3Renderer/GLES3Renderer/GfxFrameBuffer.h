@@ -6,22 +6,26 @@
 
 class CGfxFrameBuffer
 {
-public:
+	friend class CGfxRenderer;
+	friend class CGfxFrameBufferManager;
+
+
+private:
 	CGfxFrameBuffer(GLuint width, GLuint height);
 	virtual ~CGfxFrameBuffer(void);
 
 
 public:
+	void Lock(void);
+	void Unlock(bool bFree);
+
+private:
 	void Bind(void);
+	void InvalidateFramebuffer(void);
 
 public:
-	bool SetRenderTexture(GLuint index, GLenum internalformat, GLenum format, GLenum type, GLenum minFilter, GLenum magFilter, bool invalidation);
+	bool SetRenderTexture(GLuint index, GLenum internalformat, GLenum format, GLenum type, bool invalidation);
 	bool CheckFramebufferStatus(void);
-
-	bool Create(void);
-	void Destroy(void);
-
-	void InvalidateFramebuffer(void);
 
 public:
 	GLuint GetWidth(void) const;
@@ -38,4 +42,7 @@ private:
 	GLuint m_rbo;
 	std::map<GLuint, GLuint> m_textures;
 	std::map<GLuint, bool> m_invalidations;
+
+private:
+	GLuint refCount;
 };

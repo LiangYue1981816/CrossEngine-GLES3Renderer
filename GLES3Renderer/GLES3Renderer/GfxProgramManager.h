@@ -14,7 +14,7 @@ private:
 	virtual ~CGfxProgramManager(void);
 
 
-public:
+private:
 	CGfxProgram* CreateProgram(const char *szVertexFileName, const char *szFragmentFileName);
 
 
